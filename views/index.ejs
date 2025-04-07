@@ -20,8 +20,8 @@
        
         <form action="/create" method="post">
             <input class="block w-full rounded-md outline-none px-5 py-2 bg-zinc-800" type="text" placeholder="Title goes here..." name="title">
-            <textarea class="block w-full rounded-md outline-none mt-2 px-5 py-2 resize-none bg-zinc-800"  placeholder="write your task details here...." name="details"></textarea>
-            <input class="mt-2 bg-blue-600 px-5 py- rounded-md" type="submit" value="Create Task">
+            <textarea class="block w-full rounded-md outline-none mt-2 px-5 py-2  bg-zinc-800"  placeholder="write your task details here...." name="details"></textarea>
+            <input class="mt-2 bg-blue-600 px-5 py- rounded-md" type="submit" value="ADD File">
         </form>
     </div>
       <div class="tasks flex gap-3 flex-wrap p-10" >
@@ -36,7 +36,7 @@
                 </div>
                 <%})%>
             <%}else{%>
-                <h3 class="text-zinc-600">No Tasks yet.</h3>
+                <h3 class="text-zinc-600">No Files yet.</h3>
                 <%}%>
           
      </div>
