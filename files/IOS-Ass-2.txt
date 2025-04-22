@@ -1,0 +1,16 @@
+1. Apply banker’s algorithm to the following snapshot taken at time t0 and find
+out process execution sequence that lands a system in safe state.
+ sr|Allocation|Max    | Available 
+ no|A | B | C |A| B| C| A | B | C |
+ p0|0 | 1 | 0 |7| 5| 3|  3|  3  2
+ p1|2 | 0 | 0 |3| 2| 2|
+ p2|3 | 0 | 2 |9| 0| 2|
+ p3|2 | 1 | 1 |2| 2| 2|
+ p4|0 | 0 | 2 |4| 3| 3|
+2. Suppose Disk drive has 300 cylinders. The current position of head is 70. The
+queue of pending request is 42,85,25,130,230,270,85,190
+Calculate head movement for the following algorithms.
+1. FCFS 2. SSTF 3. SCAN<br>
+3. Explain Deadlock Prevention.<br>
+4. Explain Secondary storage Structure.<br>
+5. Explain RAID levels in details.
