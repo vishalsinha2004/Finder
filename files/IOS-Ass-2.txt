@@ -1,6 +1,6 @@
 1. Apply banker’s algorithm to the following snapshot taken at time t0 and find
 out process execution sequence that lands a system in safe state.
- sr|Allocation|Max    | Available 
+ sr|Allocation|  Max  | Available 
  no|A | B | C |A| B| C| A | B | C |
  p0|0 | 1 | 0 |7| 5| 3| 3 | 3 | 2 |
  p1|2 | 0 | 0 |3| 2| 2|
