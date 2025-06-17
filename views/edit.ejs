@@ -3,18 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type=" image/png" href="images/f.png">
-    <title>Finder...</title>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="icon" type="image/png" href="images/f.png">
+    <title>Edit <%= filename %> | Finder...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .input-focus-effect:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+    </style>
 </head>
-<body>
-   <div class="main w-full min-h-screen bg-zinc =-900 p-10 ">
-    <a class="text-blue-500 inline-block mb-10" href="/">Go Back To Home</a>
-    <form action="/edit" method="post">
-        <input class="text-white block w-2/4 rounded-md outline-none px-5 py-2 text-zinc-500 bg-zinc-800" type="text" placeholder="previous name" name="previous" value="<%= filename %>" >    
-        <input class="text-white block w-2/4 rounded-md outline-none px-5 py-2 bg-zinc-800 mt-2" type="text" placeholder="New Name" name="new">
-        <input class="mt-2 bg-yellow-600 px-5 py- rounded-md" type="submit" value="Update Name">
-    </form>
+<body class="bg-zinc-900 text-gray-100 min-h-screen">
+   <div class="main w-full min-h-screen p-4 md:p-10 transition-all duration-300">
+    <!-- Back button with animation -->
+    <a href="/" class="text-blue-400 hover:text-blue-300 inline-flex items-center mb-6 md:mb-10 group transition-colors">
+      <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
+      Go Back To Home
+    </a>
+    
+    <!-- Form container with subtle shadow animation -->
+    <div class="bg-zinc-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow max-w-2xl mx-auto">
+        <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+            Rename File
+        </h1>
+        
+        <form id="editForm" action="/edit" method="post" class="space-y-4">
+            <!-- Current filename -->
+            <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">Current Filename</label>
+                <div class="relative">
+                    <input 
+                        class="w-full rounded-md outline-none px-5 py-2 text-white bg-zinc-700 border border-zinc-600 focus:border-blue-500 input-focus-effect transition-all" 
+                        type="text" 
+                        name="previous" 
+                        value="<%= filename %>" 
+                        readonly
+                    >
+                    <div class="absolute right-3 top-2.5 text-gray-400">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- New filename -->
+            <div>
+                <label class="block text-sm font-medium text-gray-400 mb-1">New Filename</label>
+                <div class="relative">
+                    <input 
+                        id="newFilename"
+                        class="w-full rounded-md outline-none px-5 py-2 text-white bg-zinc-700 border border-zinc-600 focus:border-blue-500 input-focus-effect transition-all" 
+                        type="text" 
+                        name="new" 
+                        placeholder="Enter new filename..."
+                        required
+                        pattern="[^\\\/:*?\"<>|]+"
+                        title="Filename cannot contain special characters (\ / : * ? \" < > |)"
+                    >
+                    <div class="absolute right-3 top-2.5 text-gray-400">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Allowed characters: letters, numbers, spaces, hyphens, and underscores</p>
+            </div>
+            
+            <!-- Extension info -->
+            <div class="flex items-center text-sm text-gray-400">
+                <span class="mr-2">File extension will remain:</span>
+                <span class="font-mono bg-zinc-700 px-2 py-1 rounded text-yellow-400">
+                    <%= filename.split('.').pop() %>
+                </span>
+            </div>
+            
+            <!-- Submit button with loading state -->
+            <div class="pt-4">
+                <button 
+                    id="submitBtn"
+                    type="submit" 
+                    class="w-full md:w-auto px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center"
+                >
+                    <span id="btnText">Update Filename</span>
+                    <span id="btnSpinner" class="ml-2 hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- File preview section -->
+    <div class="mt-8 bg-zinc-800 p-6 rounded-lg max-w-2xl mx-auto hidden" id="previewSection">
+        <h3 class="text-lg font-medium text-gray-300 mb-3">Preview</h3>
+        <div class="font-mono text-sm bg-zinc-900 p-4 rounded overflow-x-auto">
+            <span class="text-green-400">Old:</span> <span id="oldNamePreview" class="text-gray-300 line-through"><%= filename %></span><br>
+            <span class="text-blue-400">New:</span> <span id="newNamePreview" class="text-white"></span>
+        </div>
+    </div>
+   </div>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('editForm');
+        const newFilenameInput = document.getElementById('newFilename');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const previewSection = document.getElementById('previewSection');
+        const oldNamePreview = document.getElementById('oldNamePreview');
+        const newNamePreview = document.getElementById('newNamePreview');
+        
+        // Get file extension
+        const originalFilename = "<%= filename %>";
+        const fileExtension = originalFilename.split('.').pop();
+        
+        // Update preview when typing
+        newFilenameInput.addEventListener('input', function() {
+            const newName = this.value.trim();
+            if (newName) {
+                previewSection.classList.remove('hidden');
+                newNamePreview.textContent = newName + (newName.includes('.') ? '' : '.' + fileExtension);
+            } else {
+                previewSection.classList.add('hidden');
+            }
+        });
+        
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const newName = newFilenameInput.value.trim();
+            if (!newName) {
+                newFilenameInput.classList.add('shake', 'border-red-500');
+                setTimeout(() => {
+                    newFilenameInput.classList.remove('shake');
+                }, 500);
+                return;
+            }
+            
+            // Validate filename
+            const forbiddenChars = /[\\\/:*?"<>|]/;
+            if (forbiddenChars.test(newName)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Filename',
+                    text: 'Filename cannot contain any of these characters: \\ / : * ? " < > |',
+                });
+                newFilenameInput.classList.add('shake', 'border-red-500');
+                setTimeout(() => {
+                    newFilenameInput.classList.remove('shake');
+                }, 500);
+                return;
+            }
+            
+            // Show loading state
+            btnText.textContent = 'Updating...';
+            btnSpinner.classList.remove('hidden');
+            submitBtn.disabled = true;
+            
+            // Submit form after short delay to show loading state
+            setTimeout(() => {
+                form.submit();
+            }, 500);
+        });
+        
+        // Clear error state on focus
+        newFilenameInput.addEventListener('focus', function() {
+            this.classList.remove('border-red-500');
+        });
+    });
+   </script>
 </body>
 </html>
