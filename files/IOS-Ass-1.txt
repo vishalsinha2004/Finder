@@ -1,5 +1,0 @@
-1. What is an Operating System? Give functions of Operating Systems.<br>
-2. Explain Type of Operation System.<br>
-3. Explain Five State Process Model and Transitions with diagram.<br>
-4. Explain Process control Block with diagram.<br>
-5. Explain one example of all Scheduling algorithm. (FCFS,SJF,RR,Priority,SRTN)

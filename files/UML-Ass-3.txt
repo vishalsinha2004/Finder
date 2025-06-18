@@ -1,4 +1,0 @@
-1) Draw Use Case Diagram Of Any System in Microsoft Visio platform Use All Notations And
-Relationships.<br>
-2) Draw Class Diagram Of Any System in Microsoft Visio platform Use All Symbols ,Notations And
-Relationships.

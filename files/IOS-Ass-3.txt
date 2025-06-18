@@ -1,6 +1,0 @@
-1> Explain memory partition in details<br>
-2>Explain memory re-allocation with diagram<br>
-3>Consider  the String 1,2,3,4,2,5,3,4,2,6,7,87,9,7,8,2,5,4,9,How  many page fauit and page hit accur for the following page replacement algorithm<br>
-   (1).First in first out (2).LRU & for the frame size 3&4<br>
-4>Frame size 2 & 3 String:-1,2,3,4,5,3,4,1,6,7,8,7,8,7,8,9<br>
-5>String:- 1,2,3,4,5,3,4,1,6,7,8,9,7,8,9,5,4,2 frame size :-2,3,&4 LRU optimal & FIFO algorithm.<br>
