@@ -282,6 +282,11 @@
       transform: translateY(-5px) scale(1.02);
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
+
+    /* Important task styling */
+    .task-important {
+      border-left: 4px solid #f59e0b;
+    }
   </style>
 </head>
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
@@ -395,9 +400,18 @@
     <div class="tasks grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-12" id="files-container">
       <% if(files.length > 0){ %>
         <% files.forEach(function(val, index){ %>
-          <div class="task p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50" data-index="<%= index %>">
+          <div class="task p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50 <%= index % 3 === 0 ? 'task-important' : '' %>" 
+               data-index="<%= index %>" 
+               data-important="<%= index % 3 === 0 ? 'true' : 'false' %>">
             <div class="flex justify-between items-start">
-              <h1 class="text-zinc-900 dark:text-white text-xl font-semibold tracking-tight truncate max-w-[180px]"><%= val %></h1>
+              <div class="flex items-center">
+                <% if(index % 3 === 0) { %>
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-500 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                <% } %>
+                <h1 class="text-zinc-900 dark:text-white text-xl font-semibold tracking-tight truncate max-w-[180px]"><%= val %></h1>
+              </div>
               <button class="delete-btn text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors duration-300" data-filename="<%= val %>">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -834,6 +848,23 @@
         button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
         
         const filter = button.dataset.filter;
+        const tasks = document.querySelectorAll('.task');
+        
+        tasks.forEach(task => {
+          task.classList.remove('hidden');
+          
+          if (filter === 'recent') {
+            // For recent, we could sort by date, but since we're using random dates in demo,
+            // we'll just show all for this example
+            // In a real app, you would sort by actual creation date
+          } else if (filter === 'important') {
+            if (task.dataset.important !== 'true') {
+              task.classList.add('hidden');
+            }
+          }
+          // 'all' filter shows everything
+        });
+        
         showToast(`Showing ${filter} files`);
       });
     });
