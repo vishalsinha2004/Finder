@@ -27,12 +27,36 @@ app.get('/', function(req, res) {
 });
 
 app.get('/file/:filename', function(req, res) {
-    fs.readFile(`./files/${req.params.filename}`, "utf-8", function(err, filedata) {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, 'files', filename);
+    
+    // Check if file is PDF
+    const isPdf = path.extname(filename).toLowerCase() === '.pdf';
+    
+    if (isPdf) {
+        // For PDF files, just pass the filename and isPdf flag
         res.render('show', {
-            filename: req.params.filename,
-            filedata: filedata
+            filename: filename,
+            isPdf: true
         });
-    });
+    } else {
+        // For text files, read the content
+        fs.readFile(filePath, "utf-8", function(err, filedata) {
+            if (err) return res.status(404).send('File not found');
+            res.render('show', {
+                filename: filename,
+                filedata: filedata,
+                isPdf: false
+            });
+        });
+    }
+});
+
+// Route to serve actual files (including PDFs)
+app.get('/files/:filename', function(req, res) {
+    const filename = req.params.filename;
+    const filePath = path.join(__dirname, 'files', filename);
+    res.sendFile(filePath);
 });
 
 app.get('/edit/:filename', function(req, res) {
