@@ -38,8 +38,22 @@
         border-radius: 0.5rem;
         overflow: hidden;
       }
+      .image-container {
+        max-width: 100%;
+        max-height: 70vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background-color: #f3f4f6;
+      }
       .dark .pdf-container {
         border-color: #374151;
+      }
+      .dark .image-container {
+        background-color: #1f2937;
       }
     </style>
 </head>
@@ -81,6 +95,14 @@
           </div>
           <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
             <p>This is a PDF document. If it doesn't display properly, you can <a href="/files/<%= filename %>" class="text-blue-600 dark:text-blue-400 hover:underline" download>download it</a> instead.</p>
+          </div>
+        <% } else if (isImage) { %>
+          <!-- Image Viewer -->
+          <div class="image-container">
+            <img src="/files/<%= filename %>" alt="<%= filename %>" class="max-w-full max-h-full object-contain">
+          </div>
+          <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+            <p>This is an image file. You can <a href="/files/<%= filename %>" class="text-blue-600 dark:text-blue-400 hover:underline" download>download it</a> if needed.</p>
           </div>
         <% } else { %>
           <!-- Regular text/markdown content -->
