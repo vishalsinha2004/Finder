@@ -35,24 +35,28 @@
       z-index: 50;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
     }
     .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     }
     .dark .navbar {
       background: rgba(15, 23, 42, 0.7);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .dark .navbar.scrolled {
-      background: rgba(15, 23, 42, 0.9);
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     /* Enhanced Welcome Page */
@@ -101,15 +105,18 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Logo with Holographic Effect */
+    /* Enhanced Logo with RGB Light Effect */
     .logo-container {
       position: relative;
-      width: 150px;
-      height: 150px;
+      width: 180px;
+      height: 180px;
       margin-bottom: 2.5rem;
-      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .logo-hologram {
+    
+    .rgb-light-ring {
       position: absolute;
       width: 100%;
       height: 100%;
@@ -117,36 +124,95 @@
       background: conic-gradient(
         from 0deg at 50% 50%,
         #ff0000,
-        #ff00ff,
-        #0000ff,
-        #00ffff,
-        #00ff00,
-        #ffff00,
+        #ff0099,
+        #7700ff,
+        #0066ff,
+        #00ff88,
+        #eeff00,
         #ff0000
       );
-      filter: blur(25px);
-      opacity: 0.7;
-      animation: rotateHologram 12s linear infinite;
-      transform-style: preserve-3d;
+      animation: rotateHologram 8s linear infinite;
+      padding: 4px;
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      filter: blur(1px);
+      opacity: 0.9;
+      z-index: 1;
     }
+    
+    .rgb-light-ring::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 180deg at 50% 50%,
+        #ff0000,
+        #ff0099,
+        #7700ff,
+        #0066ff,
+        #00ff88,
+        #eeff00,
+        #ff0000
+      );
+      animation: rotateHologram 12s linear infinite reverse;
+      filter: blur(12px);
+      opacity: 0.4;
+      z-index: -1;
+    }
+    
+    .rgb-light-ring::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, 
+        rgba(255,255,255,0.8) 0%, 
+        rgba(255,255,255,0) 70%);
+      animation: pulseGlow 3s ease-in-out infinite alternate;
+      z-index: -2;
+    }
+    
     .logo-img {
-      position: relative;
-      width: 130px;
-      height: 130px;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       object-fit: cover;
       z-index: 2;
-      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+      box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(255, 255, 255, 0.1) inset;
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
+      border: 2px solid rgba(255, 255, 255, 0.15);
     }
+    
     .logo-container:hover .logo-img {
-      transform: scale(1.1) rotateY(15deg) rotateX(10deg);
-      box-shadow: 0 0 60px rgba(255,255,255,0.3);
+      transform: scale(1.05);
+      box-shadow: 
+        0 0 30px rgba(0, 0, 0, 0.9),
+        0 0 60px rgba(255, 255, 255, 0.2) inset;
     }
+    
+    .logo-container:hover .rgb-light-ring {
+      animation-duration: 4s;
+      filter: blur(1.5px);
+      opacity: 1;
+    }
+    
     @keyframes rotateHologram {
-      0% { transform: rotate(0deg) rotateY(0deg); }
-      100% { transform: rotate(360deg) rotateY(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulseGlow {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.7; }
     }
 
     /* Progress Bar with Glow */
@@ -295,9 +361,9 @@
     <div class="particles" id="particles"></div>
     
     <div class="text-center z-10 flex flex-col items-center justify-center px-4">
-      <!-- Logo with Holographic Effect -->
+      <!-- Logo with Enhanced RGB Light Effect -->
       <div class="logo-container animate__animated animate__zoomIn">
-        <div class="logo-hologram"></div>
+        <div class="rgb-light-ring"></div>
         <img src="images/fm.png" alt="Finder Logo" class="logo-img">
       </div>
       
@@ -334,7 +400,7 @@
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
       <!-- Logo & Title -->
       <div class="flex items-center space-x-3">
-        <img src="images/fm.png" alt="Logo" class="w-10 h-10 rounded-full object-cover hover:rotate-12 transition-transform duration-300" />
+        <img src="images/fm.png" alt="Logo" class="w-10 h-10 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
         <span class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
       </div>
 
