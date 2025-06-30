@@ -240,27 +240,52 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
     
-    /* AI Icon Animations */
-    .ai-icon {
+    /* Responsive Text Sizing */
+    .responsive-heading {
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      line-height: 1.2;
+    }
+    
+    .responsive-subheading {
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
+      line-height: 1.4;
+    }
+    
+    .responsive-text {
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
+    }
+    
+    /* Compact Typewriter */
+    .compact-typewriter {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      min-height: 2.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* AI Button Styles */
+    .ai-btn-container {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .ai-btn {
+      position: relative;
+      padding: 0.5rem;
+      border-radius: 50%;
       transition: all 0.3s ease;
-      animation: ai-pulse 2.5s infinite ease-in-out;
+      z-index: 10;
+      background: transparent;
+      border: none;
+      cursor: pointer;
     }
     
-    .ai-icon:hover {
-      animation: ai-hover-pulse 0.8s infinite ease-in-out;
-      filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.6));
-    }
-    
-    @keyframes ai-pulse {
-      0% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.08); opacity: 1; }
-      100% { transform: scale(1); opacity: 0.9; }
-    }
-    
-    @keyframes ai-hover-pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
+    .ai-icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: #3b82f6;
     }
     
     .ai-tooltip {
@@ -291,34 +316,9 @@
       border-color: transparent transparent transparent rgba(15, 23, 42, 0.9);
     }
     
-    #ai-assistant:hover .ai-tooltip {
+    .ai-btn-container:hover .ai-tooltip {
       opacity: 1;
       margin-right: 12px;
-    }
-    
-    /* Responsive Text Sizing */
-    .responsive-heading {
-      font-size: clamp(1.5rem, 5vw, 2.5rem);
-      line-height: 1.2;
-    }
-    
-    .responsive-subheading {
-      font-size: clamp(0.9rem, 3vw, 1.1rem);
-      line-height: 1.4;
-    }
-    
-    .responsive-text {
-      font-size: clamp(0.8rem, 2.5vw, 1rem);
-    }
-    
-    /* Compact Typewriter */
-    .compact-typewriter {
-      font-size: clamp(1.2rem, 4vw, 2rem);
-      min-height: 2.5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
     }
   </style>
 </head>
@@ -363,12 +363,15 @@
       </div>
 
       <div class="flex items-center space-x-3">
-        <button id="ai-assistant" class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
-          <span class="ai-tooltip">AI Assistant</span>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-          </svg>
-        </button>
+        <div class="ai-btn-container" id="ai-assistant">
+          <a href="https://finderai.netlify.app/" target="_blank" rel="noopener noreferrer" class="ai-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ai-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </a>
+          <span class="ai-tooltip">FinderAI...</span>
+        </div>
+        
         <button id="theme-toggle" class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
           <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -722,6 +725,7 @@
       .deleteAll()
       .typeString('Your Digital Workspace')
       .pauseFor(2000)
+      .deleteAll()
       .start();
 
     // Character Counter
@@ -922,38 +926,6 @@
       if (e.target === confirmationModal) {
         confirmationModal.classList.add('hidden');
       }
-    });
-    
-    // Enhanced AI Assistant button functionality with animation
-    const aiAssistantBtn = document.getElementById('ai-assistant');
-    let aiActive = false;
-    
-    aiAssistantBtn.addEventListener('click', () => {
-      if (!aiActive) {
-        aiActive = true;
-        showToast('AI Assistant activated! How can I help?', 'success');
-        
-        // Add active animation
-        const aiIcon = aiAssistantBtn.querySelector('svg');
-        aiIcon.classList.add('animate__animated', 'animate__rubberBand');
-        
-        // Remove animation after it completes
-        setTimeout(() => {
-          aiIcon.classList.remove('animate__animated', 'animate__rubberBand');
-        }, 1000);
-        
-        // Simulate AI thinking
-        setTimeout(() => {
-          showToast('I can help you organize and find files faster!', 'success');
-        }, 2000);
-      } else {
-        showToast('AI Assistant is already active', 'warning');
-      }
-    });
-    
-    // Add hover effect with sound (optional)
-    aiAssistantBtn.addEventListener('mouseenter', () => {
-      // You could add a subtle sound effect here if desired
     });
 
     // Responsive adjustments
