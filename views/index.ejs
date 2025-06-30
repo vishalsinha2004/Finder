@@ -26,38 +26,108 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <style>
+    /* Navbar Styles */
     .navbar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 50;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 60px; /* Reduced from default */
       background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.03);
+    }
+    
+    .navbar.scrolled {
+      height: 50px; /* Even smaller when scrolled */
+      background: rgba(255, 255, 255, 0.98);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
     }
-    .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
+    
     .dark .navbar {
       background: rgba(15, 23, 42, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    
+    .dark .navbar.scrolled {
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-    .dark .navbar.scrolled {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    
+    .nav-content {
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled .nav-content {
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+    }
+    
+    .nav-logo {
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled .nav-logo {
+      transform: scale(0.9);
+    }
+    
+    .nav-title {
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled .nav-title {
+      font-size: 1rem;
+    }
+    
+    .nav-icon {
+      width: 1.75rem;
+      height: 1.75rem;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar.scrolled .nav-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    
+    /* Navbar hover effects */
+    .nav-item {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .nav-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+    
+    .nav-item:hover::after {
+      transform: translateX(0);
+    }
+    
+    .navbar.scrolled .nav-item::after {
+      height: 1.5px;
     }
 
+    /* Rest of your existing styles... */
     .welcome-page {
       position: fixed;
       top: 0;
@@ -356,27 +426,27 @@
   </div>
 
   <nav class="navbar" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <img src="images/fm.png" alt="Logo" class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
-        <span class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
+    <div class="max-w-7xl mx-auto px-4 h-full flex items-center justify-between nav-content">
+      <div class="flex items-center space-x-2 nav-item">
+        <img src="images/fm.png" alt="Logo" class="w-6 h-6 rounded-full object-cover transition-all duration-300 border border-white/20 nav-logo" />
+        <span class="font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 transition-all duration-500 nav-title">Finder...</span>
       </div>
 
-      <div class="flex items-center space-x-3">
-        <div class="ai-btn-container" id="ai-assistant">
+      <div class="flex items-center space-x-2">
+        <div class="ai-btn-container nav-item" id="ai-assistant">
           <a href="https://finderai.netlify.app/" target="_blank" rel="noopener noreferrer" class="ai-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" class="ai-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="ai-icon nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </a>
           <span class="ai-tooltip">FinderAI...</span>
         </div>
         
-        <button id="theme-toggle" class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
-          <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button id="theme-toggle" class="p-1.5 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group nav-item">
+          <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 transition-transform nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
-          <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden transition-transform nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
         </button>
