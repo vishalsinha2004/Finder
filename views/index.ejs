@@ -494,13 +494,10 @@
   </footer>
 
   <script>
-    // Check if welcome page has been shown before
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
-    const welcomePage = document.getElementById('welcomePage');
-    
-    if (!hasSeenWelcome) {
-      welcomePage.classList.remove('hidden');
-      localStorage.setItem('hasSeenWelcome', 'true');
+    // Check if welcome page has been shown in this session
+    if (!sessionStorage.getItem('welcomeShown')) {
+      document.getElementById('welcomePage').classList.remove('hidden');
+      sessionStorage.setItem('welcomeShown', 'true');
     }
 
     // Create stars and shooting stars for space background
@@ -588,93 +585,86 @@
     ];
     
     // Initialize welcome page elements
+    const welcomePage = document.getElementById('welcomePage');
     const progressBar = document.getElementById('progressBar');
     const loadingMessage = document.getElementById('loading-message');
     const loadingPercent = document.getElementById('loading-percent');
     const skipBtn = document.getElementById('skipBtn');
     
     // Create space background on load if welcome page is visible
-    if (!hasSeenWelcome) {
+    if (!welcomePage.classList.contains('hidden')) {
       createSpaceBackground();
-    }
-    
-    // Show skip button after delay with animation
-    setTimeout(() => {
-      if (welcomePage && !welcomePage.classList.contains('hidden')) {
+      
+      // Show skip button after delay with animation
+      setTimeout(() => {
         skipBtn.classList.remove('opacity-0');
         skipBtn.classList.add('animate__fadeInUp');
-      }
-    }, 2500);
-    
-    // Skip button functionality
-    if (skipBtn) {
+      }, 2500);
+      
+      // Skip button functionality
       skipBtn.addEventListener('click', () => {
         completeLoading();
       });
-    }
-    
-    // Simulate system loading
-    let currentProgress = 0;
-    let currentMessageIndex = 0;
-    
-    function updateLoading() {
-      // Update progress bar
-      progressBar.style.width = `${currentProgress}%`;
       
-      // Find the appropriate loading message
-      const message = loadingMessages.find(m => currentProgress <= m.percent) || 
-                     loadingMessages[loadingMessages.length - 1];
+      // Simulate system loading
+      let currentProgress = 0;
+      let currentMessageIndex = 0;
       
-      if (message.percent > currentMessageIndex) {
-        loadingMessage.textContent = message.text;
-        loadingPercent.textContent = `${currentProgress}%`;
-        currentMessageIndex = message.percent;
+      function updateLoading() {
+        // Update progress bar
+        progressBar.style.width = `${currentProgress}%`;
         
-        // Add animation to loading text
-        loadingMessage.classList.add('animate__animated', 'animate__fadeIn');
-        setTimeout(() => {
-          loadingMessage.classList.remove('animate__fadeIn');
-        }, 500);
-      }
-      
-      // Continue loading or complete
-      if (currentProgress < 100) {
-        // Variable speed loading - slows down at certain points
-        let increment = 0.5 + Math.random() * 1.5;
-        if (currentProgress > 80) increment = 0.2 + Math.random() * 0.8;
-        if (currentProgress > 90) increment = 0.1 + Math.random() * 0.4;
+        // Find the appropriate loading message
+        const message = loadingMessages.find(m => currentProgress <= m.percent) || 
+                       loadingMessages[loadingMessages.length - 1];
         
-        currentProgress += increment;
-        setTimeout(updateLoading, 30 + Math.random() * 50);
-      } else {
-        completeLoading();
-      }
-    }
-    
-    function completeLoading() {
-      loadingMessage.textContent = "Ready to go!";
-      loadingPercent.textContent = "100%";
-      progressBar.style.width = "100%";
-      
-      // Add celebration effect
-      progressBar.style.background = "linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6)";
-      progressBar.style.boxShadow = "0 0 15px rgba(59, 130, 246, 0.8)";
-      
-      // Add a slight delay before hiding
-      setTimeout(() => {
-        if (welcomePage) {
-          welcomePage.classList.add('hidden');
+        if (message.percent > currentMessageIndex) {
+          loadingMessage.textContent = message.text;
+          loadingPercent.textContent = `${currentProgress}%`;
+          currentMessageIndex = message.percent;
+          
+          // Add animation to loading text
+          loadingMessage.classList.add('animate__animated', 'animate__fadeIn');
+          setTimeout(() => {
+            loadingMessage.classList.remove('animate__fadeIn');
+          }, 500);
         }
         
-        // Show welcome toast
+        // Continue loading or complete
+        if (currentProgress < 100) {
+          // Variable speed loading - slows down at certain points
+          let increment = 0.5 + Math.random() * 1.5;
+          if (currentProgress > 80) increment = 0.2 + Math.random() * 0.8;
+          if (currentProgress > 90) increment = 0.1 + Math.random() * 0.4;
+          
+          currentProgress += increment;
+          setTimeout(updateLoading, 30 + Math.random() * 50);
+        } else {
+          completeLoading();
+        }
+      }
+      
+      function completeLoading() {
+        loadingMessage.textContent = "Ready to go!";
+        loadingPercent.textContent = "100%";
+        progressBar.style.width = "100%";
+        
+        // Add celebration effect
+        progressBar.style.background = "linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6)";
+        progressBar.style.boxShadow = "0 0 15px rgba(59, 130, 246, 0.8)";
+        
+        // Add a slight delay before hiding
         setTimeout(() => {
-          showToast('Welcome to Finder! Start organizing your files.');
-        }, 500);
-      }, 800);
-    }
-    
-    // Start loading animation if welcome page is visible
-    if (!hasSeenWelcome) {
+          welcomePage.classList.add('hidden');
+          
+          // Show welcome toast
+          setTimeout(() => {
+            showToast('Welcome to Finder! Start organizing your files.');
+          }, 500);
+        }, 800);
+      }
+      
+      // Start loading animation
       setTimeout(() => {
         updateLoading();
       }, 500);
