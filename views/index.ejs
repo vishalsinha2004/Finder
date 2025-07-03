@@ -324,7 +324,7 @@
 </head>
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
 
-  <div class="welcome-page" id="welcomePage">
+  <div class="welcome-page hidden" id="welcomePage">
     <div class="space-background" id="spaceBackground"></div>
     
     <div class="text-center z-10 flex flex-col items-center justify-center px-4 w-full">
@@ -494,6 +494,15 @@
   </footer>
 
   <script>
+    // Check if welcome page has been shown before
+    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+    const welcomePage = document.getElementById('welcomePage');
+    
+    if (!hasSeenWelcome) {
+      welcomePage.classList.remove('hidden');
+      localStorage.setItem('hasSeenWelcome', 'true');
+    }
+
     // Create stars and shooting stars for space background
     function createSpaceBackground() {
       const container = document.getElementById('spaceBackground');
@@ -579,25 +588,30 @@
     ];
     
     // Initialize welcome page elements
-    const welcomePage = document.getElementById('welcomePage');
     const progressBar = document.getElementById('progressBar');
     const loadingMessage = document.getElementById('loading-message');
     const loadingPercent = document.getElementById('loading-percent');
     const skipBtn = document.getElementById('skipBtn');
     
-    // Create space background on load
-    createSpaceBackground();
+    // Create space background on load if welcome page is visible
+    if (!hasSeenWelcome) {
+      createSpaceBackground();
+    }
     
     // Show skip button after delay with animation
     setTimeout(() => {
-      skipBtn.classList.remove('opacity-0');
-      skipBtn.classList.add('animate__fadeInUp');
+      if (welcomePage && !welcomePage.classList.contains('hidden')) {
+        skipBtn.classList.remove('opacity-0');
+        skipBtn.classList.add('animate__fadeInUp');
+      }
     }, 2500);
     
     // Skip button functionality
-    skipBtn.addEventListener('click', () => {
-      completeLoading();
-    });
+    if (skipBtn) {
+      skipBtn.addEventListener('click', () => {
+        completeLoading();
+      });
+    }
     
     // Simulate system loading
     let currentProgress = 0;
@@ -648,7 +662,9 @@
       
       // Add a slight delay before hiding
       setTimeout(() => {
-        welcomePage.classList.add('hidden');
+        if (welcomePage) {
+          welcomePage.classList.add('hidden');
+        }
         
         // Show welcome toast
         setTimeout(() => {
@@ -657,15 +673,17 @@
       }, 800);
     }
     
-    // Start loading animation
-    setTimeout(() => {
-      updateLoading();
-    }, 500);
-    
-    // Also allow click to skip
-    welcomePage.addEventListener('click', () => {
-      completeLoading();
-    });
+    // Start loading animation if welcome page is visible
+    if (!hasSeenWelcome) {
+      setTimeout(() => {
+        updateLoading();
+      }, 500);
+      
+      // Also allow click to skip
+      welcomePage.addEventListener('click', () => {
+        completeLoading();
+      });
+    }
 
     // Theme Toggle Functionality
     const themeToggle = document.getElementById('theme-toggle');
@@ -930,7 +948,6 @@
       const typewriter = document.getElementById('typewriter');
       typewriter.style.minHeight = typewriter.scrollHeight + 'px';
     }
-    
     // Initial call and event listener
     handleResize();
     window.addEventListener('resize', handleResize);
