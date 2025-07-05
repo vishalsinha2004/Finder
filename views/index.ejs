@@ -555,23 +555,32 @@
       </div>
       <div class="flex gap-2">
         <button
-          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
+          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-blue-600 text-white dark:bg-blue-600 dark:text-white transition-all duration-300 responsive-text"
           data-filter="all">All</button>
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
           data-filter="recent">Recent</button>
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="important">Important</button>
+          data-filter="images">Images</button>
+        <button
+          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
+          data-filter="pdfs">PDFs</button>
       </div>
     </div>
 
     <div class="tasks grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 py-8 sm:py-12" id="files-container">
       <% if(files.length> 0){ %>
         <% files.forEach(function(val, index){ %>
+          <%
+            const fileExt = val.split('.').pop().toLowerCase();
+            const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExt);
+            const isPDF = fileExt === 'pdf';
+            const isRecent = Math.random() > 0.5; // Random recent status for demo
+          %>
           <div
             class="task p-4 sm:p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50"
-            data-index="<%= index %>">
+            data-index="<%= index %>" data-filetype="<%= isImage ? 'images' : isPDF ? 'pdfs' : 'other' %>" data-recent="<%= isRecent %>">
             <div class="flex justify-between items-start">
               <h1
                 class="text-zinc-900 dark:text-white text-lg sm:text-xl font-semibold tracking-tight truncate max-w-[160px] sm:max-w-[180px]">
@@ -1022,15 +1031,55 @@
         // Remove active class from all buttons
         filterButtons.forEach(btn => {
           btn.classList.remove('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
+          btn.classList.add('bg-zinc-200/80', 'dark:bg-zinc-700/80');
         });
 
         // Add active class to clicked button
+        button.classList.remove('bg-zinc-200/80', 'dark:bg-zinc-700/80');
         button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
 
         const filter = button.dataset.filter;
-        showToast(`Showing ${filter} files`);
+        const tasks = document.querySelectorAll('.task');
+        let hasVisibleFiles = false;
+
+        tasks.forEach(task => {
+          const fileType = task.dataset.filetype;
+          const isRecent = task.dataset.recent === 'true';
+
+          if (filter === 'all' || 
+              (filter === 'recent' && isRecent) || 
+              (filter === 'images' && fileType === 'images') || 
+              (filter === 'pdfs' && fileType === 'pdfs')) {
+            task.classList.remove('hidden');
+            hasVisibleFiles = true;
+          } else {
+            task.classList.add('hidden');
+          }
+        });
+
+        // Show "no files" message if no files match the filter
+        const noFilesMessage = document.querySelector('#files-container > div.w-full.text-center');
+        if (!hasVisibleFiles && tasks.length > 0) {
+          if (!noFilesMessage) {
+            const container = document.getElementById('files-container');
+            container.innerHTML = `
+              <div class="w-full text-center py-12 sm:py-16 col-span-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                </svg>
+                <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No ${filter} files found</h3>
+                <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Try a different filter or upload new files.</p>
+              </div>
+            `;
+          }
+        } else if (hasVisibleFiles && noFilesMessage) {
+          noFilesMessage.remove();
+        }
       });
     });
+
+    // Initialize with "All" filter active
+    document.querySelector('.filter-btn[data-filter="all"]').click();
 
     // Delete Confirmation Modal
     const deleteButtons = document.querySelectorAll('.delete-btn');
@@ -1144,4 +1193,4 @@
   </script>
 </body>
 
-</html>
+</html> 
