@@ -115,12 +115,10 @@
         opacity: 0;
         transform: scale(0.5);
       }
-
       50% {
         opacity: var(--opacity);
         transform: scale(1);
       }
-
       100% {
         opacity: 0;
         transform: scale(0.5);
@@ -142,15 +140,12 @@
         transform: translateX(0) translateY(0) scale(0.3);
         opacity: 0;
       }
-
       10% {
         opacity: 1;
       }
-
       70% {
         opacity: 1;
       }
-
       100% {
         transform: translateX(var(--end-x)) translateY(var(--end-y)) scale(1.5);
         opacity: 0;
@@ -184,12 +179,10 @@
         transform: scale(1);
         box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
       }
-
       50% {
         transform: scale(1.05);
         box-shadow: 0 0 50px rgba(59, 130, 246, 0.8);
       }
-
       100% {
         transform: scale(1);
         box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
@@ -233,7 +226,6 @@
       0% {
         transform: translateX(-100%);
       }
-
       100% {
         transform: translateX(100%);
       }
@@ -276,12 +268,9 @@
     }
 
     @keyframes blink {
-
-      0%,
-      100% {
+      0%, 100% {
         opacity: 1;
       }
-
       50% {
         opacity: 0;
       }
@@ -302,7 +291,6 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
-    /* AI Icon Animations */
     .ai-icon {
       transition: all 0.3s ease;
       animation: ai-pulse 2.5s infinite ease-in-out;
@@ -318,12 +306,10 @@
         transform: scale(1);
         opacity: 0.9;
       }
-
       50% {
         transform: scale(1.08);
         opacity: 1;
       }
-
       100% {
         transform: scale(1);
         opacity: 0.9;
@@ -334,11 +320,9 @@
       0% {
         transform: scale(1);
       }
-
       50% {
         transform: scale(1.2);
       }
-
       100% {
         transform: scale(1);
       }
@@ -377,7 +361,6 @@
       margin-right: 12px;
     }
 
-    /* Responsive Text Sizing */
     .responsive-heading {
       font-size: clamp(1.5rem, 5vw, 2.5rem);
       line-height: 1.2;
@@ -392,7 +375,6 @@
       font-size: clamp(0.8rem, 2.5vw, 1rem);
     }
 
-    /* Compact Typewriter */
     .compact-typewriter {
       font-size: clamp(1.2rem, 4vw, 2rem);
       min-height: 2.5em;
@@ -402,7 +384,6 @@
       text-align: center;
     }
 
-    /* Form toggle styles */
     .content-box {
       transition: all 0.3s ease;
       overflow: hidden;
@@ -421,6 +402,13 @@
       max-height: 500px;
       opacity: 1;
     }
+
+    .file-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 
@@ -428,35 +416,24 @@
 
   <div class="welcome-page hidden" id="welcomePage">
     <div class="space-background" id="spaceBackground"></div>
-
     <div class="text-center z-10 flex flex-col items-center justify-center px-4 w-full">
       <div class="logo-container animate__animated animate__zoomIn">
         <img src="images/fm.png" alt="Finder Logo" class="logo-img">
       </div>
-
-      <h1
-        class="responsive-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-3 animate__animated animate__fadeIn">
+      <h1 class="responsive-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-3 animate__animated animate__fadeIn">
         Finder...
       </h1>
-
-      <p
-        class="text-zinc-300 dark:text-zinc-400 max-w-md px-4 responsive-subheading animate__animated animate__fadeIn animate__delay-1s">
+      <p class="text-zinc-300 dark:text-zinc-400 max-w-md px-4 responsive-subheading animate__animated animate__fadeIn animate__delay-1s">
         Your intelligent file management system
       </p>
-
       <div class="progress-container animate__animated animate__fadeIn animate__delay-1s">
         <div class="progress" id="progressBar"></div>
       </div>
-
-      <div
-        class="loading-text text-sm text-zinc-400 dark:text-zinc-500 mt-3 animate__animated animate__fadeIn animate__delay-1s responsive-text"
-        id="loadingText">
+      <div class="loading-text text-sm text-zinc-400 dark:text-zinc-500 mt-3 animate__animated animate__fadeIn animate__delay-1s responsive-text" id="loadingText">
         <span id="loading-message">Initializing system...</span>
         <span id="loading-percent">0%</span>
       </div>
-
-      <button id="skipBtn"
-        class="mt-6 px-5 py-1.5 rounded-full bg-transparent border-2 border-zinc-400 dark:border-zinc-600 text-zinc-300 dark:text-zinc-400 hover:text-white dark:hover:text-white hover:border-white dark:hover:border-white transition-all duration-300 skip-btn opacity-0 animate__animated responsive-text">
+      <button id="skipBtn" class="mt-6 px-5 py-1.5 rounded-full bg-transparent border-2 border-zinc-400 dark:border-zinc-600 text-zinc-300 dark:text-zinc-400 hover:text-white dark:hover:text-white hover:border-white dark:hover:border-white transition-all duration-300 skip-btn opacity-0 animate__animated responsive-text">
         Skip Introduction
       </button>
     </div>
@@ -465,36 +442,22 @@
   <nav class="navbar" id="navbar">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-3">
-        <img src="images/fm.png" alt="Logo"
-          class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
-        <span
-          class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
+        <img src="images/fm.png" alt="Logo" class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
+        <span class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
       </div>
-
       <div class="flex items-center space-x-3">
-        <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
-          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
+        <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank" class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
           <span class="ai-tooltip">FinderAI...</span>
-          <svg xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
           </svg>
         </a>
-        <button id="theme-toggle"
-          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
-          <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
-            viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        <button id="theme-toggle" class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
+          <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
-          <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden group-hover:scale-110 transition-transform"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
         </button>
       </div>
@@ -502,40 +465,37 @@
   </nav>
 
   <div class="flex flex-col justify-center items-center text-center pt-20 pb-16 md:py-24 space-y-3 px-4">
-    <h1 id="typewriter"
-      class="compact-typewriter font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-    </h1>
+    <h1 id="typewriter" class="compact-typewriter font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"></h1>
     <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl px-4 responsive-subheading animate__animated animate__fadeIn">
       Organize, manage, and find your files with unparalleled ease.</p>
   </div>
 
   <div class="w-full px-4 sm:px-6 md:px-10 lg:px-20 animate__animated animate__fadeInUp">
-    <!-- Add button to toggle form visibility -->
-    <div class="flex justify-center mb-6">
-      <button id="toggleFormBtn"
-        class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+    <div class="flex justify-center mb-6 space-x-4">
+      <button id="toggleFormBtn" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
         <span>Add</span>
       </button>
+      
+      <button id="uploadBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <span>Upload</span>
+      </button>
+      
+      <input type="file" id="fileInput" class="hidden" multiple>
     </div>
 
-    <!-- Form container with hidden class by default -->
     <div id="contentBox" class="content-box hidden">
-      <div
-        class="bg-zinc-100/80 dark:bg-zinc-800/80 p-6 sm:p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50">
+      <div class="bg-zinc-100/80 dark:bg-zinc-800/80 p-6 sm:p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50">
         <form action="/create" method="post" class="space-y-4" id="file-form">
-          <input
-            class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text"
-            type="text" placeholder="Title goes here..." name="title" id="title-input" required>
-          <textarea
-            class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 transition-all duration-300 min-h-[120px] sm:min-h-[150px] text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text"
-            placeholder="Write your task details here..." name="details" id="details-input" required></textarea>
+          <input class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text" type="text" placeholder="Title goes here..." name="title" id="title-input" required>
+          <textarea class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 transition-all duration-300 min-h-[120px] sm:min-h-[150px] text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text" placeholder="Write your task details here..." name="details" id="details-input" required></textarea>
           <div class="flex justify-between items-center">
-            <input
-              class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-5 py-2 sm:px-6 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text"
-              type="submit" value="Add File" id="submit-btn">
+            <input class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-5 py-2 sm:px-6 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text" type="submit" value="Add File" id="submit-btn">
             <span id="char-count" class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">0/500</span>
           </div>
         </form>
@@ -544,119 +504,101 @@
 
     <div class="mt-6 sm:mt-8 flex flex-col md:flex-row gap-3 sm:gap-4 items-center justify-between">
       <div class="relative w-full md:w-80 lg:w-96">
-        <input type="text" id="search-input" placeholder="Search files..."
-          class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 pl-10 sm:pl-12 transition-all duration-300 text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text">
-        <svg xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 sm:h-5 sm:w-5 absolute left-3 top-2.5 sm:top-3.5 text-zinc-500 dark:text-zinc-400" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        <input type="text" id="search-input" placeholder="Search files..." class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 pl-10 sm:pl-12 transition-all duration-300 text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5 absolute left-3 top-2.5 sm:top-3.5 text-zinc-500 dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
       <div class="flex gap-2">
-        <button
-          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="all">All</button>
-        <button
-          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="recent">Recent</button>
-        <button
-          class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="important">Important</button>
+        <button class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text" data-filter="all">All</button>
+        <button class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text" data-filter="recent">Recent</button>
+        <button class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text" data-filter="important">Important</button>
       </div>
     </div>
 
     <div class="tasks grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 py-8 sm:py-12" id="files-container">
-      <% if(files.length> 0){ %>
-        <% files.forEach(function(val, index){ %>
-          <div
-            class="task p-4 sm:p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50"
-            data-index="<%= index %>">
+      <% if(files.length > 0) { %>
+        <% files.forEach(function(val, index) { %>
+          <div class="task p-4 sm:p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50" data-index="<%= index %>">
             <div class="flex justify-between items-start">
-              <h1
-                class="text-zinc-900 dark:text-white text-lg sm:text-xl font-semibold tracking-tight truncate max-w-[160px] sm:max-w-[180px]">
-                <%= val %>
-              </h1>
-              <button
-                class="delete-btn text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors duration-300"
-                data-filename="<%= val %>">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <div class="flex items-center">
+                <% const ext = val.split('.').pop().toLowerCase(); %>
+                <% if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'].includes(ext)) { %>
+                  <svg class="file-icon text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                <% } else if (ext === 'pdf') { %>
+                  <svg class="file-icon text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  </svg>
+                <% } else if (ext === 'txt' || ext === 'md') { %>
+                  <svg class="file-icon text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                <% } else { %>
+                  <svg class="file-icon text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  </svg>
+                <% } %>
+                <h1 class="text-zinc-900 dark:text-white text-lg sm:text-xl font-semibold tracking-tight truncate max-w-[160px] sm:max-w-[180px]">
+                  <%= val %>
+                </h1>
+              </div>
+              <button class="delete-btn text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors duration-300" data-filename="<%= val %>">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </button>
             </div>
             <div class="flex justify-between items-center mt-3 sm:mt-4">
-              <a class="text-blue-500 dark:text-blue-400 hover:underline transition-colors duration-300 responsive-text"
-                href="/file/<%= val %>">Read More</a>
-              <a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors duration-300 responsive-text"
-                href="/edit/<%= val %>">Edit Filename</a>
+              <a class="text-blue-500 dark:text-blue-400 hover:underline transition-colors duration-300 responsive-text" href="/file/<%= val %>">View</a>
+              <a class="text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors duration-300 responsive-text" href="/edit/<%= val %>">Edit</a>
             </div>
             <div class="mt-2 sm:mt-3 text-xs text-zinc-500 dark:text-zinc-400 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span class="created-date">Just now</span>
             </div>
           </div>
-          <% }) %>
-            <% } else { %>
-              <div class="w-full text-center py-12 sm:py-16 col-span-3">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
-                <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your
-                  first file!</h3>
-                <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start
-                  organizing your files by adding a new one above.</p>
-              </div>
-              <% } %>
+        <% }); %>
+      <% } else { %>
+        <div class="w-full text-center py-12 sm:py-16 col-span-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
+          <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
+        </div>
+      <% } %>
     </div>
   </div>
 
-  <div id="toast"
-    class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
+  <div id="toast" class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
     <div class="toast-icon">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clip-rule="evenodd" />
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
       </svg>
     </div>
     <span id="toast-message" class="font-medium">File added successfully!</span>
   </div>
 
-  <div id="confirmation-modal"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
-    <div
-      class="bg-white dark:bg-zinc-800 rounded-xl p-5 sm:p-6 max-w-md w-full mx-4 animate__animated animate__fadeInUp border border-zinc-200/50 dark:border-zinc-700/50">
+  <div id="confirmation-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+    <div class="bg-white dark:bg-zinc-800 rounded-xl p-5 sm:p-6 max-w-md w-full mx-4 animate__animated animate__fadeInUp border border-zinc-200/50 dark:border-zinc-700/50">
       <div class="flex items-start space-x-3">
         <div class="flex-shrink-0 p-2 bg-red-100 dark:bg-red-900/30 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
         <div>
           <h3 class="text-lg sm:text-xl font-semibold mb-2">Confirm Deletion</h3>
-          <p class="text-zinc-700 dark:text-zinc-300 responsive-text">Are you sure you want to delete "<span
-              id="file-to-delete" class="font-medium">filename.txt</span>"? This action cannot be undone.</p>
+          <p class="text-zinc-700 dark:text-zinc-300 responsive-text">Are you sure you want to delete "<span id="file-to-delete" class="font-medium">filename.txt</span>"? This action cannot be undone.</p>
           <div class="flex justify-end space-x-2 sm:space-x-3 mt-4 sm:mt-6">
-            <button id="cancel-delete"
-              class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors duration-300 responsive-text">Cancel</button>
-            <button id="confirm-delete"
-              class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-colors duration-300 text-white flex items-center space-x-1 responsive-text">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            <button id="cancel-delete" class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors duration-300 responsive-text">Cancel</button>
+            <button id="confirm-delete" class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-colors duration-300 text-white flex items-center space-x-1 responsive-text">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
               <span>Delete</span>
             </button>
@@ -666,14 +608,10 @@
     </div>
   </div>
 
-  <footer
-    class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm">
+  <footer class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4">
-      <p
-        class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
-        &copy; 2025 <span
-          class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>.
-        All Rights Reserved.</p>
+      <p class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
+        &copy; 2025 <span class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>. All Rights Reserved.</p>
     </div>
   </footer>
 
@@ -1054,31 +992,105 @@
       fileToDelete = null;
     });
 
-    confirmDeleteBtn.addEventListener('click', () => {
-      showToast(`File "${fileToDelete}" deleted`, 'error');
-      confirmationModal.classList.add('hidden');
+    confirmDeleteBtn.addEventListener('click', async () => {
+      try {
+        const response = await fetch(`/file/${fileToDelete}`, {
+          method: 'DELETE'
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          showToast(`File "${fileToDelete}" deleted`, 'error');
+          confirmationModal.classList.add('hidden');
 
-      // Remove the file from the UI with animation
-      const fileElement = document.querySelector(`.delete-btn[data-filename="${fileToDelete}"]`).closest('.task');
-      fileElement.classList.add('animate__animated', 'animate__zoomOut');
+          // Remove the file from the UI with animation
+          const fileElement = document.querySelector(`.delete-btn[data-filename="${fileToDelete}"]`).closest('.task');
+          fileElement.classList.add('animate__animated', 'animate__zoomOut');
 
-      setTimeout(() => {
-        fileElement.remove();
+          setTimeout(() => {
+            fileElement.remove();
 
-        // Check if no files left
-        if (document.querySelectorAll('.task').length === 0) {
-          const container = document.getElementById('files-container');
-          container.innerHTML = `
-            <div class="w-full text-center py-12 sm:py-16 col-span-3">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-              </svg>
-              <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
-              <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
-            </div>
-          `;
+            // Check if no files left
+            if (document.querySelectorAll('.task').length === 0) {
+              const container = document.getElementById('files-container');
+              container.innerHTML = `
+                <div class="w-full text-center py-12 sm:py-16 col-span-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  </svg>
+                  <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
+                  <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
+                </div>
+              `;
+            }
+          }, 500);
+        } else {
+          showToast(`Error: ${result.message}`, 'error');
         }
-      }, 500);
+      } catch (error) {
+        showToast('Error deleting file', 'error');
+        console.error('Delete error:', error);
+      }
+    });
+
+    // File Upload Functionality
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('fileInput');
+
+    uploadBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', async (e) => {
+      const files = e.target.files;
+      if (files.length > 0) {
+        try {
+          // Show loading state
+          uploadBtn.disabled = true;
+          uploadBtn.innerHTML = `
+            <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Uploading...
+          `;
+
+          const formData = new FormData();
+          for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+          }
+
+          const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.json();
+          
+          if (response.ok) {
+            showToast(`${files.length} file(s) uploaded successfully!`);
+            // Refresh the file list
+            window.location.reload();
+          } else {
+            showToast(`Upload failed: ${result.message || 'Unknown error'}`, 'error');
+          }
+        } catch (error) {
+          showToast(`Upload failed: ${error.message}`, 'error');
+          console.error('Upload error:', error);
+        } finally {
+          // Reset button state
+          uploadBtn.disabled = false;
+          uploadBtn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <span>Upload</span>
+          `;
+          // Reset file input
+          fileInput.value = '';
+        }
+      }
     });
 
     // Random creation dates for demo purposes
@@ -1143,5 +1155,4 @@
     window.addEventListener('resize', handleResize);
   </script>
 </body>
-
 </html>
