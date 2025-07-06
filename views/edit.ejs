@@ -29,6 +29,7 @@
   <style>
     .input-focus-effect:focus {
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+      border-color: #3b82f6;
     }
 
     .shake {
@@ -36,24 +37,11 @@
     }
 
     @keyframes shake {
-
-      0%,
-      100% {
-        transform: translateX(0);
-      }
-
-      20%,
-      60% {
-        transform: translateX(-5px);
-      }
-
-      40%,
-      80% {
-        transform: translateX(5px);
-      }
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-5px); }
+      40%, 80% { transform: translateX(5px); }
     }
 
-    /* Smooth transition for dark/light mode */
     html {
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -62,40 +50,46 @@
       min-height: 100vh;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
+
+    .btn-disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .filename-input {
+      transition: all 0.3s ease;
+    }
+
+    .preview-transition {
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
   </style>
 </head>
 
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
 
   <div class="main w-full min-h-screen p-4 md:p-10">
-    <!-- Back button with animation -->
+    <!-- Header with back button and theme toggle -->
     <div class="flex justify-between items-center mb-6 md:mb-10">
-      <a href="/"
-        class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 inline-flex items-center group transition-colors">
+      <a href="/" class="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 inline-flex items-center group transition-colors">
         <i class="fas fa-arrow-left mr-2 group-hover:-translate-x-1 transition-transform"></i>
-        Go Back To Home
+        Back to Home
       </a>
 
-      <!-- Theme Toggle (moved here) -->
       <button id="theme-toggle" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors">
-        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
-        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
         </svg>
       </button>
     </div>
 
-    <!-- Form container with subtle shadow animation -->
-    <div
-      class="bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow max-w-2xl mx-auto">
-      <h1
-        class="text-2xl md:text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+    <!-- Main form container -->
+    <div class="bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow max-w-2xl mx-auto">
+      <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
         Rename File
       </h1>
 
@@ -104,9 +98,11 @@
         <div>
           <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">Current Filename</label>
           <div class="relative">
-            <input
-              class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 focus:border-blue-500 input-focus-effect transition-all"
-              type="text" name="previous" value="<%= filename %>" readonly>
+            <input class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input" 
+                   type="text" 
+                   name="previous" 
+                   value="<%= filename %>" 
+                   readonly>
             <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
               <i class="fas fa-lock"></i>
             </div>
@@ -118,30 +114,35 @@
           <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">New Filename</label>
           <div class="relative">
             <input id="newFilename"
-              class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 focus:border-blue-500 input-focus-effect transition-all"
-              type="text" name="new" placeholder="Enter new filename..." required pattern="[^\\\/:*?\" <>|]+"
-            title="Filename cannot contain special characters (\ / : * ? \" <> |)"
-              >
-              <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
-                <i class="fas fa-edit"></i>
-              </div>
+                   class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input"
+                   type="text" 
+                   name="new" 
+                   placeholder="Enter new filename..." 
+                   required 
+                   pattern="[^\\\/:*?\"<>|]+"
+                   title="Filename cannot contain special characters (\ / : * ? \" < > |)"
+                   autocomplete="off"
+                   autocorrect="off"
+                   spellcheck="false">
+            <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
+              <i class="fas fa-edit"></i>
+            </div>
           </div>
-          <p class="text-xs text-zinc-500 dark:text-gray-500 mt-1">Allowed characters: letters, numbers, spaces,
-            hyphens, and underscores</p>
+          <p class="text-xs text-zinc-500 dark:text-gray-500 mt-1">Allowed: letters, numbers, spaces, hyphens, underscores, dots</p>
         </div>
 
         <!-- Extension info -->
         <div class="flex items-center text-sm text-zinc-600 dark:text-gray-400">
           <span class="mr-2">File extension will remain:</span>
           <span class="font-mono bg-zinc-200 dark:bg-zinc-700 px-2 py-1 rounded text-yellow-600 dark:text-yellow-400">
-            <%= filename.split('.').pop() %>
+            .<%= filename.split('.').pop() %>
           </span>
         </div>
 
-        <!-- Submit button with loading state -->
+        <!-- Submit button -->
         <div class="pt-4">
           <button id="submitBtn" type="submit"
-            class="w-full md:w-auto px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center">
+                  class="w-full md:w-auto px-6 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-medium rounded-md transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center disabled:btn-disabled">
             <span id="btnText">Update Filename</span>
             <span id="btnSpinner" class="ml-2 hidden">
               <i class="fas fa-spinner fa-spin"></i>
@@ -152,15 +153,19 @@
     </div>
 
     <!-- File preview section -->
-    <div class="mt-8 bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg max-w-2xl mx-auto hidden" id="previewSection">
-      <h3 class="text-lg font-medium text-zinc-700 dark:text-gray-300 mb-3">Preview</h3>
+    <div class="mt-8 bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg max-w-2xl mx-auto preview-transition opacity-0 transform translate-y-2" id="previewSection">
+      <h3 class="text-lg font-medium text-zinc-700 dark:text-gray-300 mb-3">Filename Preview</h3>
       <div class="font-mono text-sm bg-white dark:bg-zinc-900 p-4 rounded overflow-x-auto">
-        <span class="text-green-600 dark:text-green-400">Old:</span> <span id="oldNamePreview"
-          class="text-zinc-700 dark:text-gray-300 line-through">
-          <%= filename %>
-        </span><br>
-        <span class="text-blue-600 dark:text-blue-400">New:</span> <span id="newNamePreview"
-          class="text-zinc-900 dark:text-white"></span>
+        <div class="flex items-center mb-2">
+          <span class="text-red-500 dark:text-red-400 mr-2">Old:</span>
+          <span id="oldNamePreview" class="text-zinc-700 dark:text-gray-300 line-through">
+            <%= filename %>
+          </span>
+        </div>
+        <div class="flex items-center">
+          <span class="text-green-600 dark:text-green-400 mr-2">New:</span>
+          <span id="newNamePreview" class="text-zinc-900 dark:text-white font-semibold"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -215,23 +220,37 @@
       const originalFilename = "<%= filename %>";
       const fileExtension = originalFilename.split('.').pop();
 
+      // Auto-focus the new filename input
+      newFilenameInput.focus();
+
       // Update preview when typing
       newFilenameInput.addEventListener('input', function () {
         const newName = this.value.trim();
+        
         if (newName) {
-          previewSection.classList.remove('hidden');
-          newNamePreview.textContent = newName + (newName.includes('.') ? '' : '.' + fileExtension);
+          // Show preview with smooth animation
+          previewSection.classList.remove('opacity-0', 'translate-y-2');
+          previewSection.classList.add('opacity-100', 'translate-y-0');
+          
+          // Update preview text
+          const displayName = newName + (newName.includes('.') ? '' : '.' + fileExtension);
+          newNamePreview.textContent = displayName;
         } else {
-          previewSection.classList.add('hidden');
+          // Hide preview with smooth animation
+          previewSection.classList.remove('opacity-100', 'translate-y-0');
+          previewSection.classList.add('opacity-0', 'translate-y-2');
         }
       });
 
       // Form submission
-      form.addEventListener('submit', function (e) {
+      form.addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const newName = newFilenameInput.value.trim();
+        
+        // Validate empty input
         if (!newName) {
+          showError("Please enter a new filename");
           newFilenameInput.classList.add('shake', 'border-red-500');
           setTimeout(() => {
             newFilenameInput.classList.remove('shake');
@@ -239,14 +258,20 @@
           return;
         }
 
-        // Validate filename
+        // Validate forbidden characters
         const forbiddenChars = /[\\\/:*?"<>|]/;
         if (forbiddenChars.test(newName)) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Invalid Filename',
-            text: 'Filename cannot contain any of these characters: \\ / : * ? " < > |',
-          });
+          showError('Filename cannot contain: \\ / : * ? " < > |');
+          newFilenameInput.classList.add('shake', 'border-red-500');
+          setTimeout(() => {
+            newFilenameInput.classList.remove('shake');
+          }, 500);
+          return;
+        }
+
+        // Validate length
+        if (newName.length > 100) {
+          showError('Filename must be less than 100 characters');
           newFilenameInput.classList.add('shake', 'border-red-500');
           setTimeout(() => {
             newFilenameInput.classList.remove('shake');
@@ -259,18 +284,52 @@
         btnSpinner.classList.remove('hidden');
         submitBtn.disabled = true;
 
-        // Submit form after short delay to show loading state
-        setTimeout(() => {
-          form.submit();
-        }, 500);
+        try {
+          // Submit form
+          const response = await fetch('/edit', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams(new FormData(form))
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to rename file');
+          }
+
+          // Show success message
+          Swal.fire({
+            icon: 'success',
+            title: 'File Renamed!',
+            text: 'The file has been successfully renamed.',
+            willClose: () => {
+              window.location.href = '/';
+            }
+          });
+        } catch (error) {
+          console.error('Error:', error);
+          showError('An error occurred while renaming the file');
+          btnText.textContent = 'Update Filename';
+          btnSpinner.classList.add('hidden');
+          submitBtn.disabled = false;
+        }
       });
 
       // Clear error state on focus
       newFilenameInput.addEventListener('focus', function () {
         this.classList.remove('border-red-500');
       });
+
+      // Helper function to show error messages
+      function showError(message) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: message,
+        });
+      }
     });
   </script>
 </body>
-
 </html>

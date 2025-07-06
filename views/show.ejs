@@ -4,9 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    <%= filename %> | Finder...
-  </title>
+  <title><%= filename %> | Finder...</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -80,12 +78,10 @@
         transform: scale(1);
         opacity: 0.9;
       }
-
       50% {
         transform: scale(1.08);
         opacity: 1;
       }
-
       100% {
         transform: scale(1);
         opacity: 0.9;
@@ -96,11 +92,9 @@
       0% {
         transform: scale(1);
       }
-
       50% {
         transform: scale(1.2);
       }
-
       100% {
         transform: scale(1);
       }
@@ -222,6 +216,87 @@
         display: block;
       }
     }
+
+    /* Loading animation for images */
+    .image-loading {
+      position: relative;
+      background-color: #f3f4f6;
+      overflow: hidden;
+    }
+
+    .image-loading::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, 
+        rgba(255,255,255,0) 0%, 
+        rgba(255,255,255,0.8) 50%, 
+        rgba(255,255,255,0) 100%);
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    /* Markdown content styling */
+    .prose {
+      color: #374151;
+    }
+
+    .dark .prose {
+      color: #e5e7eb;
+    }
+
+    .prose a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    .dark .prose a {
+      color: #60a5fa;
+    }
+
+    .prose a:hover {
+      text-decoration: underline;
+    }
+
+    .prose code {
+      background-color: #f3f4f6;
+      padding: 0.2em 0.4em;
+      border-radius: 0.25em;
+      font-family: monospace;
+    }
+
+    .dark .prose code {
+      background-color: #374151;
+      color: #f3f4f6;
+    }
+
+    .prose pre {
+      background-color: #f3f4f6;
+      padding: 1em;
+      border-radius: 0.5em;
+      overflow-x: auto;
+    }
+
+    .dark .prose pre {
+      background-color: #1f2937;
+    }
+
+    .prose img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0.5em;
+    }
   </style>
 </head>
 
@@ -268,9 +343,17 @@
 
     <div class="bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300">
       <div class="p-4 md:p-6">
-        <h1 class="text-xl md:text-3xl font-bold mb-4 text-blue-500 dark:text-blue-400">
-          <%= filename %>
-        </h1>
+        <div class="flex justify-between items-center mb-4">
+          <h1 class="text-xl md:text-3xl font-bold text-blue-500 dark:text-blue-400 truncate max-w-[70%]">
+            <%= filename %>
+          </h1>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs text-zinc-500 dark:text-zinc-400">
+              <% const ext = filename.split('.').pop().toUpperCase(); %>
+              <%= ext %> File
+            </span>
+          </div>
+        </div>
 
         <% if (isPdf) { %>
           <!-- PDF Viewer -->
@@ -281,7 +364,7 @@
           <div class="pdf-mobile-fallback">
             <p class="text-sm text-zinc-600 dark:text-zinc-300 mb-2">For better PDF viewing on mobile, we recommend
               downloading the file.</p>
-            <a href="/files/<%= filename %>"
+            <a href="/files/<%= filename %>" download
               class="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors text-white text-sm">
               <i class="fas fa-download mr-2"></i> Download PDF
             </a>
@@ -292,9 +375,11 @@
           </div>
           <% } else if (isImage) { %>
             <!-- Image Viewer with responsive sizing -->
-            <div class="image-container">
-              <img src="/files/<%= filename %>" alt="<%= filename %>" class="max-w-full max-h-full object-contain"
-                style="max-height: 70vh;" onload="this.style.opacity=1" style="opacity:0;transition:opacity 0.3s">
+            <div class="image-container image-loading">
+              <img src="/files/<%= filename %>" alt="<%= filename %>" 
+                class="max-w-full max-h-full object-contain transition-opacity duration-300"
+                onload="this.parentElement.classList.remove('image-loading'); this.style.opacity=1" 
+                style="opacity:0">
             </div>
             <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
               <p>This is an image file. You can <a href="/files/<%= filename %>"
@@ -304,7 +389,11 @@
             <% } else { %>
               <!-- Regular text/markdown content -->
               <div class="prose dark:prose-invert max-w-none">
-                <%- marked.parse(filedata) %>
+                <% if (isMarkdown) { %>
+                  <%- marked.parse(filedata) %>
+                <% } else { %>
+                  <pre class="whitespace-pre-wrap font-sans"><%= filedata %></pre>
+                <% } %>
               </div>
               <% } %>
 
@@ -316,6 +405,7 @@
                     <a href="/edit/<%= filename %>"
                       class="edit-btn px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors text-white">
                       <i class="fas fa-edit edit-btn-icon mr-2"></i>
+                      <span class="edit-btn-text">Edit</span>
                     </a>
                   </div>
                 </div>
@@ -358,24 +448,21 @@
 
     // Share Button Functionality
     const shareBtn = document.getElementById('share-btn');
+    const shareData = {
+      title: '<%= filename %>',
+      text: 'Check out this file from Finder',
+      url: window.location.href
+    };
 
     shareBtn.addEventListener('click', async () => {
       try {
-        const fileUrl = window.location.href;
-        const title = document.title;
-
         if (navigator.share) {
-          // Web Share API is available
-          await navigator.share({
-            title: title,
-            text: 'Check out this file: ' + '<%= filename %>',
-            url: fileUrl
-          });
+          await navigator.share(shareData);
         } else {
           // Fallback for browsers without Web Share API
-          await navigator.clipboard.writeText(fileUrl);
-
-          // Show a temporary tooltip
+          await navigator.clipboard.writeText(shareData.url);
+          
+          // Create and show a tooltip
           const tooltip = document.createElement('div');
           tooltip.textContent = 'Link copied!';
           tooltip.style.position = 'absolute';
@@ -418,7 +505,7 @@
     // Handle PDF viewer on mobile devices
     function checkPDFViewerSupport() {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      if (isMobile) {
+      if (isMobile && '<%= isPdf %>' === 'true') {
         const pdfFallback = document.querySelector('.pdf-mobile-fallback');
         if (pdfFallback) {
           pdfFallback.style.display = 'block';
@@ -429,7 +516,14 @@
     // Run on load and if orientation changes
     window.addEventListener('load', checkPDFViewerSupport);
     window.addEventListener('orientationchange', checkPDFViewerSupport);
+
+    // Add download button event listeners
+    document.querySelectorAll('a[download]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        // Track downloads if needed
+        console.log(`Downloading: ${link.href}`);
+      });
+    });
   </script>
 </body>
-
 </html>
