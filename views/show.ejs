@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= filename %> | Finder...</title>
+  <title>
+    <%= filename %> | Finder...
+  </title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -78,10 +80,12 @@
         transform: scale(1);
         opacity: 0.9;
       }
+
       50% {
         transform: scale(1.08);
         opacity: 1;
       }
+
       100% {
         transform: scale(1);
         opacity: 0.9;
@@ -92,9 +96,11 @@
       0% {
         transform: scale(1);
       }
+
       50% {
         transform: scale(1.2);
       }
+
       100% {
         transform: scale(1);
       }
@@ -231,10 +237,10 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(90deg, 
-        rgba(255,255,255,0) 0%, 
-        rgba(255,255,255,0.8) 50%, 
-        rgba(255,255,255,0) 100%);
+      background: linear-gradient(90deg,
+          rgba(255, 255, 255, 0) 0%,
+          rgba(255, 255, 255, 0.8) 50%,
+          rgba(255, 255, 255, 0) 100%);
       animation: shimmer 1.5s infinite;
     }
 
@@ -242,6 +248,7 @@
       0% {
         transform: translateX(-100%);
       }
+
       100% {
         transform: translateX(100%);
       }
@@ -349,8 +356,8 @@
           </h1>
           <div class="flex items-center space-x-2">
             <span class="text-xs text-zinc-500 dark:text-zinc-400">
-              <% const ext = filename.split('.').pop().toUpperCase(); %>
-              <%= ext %> File
+              <% const ext=filename.split('.').pop().toUpperCase(); %>
+                <%= ext %> File
             </span>
           </div>
         </div>
@@ -361,14 +368,7 @@
             <embed src="/files/<%= filename %>" type="application/pdf" width="100%" height="100%"
               class="bg-white dark:bg-zinc-800">
           </div>
-          <div class="pdf-mobile-fallback">
-            <p class="text-sm text-zinc-600 dark:text-zinc-300 mb-2">For better PDF viewing on mobile, we recommend
-              downloading the file.</p>
-            <a href="/files/<%= filename %>" download
-              class="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors text-white text-sm">
-              <i class="fas fa-download mr-2"></i> Download PDF
-            </a>
-          </div>
+
           <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
             <p>This is a PDF document. If it doesn't display properly, you can <a href="/files/<%= filename %>"
                 class="text-blue-600 dark:text-blue-400 hover:underline" download>download it</a> instead.</p>
@@ -376,10 +376,9 @@
           <% } else if (isImage) { %>
             <!-- Image Viewer with responsive sizing -->
             <div class="image-container image-loading">
-              <img src="/files/<%= filename %>" alt="<%= filename %>" 
+              <img src="/files/<%= filename %>" alt="<%= filename %>"
                 class="max-w-full max-h-full object-contain transition-opacity duration-300"
-                onload="this.parentElement.classList.remove('image-loading'); this.style.opacity=1" 
-                style="opacity:0">
+                onload="this.parentElement.classList.remove('image-loading'); this.style.opacity=1" style="opacity:0">
             </div>
             <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
               <p>This is an image file. You can <a href="/files/<%= filename %>"
@@ -391,9 +390,9 @@
               <div class="prose dark:prose-invert max-w-none">
                 <% if (isMarkdown) { %>
                   <%- marked.parse(filedata) %>
-                <% } else { %>
-                  <pre class="whitespace-pre-wrap font-sans"><%= filedata %></pre>
-                <% } %>
+                    <% } else { %>
+                      <pre class="whitespace-pre-wrap font-sans"><%= filedata %></pre>
+                      <% } %>
               </div>
               <% } %>
 
@@ -461,7 +460,7 @@
         } else {
           // Fallback for browsers without Web Share API
           await navigator.clipboard.writeText(shareData.url);
-          
+
           // Create and show a tooltip
           const tooltip = document.createElement('div');
           tooltip.textContent = 'Link copied!';
@@ -526,4 +525,5 @@
     });
   </script>
 </body>
+
 </html>
