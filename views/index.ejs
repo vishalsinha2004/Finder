@@ -27,29 +27,34 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <style>
-/* ===== FINAL NAVBAR CSS ===== */
-/* ===== COMPACT NAVBAR WITH TOP SPACE ===== */
+/* ===== NAVBAR WITH UNIFIED SHADOWS ===== */
 .navbar {
   position: sticky;
-  top: 20px; /* Increased from 12px for more space */
+  top: 20px;
   left: 0;
-  width: calc(100% - 32px); /* Slightly wider to match new spacing */
-  margin: 0 16px; /* Adjusted margins */
-  padding: 12px 20px; /* Slightly more padding */
+  width: calc(100% - 32px);
+  margin: 0 16px;
+  padding: 12px 20px;
   z-index: 50;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Glass effect */
+  /* Glass Effect */
   background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px); /* Balanced blur */
+  backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px; /* Slightly rounded */
-  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+  
+  /* Unified Border & Shadow */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 14px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.08), /* Consistent base shadow */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
 
   /* Fallback */
   @supports not (backdrop-filter: blur(18px)) {
-    background: rgba(255, 255, 255, 0.94);
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -57,25 +62,35 @@
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
-  top: 12px; /* Adjusted scroll position */
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.12), /* Same shadow pattern, slightly stronger */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  top: 12px;
   padding: 10px 20px;
 }
 
 /* Dark Mode */
 .dark .navbar {
   background: rgba(15, 23, 42, 0.45);
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2), /* Same shadow with dark mode opacity */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
   
   @supports not (backdrop-filter: blur(18px)) {
     background: rgba(15, 23, 42, 0.92);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   }
 }
 
 .dark .navbar.scrolled {
   background: rgba(15, 23, 42, 0.82);
   border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3), /* Same shadow, darker */
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 /* Responsive Adjustments */
@@ -86,29 +101,38 @@
     padding: 10px 16px;
     top: 16px;
     border-radius: 12px;
+    border-width: 0.8px;
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
   
   .navbar.scrolled {
     top: 10px;
     padding: 8px 16px;
+    box-shadow: 
+      0 4px 10px rgba(0, 0, 0, 0.12),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   }
 }
 
-/* Small Mobile */
 @media (max-width: 480px) {
   .navbar {
     width: calc(100% - 20px);
     margin: 0 10px;
     padding: 8px 14px;
     top: 12px;
+    border-radius: 10px;
+    box-shadow: 
+      0 3px 8px rgba(0, 0, 0, 0.08),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
   }
 }
 
 /* Content spacing */
 html {
-  scroll-padding-top: 80px; /* Balanced spacing */
-}
-    .welcome-page {
+  scroll-padding-top: 80px;
+} .welcome-page {
       position: fixed;
       top: 0;
       left: 0;
