@@ -27,41 +27,79 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <style>
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 50;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
-    }
+/* CSS */
+.navbar {
+  position: sticky;
+  top: 24px; /* Increased from 12px */
+  left: 0;
+  width: calc(100% - 48px); /* Increased to match new margin */
+  margin: 0 24px; /* Increased from 12px */
+  padding: 16px 24px; /* Increased top/bottom padding */
+  z-index: 50;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Glass effect with fallback */
+  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
 
-    .navbar.scrolled {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    }
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
+  top: 16px; /* Increased from 8px */
+}
 
-    .dark .navbar {
-      background: rgba(15, 23, 42, 0.7);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
+.dark .navbar {
+  background: rgba(15, 23, 42, 0.95);
+  background: rgba(15, 23, 42, 0.5);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
 
-    .dark .navbar.scrolled {
-      background: rgba(15, 23, 42, 0.95);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
+.dark .navbar.scrolled {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+}
 
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .navbar {
+    width: calc(100% - 32px); /* Increased from 16px */
+    margin: 0 16px; /* Increased from 8px */
+    padding: 12px 16px; /* Increased from 8px */
+    top: 16px; /* Increased from 8px */
+  }
+  
+  .navbar.scrolled {
+    top: 12px; /* Increased from 4px */
+  }
+}
+
+/* Ensure proper scroll spacing - increased to match new navbar height */
+html {
+  scroll-padding-top: 96px; /* Increased from 80px */
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(20px)) {
+  .navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+  }
+  
+  .dark .navbar {
+    background: rgba(15, 23, 42, 0.95) !important;
+  }
+}
     .welcome-page {
       position: fixed;
       top: 0;
