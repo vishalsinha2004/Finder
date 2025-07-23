@@ -27,112 +27,133 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <style>
-/* ===== NAVBAR WITH UNIFIED SHADOWS ===== */
-.navbar {
-  position: sticky;
-  top: 20px;
-  left: 0;
-  width: calc(100% - 32px);
-  margin: 0 16px;
-  padding: 12px 20px;
-  z-index: 50;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Glass Effect */
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  
-  /* Unified Border & Shadow */
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.08), /* Consistent base shadow */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    /* ===== FINAL NAVBAR CSS ===== */
+    /* ===== COMPACT NAVBAR WITH TOP SPACE ===== */
+    .navbar {
+      position: sticky;
+      top: 20px;
+      left: 0;
+      width: calc(100% - 32px);
+      margin: 0 16px;
+      padding: 12px 20px;
+      z-index: 50;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Fallback */
-  @supports not (backdrop-filter: blur(18px)) {
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
+      /* Enhanced glass effect with more transparency and shadows */
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        /* Stronger outer shadow */
+        0 2px 6px rgba(0, 0, 0, 0.04),
+        /* Secondary softer shadow */
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 0 12px rgba(255, 255, 255, 0.08) inset,
+        0 1px 1px rgba(255, 255, 255, 0.1) inset;
+      /* Subtle top highlight */
 
-.navbar.scrolled {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-color: rgba(0, 0, 0, 0.12);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.12), /* Same shadow pattern, slightly stronger */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  top: 12px;
-  padding: 10px 20px;
-}
+      /* Fallback */
+      @supports not (backdrop-filter: blur(18px)) {
+        background: rgba(255, 255, 255, 0.88);
+        box-shadow:
+          0 4px 20px rgba(0, 0, 0, 0.1),
+          0 2px 6px rgba(0, 0, 0, 0.05),
+          0 0 0 1px rgba(0, 0, 0, 0.03);
+      }
+    }
 
-/* Dark Mode */
-.dark .navbar {
-  background: rgba(15, 23, 42, 0.45);
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.2), /* Same shadow with dark mode opacity */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  
-  @supports not (backdrop-filter: blur(18px)) {
-    background: rgba(15, 23, 42, 0.92);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  }
-}
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow:
+        0 6px 24px rgba(0, 0, 0, 0.12),
+        /* More prominent shadow when scrolled */
+        0 3px 10px rgba(0, 0, 0, 0.08),
+        0 0 0 1px rgba(255, 255, 255, 0.3) inset,
+        0 0 16px rgba(255, 255, 255, 0.12) inset,
+        0 1px 1px rgba(255, 255, 255, 0.15) inset;
+      top: 12px;
+      padding: 10px 20px;
+    }
 
-.dark .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.82);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.3), /* Same shadow, darker */
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-}
+    /* Dark Mode */
+    .dark .navbar {
+      background: rgba(15, 23, 42, 0.3);
+      border-color: rgba(255, 255, 255, 0.06);
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.15),
+        0 2px 6px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .navbar {
-    width: calc(100% - 24px);
-    margin: 0 12px;
-    padding: 10px 16px;
-    top: 16px;
-    border-radius: 12px;
-    border-width: 0.8px;
-    box-shadow: 
-      0 4px 10px rgba(0, 0, 0, 0.08),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  }
-  
-  .navbar.scrolled {
-    top: 10px;
-    padding: 8px 16px;
-    box-shadow: 
-      0 4px 10px rgba(0, 0, 0, 0.12),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-  }
-}
+      @supports not (backdrop-filter: blur(18px)) {
+        background: rgba(15, 23, 42, 0.85);
+        box-shadow:
+          0 4px 20px rgba(0, 0, 0, 0.18),
+          0 2px 6px rgba(0, 0, 0, 0.12);
+      }
+    }
 
-@media (max-width: 480px) {
-  .navbar {
-    width: calc(100% - 20px);
-    margin: 0 10px;
-    padding: 8px 14px;
-    top: 12px;
-    border-radius: 10px;
-    box-shadow: 
-      0 3px 8px rgba(0, 0, 0, 0.08),
-      inset 0 0 0 1px rgba(255, 255, 255, 0.12);
-  }
-}
+    .dark .navbar.scrolled {
+      background: rgba(15, 23, 42, 0.7);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 6px 24px rgba(0, 0, 0, 0.22),
+        0 3px 10px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+    }
 
-/* Content spacing */
-html {
-  scroll-padding-top: 80px;
-} .welcome-page {
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .navbar {
+        width: calc(100% - 24px);
+        margin: 0 12px;
+        padding: 10px 16px;
+        top: 16px;
+        border-radius: 12px;
+        box-shadow:
+          0 3px 16px rgba(0, 0, 0, 0.06),
+          0 1px 4px rgba(0, 0, 0, 0.03),
+          0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+          0 0 8px rgba(255, 255, 255, 0.05) inset;
+      }
+
+      .navbar.scrolled {
+        top: 10px;
+        padding: 8px 16px;
+        box-shadow:
+          0 4px 18px rgba(0, 0, 0, 0.1),
+          0 2px 5px rgba(0, 0, 0, 0.06),
+          0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+          0 0 10px rgba(255, 255, 255, 0.08) inset;
+      }
+    }
+
+    /* Small Mobile */
+    @media (max-width: 480px) {
+      .navbar {
+        width: calc(100% - 20px);
+        margin: 0 10px;
+        padding: 8px 14px;
+        top: 12px;
+        box-shadow:
+          0 2px 12px rgba(0, 0, 0, 0.05),
+          0 1px 3px rgba(0, 0, 0, 0.02),
+          0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+          0 0 6px rgba(255, 255, 255, 0.04) inset;
+      }
+    }
+
+    /* Content spacing */
+    html {
+      scroll-padding-top: 80px;
+    }
+
+    .welcome-page {
       position: fixed;
       top: 0;
       left: 0;
@@ -567,13 +588,13 @@ html {
     </div>
   </nav>
 
- <div class="flex flex-col justify-center items-center text-center pt-20 pb-16 md:py-24 space-y-3 px-4">
-  <h1 id="typewriter"
-    class="compact-typewriter font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-  </h1>
-  <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl px-4 responsive-subheading animate__animated animate__fadeIn">
-    Organize, manage, and find your files with unparalleled ease.</p>
-</div>
+  <div class="flex flex-col justify-center items-center text-center pt-20 pb-16 md:py-24 space-y-3 px-4">
+    <h1 id="typewriter"
+      class="compact-typewriter font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+    </h1>
+    <p class="text-zinc-600 dark:text-zinc-400 max-w-2xl px-4 responsive-subheading animate__animated animate__fadeIn">
+      Organize, manage, and find your files with unparalleled ease.</p>
+  </div>
 
   <div class="w-full px-4 sm:px-6 md:px-10 lg:px-20 animate__animated animate__fadeInUp">
     <div class="flex justify-center mb-6 space-x-4">
@@ -635,8 +656,8 @@ html {
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
           data-filter="recent">Recent</button>
-        
-        
+
+
       </div>
     </div>
 
@@ -1279,33 +1300,33 @@ html {
     });
 
     // Navbar scroll effect
-  // FINAL OPTIMIZED NAVBAR SCRIPT
-document.addEventListener('DOMContentLoaded', () => {
-  const navbar = document.getElementById('navbar');
-  let lastScrollY = window.scrollY;
-  let ticking = false;
+    // FINAL OPTIMIZED NAVBAR SCRIPT
+    document.addEventListener('DOMContentLoaded', () => {
+      const navbar = document.getElementById('navbar');
+      let lastScrollY = window.scrollY;
+      let ticking = false;
 
-  // Initialize navbar state
-  navbar.classList.toggle('scrolled', window.scrollY > 20);
-
-  // Optimized scroll handler
-  const updateNavbar = () => {
-    if (Math.abs(lastScrollY - window.scrollY) > 5) { // Only update if significant scroll
+      // Initialize navbar state
       navbar.classList.toggle('scrolled', window.scrollY > 20);
-      lastScrollY = window.scrollY;
-    }
-    ticking = false;
-  };
 
-  // Throttled scroll event
-  window.addEventListener('scroll', () => {
-    lastScrollY = window.scrollY;
-    if (!ticking) {
-      window.requestAnimationFrame(updateNavbar);
-      ticking = true;
-    }
-  });
-});
+      // Optimized scroll handler
+      const updateNavbar = () => {
+        if (Math.abs(lastScrollY - window.scrollY) > 5) { // Only update if significant scroll
+          navbar.classList.toggle('scrolled', window.scrollY > 20);
+          lastScrollY = window.scrollY;
+        }
+        ticking = false;
+      };
+
+      // Throttled scroll event
+      window.addEventListener('scroll', () => {
+        lastScrollY = window.scrollY;
+        if (!ticking) {
+          window.requestAnimationFrame(updateNavbar);
+          ticking = true;
+        }
+      });
+    });
 
     // Close modal when clicking outside
     confirmationModal.addEventListener('click', (e) => {
