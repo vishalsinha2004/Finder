@@ -27,78 +27,86 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <style>
-/* CSS */
+/* ===== FINAL NAVBAR CSS ===== */
+/* ===== COMPACT NAVBAR WITH TOP SPACE ===== */
 .navbar {
   position: sticky;
-  top: 24px; /* Increased from 12px */
+  top: 20px; /* Increased from 12px for more space */
   left: 0;
-  width: calc(100% - 48px); /* Increased to match new margin */
-  margin: 0 24px; /* Increased from 12px */
-  padding: 16px 24px; /* Increased top/bottom padding */
+  width: calc(100% - 32px); /* Slightly wider to match new spacing */
+  margin: 0 16px; /* Adjusted margins */
+  padding: 12px 20px; /* Slightly more padding */
   z-index: 50;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  /* Glass effect with fallback */
-  background: rgba(255, 255, 255, 0.95);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  /* Glass effect */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px); /* Balanced blur */
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px; /* Slightly rounded */
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+
+  /* Fallback */
+  @supports not (backdrop-filter: blur(18px)) {
+    background: rgba(255, 255, 255, 0.94);
+  }
 }
 
 .navbar.scrolled {
   background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
-  top: 16px; /* Increased from 8px */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  top: 12px; /* Adjusted scroll position */
+  padding: 10px 20px;
 }
 
+/* Dark Mode */
 .dark .navbar {
-  background: rgba(15, 23, 42, 0.95);
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(15, 23, 42, 0.45);
   border-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  @supports not (backdrop-filter: blur(18px)) {
+    background: rgba(15, 23, 42, 0.92);
+  }
 }
 
 .dark .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.25);
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
+/* Responsive Adjustments */
+@media (max-width: 768px) {
   .navbar {
-    width: calc(100% - 32px); /* Increased from 16px */
-    margin: 0 16px; /* Increased from 8px */
-    padding: 12px 16px; /* Increased from 8px */
-    top: 16px; /* Increased from 8px */
+    width: calc(100% - 24px);
+    margin: 0 12px;
+    padding: 10px 16px;
+    top: 16px;
+    border-radius: 12px;
   }
   
   .navbar.scrolled {
-    top: 12px; /* Increased from 4px */
+    top: 10px;
+    padding: 8px 16px;
   }
 }
 
-/* Ensure proper scroll spacing - increased to match new navbar height */
-html {
-  scroll-padding-top: 96px; /* Increased from 80px */
-}
-
-/* Fallback for browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(20px)) {
+/* Small Mobile */
+@media (max-width: 480px) {
   .navbar {
-    background: rgba(255, 255, 255, 0.95) !important;
+    width: calc(100% - 20px);
+    margin: 0 10px;
+    padding: 8px 14px;
+    top: 12px;
   }
-  
-  .dark .navbar {
-    background: rgba(15, 23, 42, 0.95) !important;
-  }
+}
+
+/* Content spacing */
+html {
+  scroll-padding-top: 80px; /* Balanced spacing */
 }
     .welcome-page {
       position: fixed;
@@ -1247,14 +1255,33 @@ html {
     });
 
     // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 20) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
+  // FINAL OPTIMIZED NAVBAR SCRIPT
+document.addEventListener('DOMContentLoaded', () => {
+  const navbar = document.getElementById('navbar');
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  // Initialize navbar state
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+
+  // Optimized scroll handler
+  const updateNavbar = () => {
+    if (Math.abs(lastScrollY - window.scrollY) > 5) { // Only update if significant scroll
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+      lastScrollY = window.scrollY;
+    }
+    ticking = false;
+  };
+
+  // Throttled scroll event
+  window.addEventListener('scroll', () => {
+    lastScrollY = window.scrollY;
+    if (!ticking) {
+      window.requestAnimationFrame(updateNavbar);
+      ticking = true;
+    }
+  });
+});
 
     // Close modal when clicking outside
     confirmationModal.addEventListener('click', (e) => {
