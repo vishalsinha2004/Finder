@@ -29,6 +29,114 @@
   <style>
     /* ===== FINAL NAVBAR CSS ===== */
     /* ===== COMPACT NAVBAR WITH TOP SPACE ===== */
+
+     .menu-bar {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
+      max-width: 90%;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .menu-container {
+      display: flex;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 14px;
+      padding: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 
+                  0 2px 6px rgba(0, 0, 0, 0.05),
+                  inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+                  inset 0 0 12px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      margin: 0 4px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 80px;
+      text-decoration: none;
+      color: #333;
+      position: relative;
+    }
+    
+    .menu-item:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    
+    .menu-item.active {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+    
+    .menu-item .icon {
+      width: 20px;
+      height: 20px;
+      margin-bottom: 4px;
+    }
+    
+    .menu-item .label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    /* Dark mode styles */
+    .dark .menu-container {
+      background: rgba(39, 39, 42, 0.9);
+      border-color: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15),
+                  0 2px 6px rgba(0, 0, 0, 0.1),
+                  inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+    
+    .dark .menu-item {
+      color: #e5e7eb;
+    }
+    
+    .dark .menu-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .dark .menu-item.active {
+      background: rgba(59, 130, 246, 0.2);
+      color: #3b82f6;
+    }
+    
+    /* Desktop adjustments - keep at bottom but make it wider */
+    @media (min-width: 768px) {
+      .menu-bar {
+        width: auto;
+        max-width: 600px;
+      }
+      
+      .menu-item {
+        min-width: 100px;
+        padding: 10px 16px;
+      }
+      
+      .menu-item .label {
+        font-size: 13px;
+      }
+    }
+
+    /* Add padding to bottom of body to prevent content from being hidden behind menu */
+    body {
+      padding-bottom: 80px;
+    }
+
+
     .navbar {
       position: sticky;
       top: 20px;
@@ -520,6 +628,40 @@
 
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
 
+   <!-- Menu Bar -->
+  <div class="menu-bar">
+    <div class="menu-container">
+      <a href="https://finderai.netlify.app/" target="_blank" class="menu-item" id="finder-ai">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+        <span class="label">FinderAI</span>
+      </a>
+      
+      <a href="/" class="menu-item active" id="all-files">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>
+        <span class="label">All Files</span>
+      </a>
+      
+      <button class="menu-item" id="add-file">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span class="label">Add</span>
+      </button>
+      
+      <button class="menu-item" id="upload-file">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <span class="label">Upload</span>
+      </button>
+    </div>
+  </div>
+
+
   <div class="welcome-page hidden" id="welcomePage">
     <div class="space-background" id="spaceBackground"></div>
     <div class="text-center z-10 flex flex-col items-center justify-center px-4 w-full">
@@ -800,18 +942,42 @@
     </div>
   </div>
 
-  <footer
-    class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto px-4">
-      <p
-        class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
-        &copy; 2025 <span
-          class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>.
-        All Rights Reserved.</p>
-    </div>
-  </footer>
+  
 
   <script>
+
+       // Add this new menu bar functionality:
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        // Remove active class from all items
+        document.querySelectorAll('.menu-item').forEach(i => {
+          i.classList.remove('active');
+        });
+        
+        // Add active class to clicked item
+        this.classList.add('active');
+        
+        // Handle specific actions
+        const id = this.id;
+        if (id === 'add-file') {
+          // Show add file form
+          document.getElementById('contentBox').classList.remove('hidden');
+          document.getElementById('contentBox').classList.add('visible');
+          document.getElementById('contentBox').scrollIntoView({ behavior: 'smooth' });
+        } else if (id === 'upload-file') {
+          // Trigger file upload
+          document.getElementById('fileInput').click();
+        }
+      });
+    });
+    
+    // Set active menu item based on current page
+    const currentPath = window.location.pathname;
+    if (currentPath === '/') {
+      document.getElementById('all-files').classList.add('active');
+      document.getElementById('finder-ai').classList.remove('active');
+    }
+
     // Check if welcome page has been shown in this session
     if (!sessionStorage.getItem('welcomeShown')) {
       document.getElementById('welcomePage').classList.remove('hidden');
