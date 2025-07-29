@@ -845,16 +845,16 @@
       <div class="flex gap-2">
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="all">All's</button>
+          >All's</button>
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="recent">Recent's</button>
+          >Recent's</button>
            <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="PDF's">PDF's</button>
+          >PDF's</button>
            <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          data-filter="Image's">Image's</button>
+          >Image's</button>
 
 
       </div>
@@ -1215,8 +1215,7 @@
           welcomePage.classList.add('hidden');
 
           // Show welcome toast
-          setTimeout(() => {
-            showToast('Welcome to Finder! Start organizing your files.');
+            setTimeout(() => {
           }, 500);
         }, 800);
       }
@@ -1400,8 +1399,7 @@
         // Add active class to clicked button
         button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
 
-        const filter = button.dataset.filter;
-        showToast(`Showing ${filter} files`);
+        
       });
     });
 
