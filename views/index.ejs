@@ -29,163 +29,6 @@
   <style>
     /* ===== FINAL NAVBAR CSS ===== */
     /* ===== COMPACT NAVBAR WITH TOP SPACE ===== */
-
-     /* Enhanced Menu Bar Styles */
-    .menu-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      z-index: 100;
-      display: flex;
-      justify-content: center;
-      padding: 12px;
-      box-sizing: border-box;
-    }
-    
-    .menu-container {
-      display: flex;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-radius: 18px;
-      padding: 8px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1), 
-                  0 2px 6px rgba(0, 0, 0, 0.05),
-                  inset 0 0 0 1px rgba(255, 255, 255, 0.2),
-                  inset 0 0 12px rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      width: 100%;
-      max-width: 500px;
-      justify-content: space-around;
-    }
-    
-    .menu-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 12px;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-width: 64px;
-      text-decoration: none;
-      color: #333;
-      position: relative;
-      -webkit-tap-highlight-color: transparent;
-    }
-    
-    .menu-item:hover {
-      background: rgba(0, 0, 0, 0.05);
-    }
-    
-    .menu-item:active {
-      transform: scale(0.95);
-    }
-    
-    .menu-item.active {
-      background: rgba(59, 130, 246, 0.1);
-      color: #3b82f6;
-    }
-    
-    .menu-item .icon {
-      width: 22px;
-      height: 22px;
-      margin-bottom: 4px;
-    }
-    
-    .menu-item .label {
-      font-size: 11px;
-      font-weight: 500;
-      text-align: center;
-    }
-    
-    /* Dark mode styles */
-    .dark .menu-container {
-      background: rgba(39, 39, 42, 0.95);
-      border-color: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2),
-                  0 2px 6px rgba(0, 0, 0, 0.1),
-                  inset 0 0 0 1px rgba(255, 255, 255, 0.03);
-    }
-    
-    .dark .menu-item {
-      color: #e5e7eb;
-    }
-    
-    .dark .menu-item:hover {
-      background: rgba(255, 255, 255, 0.05);
-    }
-    
-    .dark .menu-item.active {
-      background: rgba(59, 130, 246, 0.2);
-      color: #3b82f6;
-    }
-    
-    /* Responsive adjustments */
-    @media (min-width: 375px) {
-      .menu-item {
-        min-width: 72px;
-        padding: 8px 14px;
-      }
-      
-      .menu-item .label {
-        font-size: 12px;
-      }
-    }
-    
-    @media (min-width: 425px) {
-      .menu-item {
-        min-width: 80px;
-      }
-    }
-    
-    @media (min-width: 768px) {
-      .menu-bar {
-        padding: 16px;
-      }
-      
-      .menu-container {
-        border-radius: 20px;
-        padding: 10px;
-      }
-      
-      .menu-item {
-        min-width: 90px;
-        padding: 10px 16px;
-      }
-      
-      .menu-item .icon {
-        width: 24px;
-        height: 24px;
-      }
-      
-      .menu-item .label {
-        font-size: 13px;
-      }
-    }
-    
-    /* iPhone notch/padding adjustments */
-    @supports (padding: max(0px)) {
-      .menu-bar {
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-      }
-    }
-
-    /* Add padding to bottom of body to prevent content from being hidden behind menu */
-    body {
-      padding-bottom: 80px;
-    }
-    
-    @media (min-width: 768px) {
-      body {
-        padding-bottom: 100px;
-      }
-    }
-
-
     .navbar {
       position: sticky;
       top: 10px;
@@ -550,6 +393,79 @@
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
 
+    .ai-icon {
+      transition: all 0.3s ease;
+      animation: ai-pulse 2.5s infinite ease-in-out;
+    }
+
+    .ai-icon:hover {
+      animation: ai-hover-pulse 0.8s infinite ease-in-out;
+      filter: drop-shadow(0 0 8px rgba(74, 222, 128, 0.6));
+    }
+
+    @keyframes ai-pulse {
+      0% {
+        transform: scale(1);
+        opacity: 0.9;
+      }
+
+      50% {
+        transform: scale(1.08);
+        opacity: 1;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 0.9;
+      }
+    }
+
+    @keyframes ai-hover-pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.2);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .ai-tooltip {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(15, 23, 42, 0.9);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: all 0.3s ease;
+      margin-right: 8px;
+    }
+
+    .ai-tooltip::after {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 4px;
+      border-style: solid;
+      border-color: transparent transparent transparent rgba(15, 23, 42, 0.9);
+    }
+
+    #ai-assistant:hover .ai-tooltip {
+      opacity: 1;
+      margin-right: 12px;
+    }
 
     .responsive-heading {
       font-size: clamp(1.5rem, 5vw, 2.5rem);
@@ -604,40 +520,6 @@
 
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
 
-  <!-- Enhanced Menu Bar -->
-  <div class="menu-bar">
-    <div class="menu-container">
-      <a href="https://finderai.netlify.app/" target="_blank" class="menu-item" id="finder-ai">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-        <span class="label">FinderAI</span>
-      </a>
-      
-      <a href="/" class="menu-item active" id="all-files">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-        </svg>
-        <span class="label">All Files</span>
-      </a>
-      
-      <button class="menu-item" id="add-file">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-        </svg>
-        <span class="label">Add</span>
-      </button>
-      
-      <button class="menu-item" id="upload-file">
-        <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-        </svg>
-        <span class="label">Upload</span>
-      </button>
-    </div>
-  </div>
-
-
   <div class="welcome-page hidden" id="welcomePage">
     <div class="space-background" id="spaceBackground"></div>
     <div class="text-center z-10 flex flex-col items-center justify-center px-4 w-full">
@@ -677,7 +559,16 @@
           class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
       </div>
       <div class="flex items-center space-x-3">
-        
+        <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
+          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
+          <span class="ai-tooltip">FinderAI...</span>
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          </svg>
+        </a>
         <button id="theme-toggle"
           class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
           <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg"
@@ -763,16 +654,16 @@
       <div class="flex gap-2">
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          >All's</button>
+          data-filter="all">All's</button>
         <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          >Recent's</button>
+          data-filter="recent">Recent's</button>
            <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          >PDF's</button>
+          data-filter="PDF's">PDF's</button>
            <button
           class="filter-btn px-4 py-1.5 sm:px-5 sm:py-2.5 rounded-xl bg-zinc-200/80 dark:bg-zinc-700/80 hover:bg-zinc-300/80 dark:hover:bg-zinc-600/80 transition-all duration-300 responsive-text"
-          >Image's</button>
+          data-filter="Image's">Image's</button>
 
 
       </div>
@@ -909,66 +800,18 @@
     </div>
   </div>
 
-  
+  <footer
+    class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto px-4">
+      <p
+        class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
+        &copy; 2025 <span
+          class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>.
+        All Rights Reserved.</p>
+    </div>
+  </footer>
 
   <script>
-
-     // Enhanced menu bar functionality with touch optimizations
-    document.querySelectorAll('.menu-item').forEach(item => {
-      // Add touch feedback
-      item.addEventListener('touchstart', function() {
-        this.classList.add('active');
-      }, { passive: true });
-      
-      item.addEventListener('touchend', function() {
-        if (!this.classList.contains('active')) {
-          this.classList.remove('active');
-        }
-      }, { passive: true });
-      
-      item.addEventListener('click', function() {
-        // Remove active class from all items
-        document.querySelectorAll('.menu-item').forEach(i => {
-          if (i !== this) i.classList.remove('active');
-        });
-        
-        // Add active class to clicked item
-        this.classList.add('active');
-        
-        // Handle specific actions
-        const id = this.id;
-        if (id === 'add-file') {
-          // Show add file form
-          document.getElementById('contentBox').classList.remove('hidden');
-          document.getElementById('contentBox').classList.add('visible');
-          document.getElementById('contentBox').scrollIntoView({ behavior: 'smooth' });
-        } else if (id === 'upload-file') {
-          // Trigger file upload
-          document.getElementById('fileInput').click();
-        }
-      });
-    });
-    
-    // Set active menu item based on current page
-    const currentPath = window.location.pathname;
-    if (currentPath === '/') {
-      document.getElementById('all-files').classList.add('active');
-      document.getElementById('finder-ai').classList.remove('active');
-    }
-
-    // Handle window resize for better responsiveness
-    function handleResize() {
-      const menuBar = document.querySelector('.menu-bar');
-      if (window.innerWidth >= 768) {
-        menuBar.style.padding = '16px';
-      } else {
-        menuBar.style.padding = '12px';
-      }
-    }
-    
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
     // Check if welcome page has been shown in this session
     if (!sessionStorage.getItem('welcomeShown')) {
       document.getElementById('welcomePage').classList.remove('hidden');
@@ -1133,7 +976,8 @@
           welcomePage.classList.add('hidden');
 
           // Show welcome toast
-            setTimeout(() => {
+          setTimeout(() => {
+            showToast('Welcome to Finder! Start organizing your files.');
           }, 500);
         }, 800);
       }
@@ -1317,7 +1161,8 @@
         // Add active class to clicked button
         button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
 
-        
+        const filter = button.dataset.filter;
+        showToast(`Showing ${filter} files`);
       });
     });
 
