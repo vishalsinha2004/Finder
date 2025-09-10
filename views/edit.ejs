@@ -47,6 +47,7 @@
     }
 
     body {
+       padding-bottom: 70px;
       min-height: 100vh;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -63,6 +64,93 @@
 
     .preview-transition {
       transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    
+    /* Mobile Menu Bar */
+    .mobile-menu-bar {
+      position: fixed;
+      bottom: 0px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100%);
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 16px 16px 0 0;
+      padding: 10px;
+      display: none;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 40;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+      transition: all 0.3s ease;
+    }
+
+    .dark .mobile-menu-bar {
+      background: rgb(39 39 42 / 0.8);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    }
+
+    .mobile-menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .mobile-menu-item:hover {
+      background: rgba(59, 130, 246, 0.1);
+    }
+
+    .mobile-menu-item.active {
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .mobile-menu-icon {
+      width: 20px;
+      height: 20px;
+      margin-bottom: 4px;
+      color: #4b5563;
+      transition: all 0.3s ease;
+    }
+
+    .dark .mobile-menu-icon {
+      color: #d1d5db;
+    }
+
+    .mobile-menu-item:hover .mobile-menu-icon,
+    .mobile-menu-item.active .mobile-menu-icon {
+      color: #3b82f6;
+    }
+
+    .mobile-menu-label {
+      font-size: 12px;
+      color: #4b5563;
+      transition: all 0.3s ease;
+    }
+
+    .dark .mobile-menu-label {
+      color: #d1d5db;
+    }
+
+    .mobile-menu-item:hover .mobile-menu-label,
+    .mobile-menu-item.active .mobile-menu-label {
+      color: #3b82f6;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-bar {
+        display: flex;
+      }
+
+      .button-container {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -87,6 +175,55 @@
       </button> -->
     </div>
 
+  <!-- Mobile Menu Bar -->
+
+  <div class="mobile-menu-bar" id="mobileMenuBar">
+    <div class="mobile-menu-item active" id="mobileHome">
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
+      </svg>
+      <span class="mobile-menu-label">Home</span>
+    </div>
+    <div class="mobile-menu-item" id="mobileChart">
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+      <span class="mobile-menu-label">Chart</span>
+    </div>
+    <div class="mobile-menu-item" id="mobileSearch">
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
+      </svg>
+      <span class="mobile-menu-label">Search</span>
+    </div>
+    <div class="mobile-menu-item" id="mobileUpload">
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+      <span class="mobile-menu-label">Upload</span>
+    </div>
+  </div>
+
+
+  <div id="toast"
+    class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
+    <div class="toast-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+          clip-rule="evenodd" />
+      </svg>
+    </div>
+    <span id="toast-message" class="font-medium">File added successfully!</span>
+  </div>
     <!-- Main form container -->
     <div class="bg-zinc-100 dark:bg-zinc-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow max-w-2xl mx-auto">
       <h1 class="text-2xl md:text-3xl font-bold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
@@ -171,6 +308,80 @@
   </div>
 
   <script>
+        // Mobile Menu Functionality
+    // Mobile Menu Functionality
+    const mobileMenuBar = document.getElementById('mobileMenuBar');
+    const mobileHome = document.getElementById('mobileHome');
+    const mobileChart = document.getElementById('mobileChart');
+    const mobileSearch = document.getElementById('mobileSearch');
+    const mobileUpload = document.getElementById('mobileUpload');
+    const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+
+    // Show/hide mobile menu based on screen size
+    function checkScreenSize() {
+      if (window.innerWidth <= 768) {
+        mobileMenuBar.style.display = 'flex';
+      } else {
+        mobileMenuBar.style.display = 'none';
+      }
+    }
+
+    // Initial check
+    checkScreenSize();
+
+    // Listen for window resize
+    window.addEventListener('resize', checkScreenSize);
+
+    // Mobile menu item click handlers
+    mobileHome.addEventListener('click', () => {
+      // Navigate to home page
+      window.location.href = '/';
+
+      // Update active state
+      mobileMenuItems.forEach(item => item.classList.remove('active'));
+      mobileHome.classList.add('active');
+
+      showToast('Navigating to Home...');
+    });
+
+    mobileChart.addEventListener('click', () => {
+      // Placeholder for chart functionality
+      mobileMenuItems.forEach(item => item.classList.remove('active'));
+      mobileChart.classList.add('active');
+
+      showToast('Chart feature coming soon!', 'warning');
+    });
+
+    mobileSearch.addEventListener('click', () => {
+      // Placeholder for search functionality
+      mobileMenuItems.forEach(item => item.classList.remove('active'));
+      mobileSearch.classList.add('active');
+
+      showToast('Search feature coming soon!', 'info');
+    });
+
+    mobileUpload.addEventListener('click', () => {
+      // Trigger file upload
+      fileInput.click();
+
+      // Update active state
+      mobileMenuItems.forEach(item => item.classList.remove('active'));
+      mobileUpload.classList.add('active');
+    });
+
+    // Responsive adjustments
+    function handleResize() {
+      const typewriter = document.getElementById('typewriter');
+      if (typewriter) {
+        typewriter.style.minHeight = typewriter.scrollHeight + 'px';
+      }
+      checkScreenSize();
+    }
+
+    // Initial call and event listener
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     // Theme Toggle Functionality
     const themeToggle = document.getElementById('theme-toggle');
     const themeIconDark = document.getElementById('theme-icon-dark');
