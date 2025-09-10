@@ -844,32 +844,37 @@
 
   <!-- Mobile Menu Bar -->
    
-  <div class="mobile-menu-bar" id="mobileMenuBar">
-    <div class="mobile-menu-item" id="mobileAi">
+ <div class="mobile-menu-bar" id="mobileMenuBar">
+    <div class="mobile-menu-item active" id="mobileHome">
       <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
       </svg>
-      <span class="mobile-menu-label">AI</span>
+      <span class="mobile-menu-label">Home</span>
     </div>
     <div class="mobile-menu-item" id="mobileChart">
       <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
       </svg>
       <span class="mobile-menu-label">Chart</span>
     </div>
-    <div class="mobile-menu-item active" id="mobileAdd">
+    <div class="mobile-menu-item" id="mobileSearch">
       <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
       </svg>
-      <span class="mobile-menu-label">Add</span>
+      <span class="mobile-menu-label">Search</span>
     </div>
     <div class="mobile-menu-item" id="mobileUpload">
       <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
       </svg>
       <span class="mobile-menu-label">Upload</span>
     </div>
-  </div>
+</div>
+
 
   <div id="toast"
     class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
@@ -1477,89 +1482,79 @@
     });
 
     // Mobile Menu Functionality
-    const mobileMenuBar = document.getElementById('mobileMenuBar');
-    const mobileAi = document.getElementById('mobileAi');
-    const mobileChart = document.getElementById('mobileChart');
-    const mobileAdd = document.getElementById('mobileAdd');
-    const mobileUpload = document.getElementById('mobileUpload');
-    const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+   // Mobile Menu Functionality
+const mobileMenuBar = document.getElementById('mobileMenuBar');
+const mobileHome = document.getElementById('mobileHome');
+const mobileChart = document.getElementById('mobileChart');
+const mobileSearch = document.getElementById('mobileSearch');
+const mobileUpload = document.getElementById('mobileUpload');
+const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
 
-    // Show/hide mobile menu based on screen size
-    function checkScreenSize() {
-      if (window.innerWidth <= 768) {
-        mobileMenuBar.style.display = 'flex';
-      } else {
-        mobileMenuBar.style.display = 'none';
-      }
-    }
+// Show/hide mobile menu based on screen size
+function checkScreenSize() {
+  if (window.innerWidth <= 768) {
+    mobileMenuBar.style.display = 'flex';
+  } else {
+    mobileMenuBar.style.display = 'none';
+  }
+}
 
-    // Initial check
-    checkScreenSize();
-    
-    // Listen for window resize
-    window.addEventListener('resize', checkScreenSize);
+// Initial check
+checkScreenSize();
 
-    // Mobile menu item click handlers
-    mobileAi.addEventListener('click', () => {
-      // Open AI page
-      window.open('https://finderai.netlify.app/', '_blank');
-      
-      // Update active state
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileAi.classList.add('active');
-      
-      showToast('Opening FinderAI...');
-    });
+// Listen for window resize
+window.addEventListener('resize', checkScreenSize);
 
-    mobileChart.addEventListener('click', () => {
-      // Placeholder for chart functionality
-      
-      // Update active state
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileChart.classList.add('active');
-      
-      showToast('Chart feature coming soon!', 'warning');
-    });
+// Mobile menu item click handlers
+mobileHome.addEventListener('click', () => {
+  // Navigate to home page
+  window.location.href = '/';
+  
+  // Update active state
+  mobileMenuItems.forEach(item => item.classList.remove('active'));
+  mobileHome.classList.add('active');
+  
+  showToast('Navigating to Home...');
+});
 
-    mobileAdd.addEventListener('click', () => {
-      // Toggle form visibility
-      if (contentBox.classList.contains('hidden')) {
-        contentBox.classList.remove('hidden');
-        contentBox.classList.add('visible');
-        // Scroll to the form for better UX
-        contentBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        contentBox.classList.add('hidden');
-        contentBox.classList.remove('visible');
-      }
-      
-      // Update active state
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileAdd.classList.add('active');
-    });
+mobileChart.addEventListener('click', () => {
+  // Placeholder for chart functionality
+  mobileMenuItems.forEach(item => item.classList.remove('active'));
+  mobileChart.classList.add('active');
+  
+  showToast('Chart feature coming soon!', 'warning');
+});
 
-    mobileUpload.addEventListener('click', () => {
-      // Trigger file upload
-      fileInput.click();
-      
-      // Update active state
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileUpload.classList.add('active');
-    });
+mobileSearch.addEventListener('click', () => {
+  // Placeholder for search functionality
+  mobileMenuItems.forEach(item => item.classList.remove('active'));
+  mobileSearch.classList.add('active');
+  
+  showToast('Search feature coming soon!', 'info');
+});
 
-    // Responsive adjustments
-    function handleResize() {
-      // Adjust typewriter container height based on content
-      const typewriter = document.getElementById('typewriter');
-      typewriter.style.minHeight = typewriter.scrollHeight + 'px';
-      
-      // Check if we need to show/hide mobile menu
-      checkScreenSize();
-    }
-    
-    // Initial call and event listener
-    handleResize();
-    window.addEventListener('resize', handleResize);
+mobileUpload.addEventListener('click', () => {
+  // Trigger file upload
+  fileInput.click();
+  
+  // Update active state
+  mobileMenuItems.forEach(item => item.classList.remove('active'));
+  mobileUpload.classList.add('active');
+});
+
+// Responsive adjustments
+function handleResize() {
+  const typewriter = document.getElementById('typewriter');
+  if (typewriter) {
+    typewriter.style.minHeight = typewriter.scrollHeight + 'px';
+  }
+  checkScreenSize();
+}
+
+// Initial call and event listener
+handleResize();
+window.addEventListener('resize', handleResize);
+
   </script>
 </body>
 
