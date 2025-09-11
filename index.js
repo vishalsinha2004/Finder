@@ -28,9 +28,9 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
-  limits: { 
+  limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
     files: 5 // Max 5 files at once
   },
@@ -53,44 +53,44 @@ app.locals.marked = marked;
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
 
 // File upload endpoint
-app.post('/upload', upload.array('files'), function(req, res) {
+app.post('/upload', upload.array('files'), function (req, res) {
   try {
     if (!req.files || req.files.length === 0) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        message: 'No files were uploaded.' 
+        message: 'No files were uploaded.'
       });
     }
-    
+
     const uploadedFiles = req.files.map(file => file.filename);
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
       message: 'Files uploaded successfully',
       files: uploadedFiles
     });
   } catch (error) {
     console.error('Upload error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       success: false,
-      message: 'Error uploading files' 
+      message: 'Error uploading files'
     });
   }
 });
 
 // Delete file endpoint
-app.delete('/file/:filename', function(req, res) {
+app.delete('/file/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
 
   fs.unlink(filePath, (err) => {
     if (err) {
       console.error('Delete error:', err);
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
-        message: 'Error deleting file' 
+        message: 'Error deleting file'
       });
     }
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
       message: 'File deleted successfully'
     });
@@ -98,8 +98,8 @@ app.delete('/file/:filename', function(req, res) {
 });
 
 // Routes
-app.get('/', function(req, res) {
-  fs.readdir(`./files`, function(err, files) {
+app.get('/', function (req, res) {
+  fs.readdir(`./files`, function (err, files) {
     if (err) {
       console.error('Error reading files:', err);
       // If directory doesn't exist, create it and return empty array
@@ -109,7 +109,7 @@ app.get('/', function(req, res) {
       }
       return res.status(500).send('Error reading files');
     }
-    
+
     // Sort files by creation time (newest first)
     const sortedFiles = files.map(file => {
       const stat = fs.statSync(path.join(__dirname, 'files', file));
@@ -119,20 +119,20 @@ app.get('/', function(req, res) {
       };
     }).sort((a, b) => b.createdAt - a.createdAt)
       .map(file => file.name);
-    
+
     res.render("index", { files: sortedFiles });
   });
 });
 
-app.get('/file/:filename', function(req, res) {
+app.get('/file/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
   const ext = path.extname(filename).toLowerCase();
-  
+
   // Check file types
   const isPdf = ext === '.pdf';
   const isImage = IMAGE_EXTENSIONS.includes(ext);
-  
+
   if (isPdf || isImage) {
     res.render('show', {
       filename: filename,
@@ -141,12 +141,12 @@ app.get('/file/:filename', function(req, res) {
       filedata: null
     });
   } else {
-    fs.readFile(filePath, "utf-8", function(err, filedata) {
+    fs.readFile(filePath, "utf-8", function (err, filedata) {
       if (err) return res.status(404).send('File not found');
-      
+
       // Check if file is markdown
       const isMarkdown = ext === '.md';
-      
+
       res.render('show', {
         filename: filename,
         filedata: isMarkdown ? marked(filedata) : filedata,
@@ -159,10 +159,10 @@ app.get('/file/:filename', function(req, res) {
 });
 
 // Route to serve actual files
-app.get('/files/:filename', function(req, res) {
+app.get('/files/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
-  
+
   // Check if file exists
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
@@ -172,24 +172,24 @@ app.get('/files/:filename', function(req, res) {
   });
 });
 
-app.get('/edit/:filename', function(req, res) {
+app.get('/edit/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
-  
-  fs.readFile(filePath, "utf-8", function(err, filedata) {
+
+  fs.readFile(filePath, "utf-8", function (err, filedata) {
     if (err) return res.status(404).send('File not found');
-    res.render('edit', { 
+    res.render('edit', {
       filename: filename,
-      filedata: filedata 
+      filedata: filedata
     });
   });
 });
 
-app.post('/edit', function(req, res) {
+app.post('/edit', function (req, res) {
   const oldPath = path.join(__dirname, 'files', req.body.previous);
   const newPath = path.join(__dirname, 'files', req.body.new);
-  
-  fs.rename(oldPath, newPath, function(err) {
+
+  fs.rename(oldPath, newPath, function (err) {
     if (err) {
       console.error('Error renaming file:', err);
       return res.status(500).send('Error renaming file');
@@ -198,16 +198,16 @@ app.post('/edit', function(req, res) {
   });
 });
 
-app.post('/create', function(req, res) {
+app.post('/create', function (req, res) {
   if (!req.body.title || !req.body.details) {
     return res.status(400).send('Title and details are required');
   }
-  
+
   // Sanitize filename
   const filename = req.body.title.replace(/[^a-zA-Z0-9]/g, '_') + '.txt';
   const filePath = path.join(__dirname, 'files', filename);
-  
-  fs.writeFile(filePath, req.body.details, function(err) {
+
+  fs.writeFile(filePath, req.body.details, function (err) {
     if (err) {
       console.error('Error creating file:', err);
       return res.status(500).send('Error creating file');
@@ -224,5 +224,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`); 
+  console.log(`Server running on port ${PORT}`);
 });

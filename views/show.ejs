@@ -32,7 +32,7 @@
     }
 
     body {
-       padding-bottom: 70px;
+      padding-bottom: 70px;
       min-height: 100vh;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
@@ -196,7 +196,8 @@
         height: 60vh;
       }
 
-      .image-container, .image-container img {
+      .image-container,
+      .image-container img {
         max-height: 60vh;
       }
 
@@ -231,8 +232,9 @@
       .pdf-mobile-fallback {
         display: block;
       }
-      
-      .image-container, .image-container img {
+
+      .image-container,
+      .image-container img {
         max-height: 50vh;
       }
     }
@@ -319,7 +321,7 @@
       height: auto;
       border-radius: 0.5em;
     }
-    
+
     /* Mobile Menu Bar */
     .mobile-menu-bar {
       position: fixed;
@@ -422,15 +424,12 @@
       </div>
 
       <div class="flex items-center space-x-3">
-       <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
+        <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
           class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
           <span class="ai-tooltip">FinderAI...</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars"
-            viewBox="0 0 16 16"
-
-            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400
-            transition-colors duration-300 ai-icon"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            viewBox="0 0 16 16" class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400
+            transition-colors duration-300 ai-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
           </svg>
@@ -452,60 +451,61 @@
         </button> -->
       </div>
     </div>
-    
-  <!-- Mobile Menu Bar -->
 
-  <div class="mobile-menu-bar" id="mobileMenuBar">
-    <div class="mobile-menu-item active" id="mobileHome">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
-      </svg>
-      <span class="mobile-menu-label">Home</span>
-    </div>
-    
-    <a href="https://mysolvingerai.vercel.app/" target="_blank" rel="noopener noreferrer" class="mobile-menu-item" id="mobileChat">
-    <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-    class="bi bi-chat-left-text" viewBox="0 0 16 16">
-    <path
-        d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-    <path
-        d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-    </svg>
-    <span class="mobile-menu-label">Chat</span>
-</a>
+    <!-- Mobile Menu Bar -->
 
-    <div class="mobile-menu-item" id="mobileSearch">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
-      </svg>
-      <span class="mobile-menu-label">Search</span>
+    <div class="mobile-menu-bar" id="mobileMenuBar">
+      <div class="mobile-menu-item active" id="mobileHome">
+        <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
+        </svg>
+        <span class="mobile-menu-label">Home</span>
+      </div>
+
+      <a href="https://mysolvingerai.vercel.app/" target="_blank" rel="noopener noreferrer" class="mobile-menu-item"
+        id="mobileChat">
+        <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+          class="bi bi-chat-left-text" viewBox="0 0 16 16">
+          <path
+            d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+          <path
+            d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+        </svg>
+        <span class="mobile-menu-label">Chat</span>
+      </a>
+
+      <div class="mobile-menu-item" id="mobileSearch">
+        <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
+        </svg>
+        <span class="mobile-menu-label">Search</span>
+      </div>
+      <div class="mobile-menu-item" id="mobileUpload">
+        <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <span class="mobile-menu-label">Upload</span>
+      </div>
     </div>
-    <div class="mobile-menu-item" id="mobileUpload">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-      </svg>
-      <span class="mobile-menu-label">Upload</span>
-    </div>
-  </div>
 
 
-  <div id="toast"
-    class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
-    <div class="toast-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clip-rule="evenodd" />
-      </svg>
+    <div id="toast"
+      class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
+      <div class="toast-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <span id="toast-message" class="font-medium">File added successfully!</span>
     </div>
-    <span id="toast-message" class="font-medium">File added successfully!</span>
-  </div>
 
     <div class="bg-zinc-100 dark:bg-zinc-800 rounded-lg shadow-xl overflow-hidden transition-all duration-300">
       <div class="p-4 md:p-6">
@@ -535,8 +535,7 @@
           <% } else if (isImage) { %>
             <!-- Image Viewer with responsive sizing -->
             <div class="image-container image-loading">
-              <img src="/files/<%= filename %>" alt="<%= filename %>"
-                class="transition-opacity duration-300"
+              <img src="/files/<%= filename %>" alt="<%= filename %>" class="transition-opacity duration-300"
                 onload="this.parentElement.classList.remove('image-loading'); this.style.opacity=1" style="opacity:0">
             </div>
             <div class="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
@@ -608,10 +607,10 @@
     });
 
     mobileChat.addEventListener('click', () => {
-    // Update active state when the link is clicked
-    mobileMenuItems.forEach(item => item.classList.remove('active'));
-    mobileChat.classList.add('active');
-});
+      // Update active state when the link is clicked
+      mobileMenuItems.forEach(item => item.classList.remove('active'));
+      mobileChat.classList.add('active');
+    });
 
 
     mobileSearch.addEventListener('click', () => {
