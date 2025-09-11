@@ -602,6 +602,79 @@
         display: none !important;
       }
     }
+    /* Dynamic Floating Chat Button */
+.floating-chat-btn {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 18px;
+  border-radius: 50px;
+  /* Matching the site's gradient */
+  background-image: linear-gradient(45deg, #3b82f6, #8b5cf6, #ec4899);
+  background-size: 250% 250%;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(96, 91, 255, 0.3);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* Entrance and pulsing animations */
+  animation: float-in 0.8s ease-out forwards, pulse-glow 3s infinite 1s;
+}
+
+.floating-chat-btn:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(96, 91, 255, 0.45);
+  /* Animate gradient on hover */
+  background-position: right center;
+}
+
+.floating-chat-icon {
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+.floating-chat-btn:hover .floating-chat-icon {
+  transform: rotate(-15deg) scale(1.1);
+}
+
+.floating-chat-text {
+  font-size: 16px;
+}
+
+/* Keyframe animations for a dynamic feel */
+@keyframes float-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 8px 20px rgba(96, 91, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 10px 28px rgba(96, 91, 255, 0.5);
+  }
+}
+
+/* Hide the button on mobile devices */
+@media (max-width: 768px) {
+  .floating-chat-btn {
+    display: none;
+  }
+}
+ .floating-chat-btn.welcome-hidden {
+      display: none !important;
+    }
   </style>
 </head>
 
@@ -926,6 +999,16 @@
       </div>
     </div>
   </div>
+  <!-- Dynamic Floating Chat Button - Add 'welcome-hidden' class -->
+  <a href="https://mysolvingerai.vercel.app/" target="_blank" rel="noopener noreferrer" 
+     class="floating-chat-btn welcome-hidden" title="Chat with AI">
+    <span class="floating-chat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+        </svg>
+    </span>
+    <span class="floating-chat-text">Chat</span>
+  </a>
 
   <footer
     class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 mb-2 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm rounded-[40px]">
@@ -939,6 +1022,27 @@
     </div>
   </footer>
   <script>
+     // Add this JavaScript to show/hide the button based on welcome page visibility
+    document.addEventListener('DOMContentLoaded', function() {
+      const welcomePage = document.getElementById('welcomePage');
+      const floatingButton = document.querySelector('.floating-chat-btn');
+      
+      // Function to update button visibility
+      function updateButtonVisibility() {
+        if (welcomePage.classList.contains('hidden')) {
+          floatingButton.classList.remove('welcome-hidden');
+        } else {
+          floatingButton.classList.add('welcome-hidden');
+        }
+      }
+      
+      // Initial check
+      updateButtonVisibility();
+      
+      // Monitor for changes to the welcome page
+      const observer = new MutationObserver(updateButtonVisibility);
+      observer.observe(welcomePage, { attributes: true, attributeFilter: ['class'] });
+    });
     // Check if welcome page has been shown in this session
     if (!sessionStorage.getItem('welcomeShown')) {
       document.getElementById('welcomePage').classList.remove('hidden');
