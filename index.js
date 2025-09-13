@@ -184,6 +184,10 @@ app.get('/edit/:filename', function (req, res) {
     });
   });
 });
+// Add this route in index.js
+app.get('/settings', function(req, res) {
+  res.render("settings");
+});
 
 app.post('/edit', function (req, res) {
   const oldPath = path.join(__dirname, 'files', req.body.previous);

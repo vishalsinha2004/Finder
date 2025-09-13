@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings - Finder</title>
+  <link rel="icon" type="image/png" href="/images/fm1.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: { 50: '#f0f9ff', 100: '#e0f2fe', 500: '#3b82f6', 600: '#2563eb' },
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    .content-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(229, 231, 235, 0.5);
+    }
+    .dark .content-card {
+      background: rgba(31, 41, 55, 0.7);
+      border: 1px solid rgba(55, 65, 81, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-white transition-colors duration-300">
+
+  <!-- Main Content -->
+  <div class="min-h-screen container mx-auto px-4 py-8 sm:py-12">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Header -->
+      <div class="text-center mb-10">
+        <h1 class="text-4xl sm:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500 mb-2">
+          About Finder
+        </h1>
+        <p class="text-lg text-zinc-600 dark:text-zinc-400">
+          Your Intelligent File Management System
+        </p>
+      </div>
+
+      <!-- How it Works Section -->
+      <div class="content-card rounded-2xl p-6 sm:p-8 shadow-lg">
+        <h2 class="text-2xl font-semibold mb-4 border-b border-zinc-300 dark:border-zinc-700 pb-2">How It Works</h2>
+        
+        <div class="space-y-6 text-zinc-700 dark:text-zinc-300">
+          <p>
+            Welcome to <strong>Finder</strong>! This application is a lightweight, server-based file manager built with Node.js and Express. It allows you to create, upload, view, and manage files directly from your web browser.
+          </p>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Core Features:</h3>
+            <ul class="list-disc list-inside space-y-2">
+              <li><strong>Create Text Files:</strong> Use the "Add" button to create new <code>.txt</code> files. Your title becomes the filename, and the content is saved in the file.</li>
+              <li><strong>Upload Files:</strong> Click "Upload" to add files from your computer. The system supports various types, including images (JPG, PNG), PDFs, and text files.</li>
+              <li><strong>View Files:</strong> Click the "View" button on any file card to see its content. The app intelligently displays images, PDFs, and renders Markdown (<code>.md</code>) files as formatted text.</li>
+              <li><strong>File Management:</strong> You can easily "Rename" or "Delete" any file. Deleting a file is permanent.</li>
+              <li><strong>Search & Filter:</strong> Use the search bar to find files by title. Filter buttons help narrow your view (this feature is currently in development).</li>
+              <li><strong>Dark & Light Mode:</strong> Toggle themes using the sun/moon icon in the main application for comfortable viewing.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Technical Details:</h3>
+            <p>
+              The backend runs on <strong>Node.js</strong> with the <strong>Express</strong> framework. Files are handled using the built-in <code>fs</code> module and <strong>Multer</strong> for uploads. The frontend uses EJS for templating and is styled with <strong>Tailwind CSS</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="mt-8 text-center">
+          <a href="/" class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 text-white font-medium shadow-md">
+            &larr; Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme-handling script to ensure consistency with the rest of the app
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    });
+  </script>
+
+</body>
+</html>
