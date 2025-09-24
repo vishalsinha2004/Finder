@@ -20,7 +20,7 @@
               600: '#2563eb',
             },
           },
-        }
+        },
       }
     }
   </script>
@@ -151,204 +151,6 @@
     /* Content spacing */
     html {
       scroll-padding-top: 80px;
-    }
-
-    .welcome-page {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      overflow: hidden;
-    }
-
-    .dark .welcome-page {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-    }
-
-    .light .welcome-page {
-      background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
-    }
-
-    .welcome-page.hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-20px);
-    }
-
-    .space-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-      z-index: 0;
-    }
-
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      animation: twinkle var(--duration) infinite ease-in-out;
-      opacity: 0;
-    }
-
-    @keyframes twinkle {
-      0% {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-
-      50% {
-        opacity: var(--opacity);
-        transform: scale(1);
-      }
-
-      100% {
-        opacity: 0;
-        transform: scale(0.5);
-      }
-    }
-
-    .shooting-star {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0) 100%);
-      border-radius: 50%;
-      animation: shoot var(--duration) linear infinite;
-      opacity: 0;
-    }
-
-    @keyframes shoot {
-      0% {
-        transform: translateX(0) translateY(0) scale(0.3);
-        opacity: 0;
-      }
-
-      10% {
-        opacity: 1;
-      }
-
-      70% {
-        opacity: 1;
-      }
-
-      100% {
-        transform: translateX(var(--end-x)) translateY(var(--end-y)) scale(1.5);
-        opacity: 0;
-      }
-    }
-
-    .logo-container {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .logo-img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      z-index: 2;
-      box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 2px solid rgba(255, 255, 255, 0.15);
-      animation: pulse 3s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-      }
-
-      50% {
-        transform: scale(1.05);
-        box-shadow: 0 0 50px rgba(59, 130, 246, 0.8);
-      }
-
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
-      }
-    }
-
-    .progress-container {
-      width: 280px;
-      max-width: 85%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 4px;
-      margin-top: 1.5rem;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      border-radius: 4px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
-      box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
-      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
-      animation: shimmer 2s infinite;
-    }
-
-    @keyframes shimmer {
-      0% {
-        transform: translateX(-100%);
-      }
-
-      100% {
-        transform: translateX(100%);
-      }
-    }
-
-    .skip-btn {
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .skip-btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: all 0.5s ease;
-    }
-
-    .skip-btn:hover::after {
-      left: 100%;
     }
 
     html {
@@ -677,105 +479,71 @@
         display: none;
       }
     }
-
-    .floating-chat-btn.welcome-hidden {
-      display: none !important;
-    }
   </style>
 </head>
 
 <body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
 
-  <div class="welcome-page hidden" id="welcomePage">
-    <div class="space-background" id="spaceBackground"></div>
-    <div class="text-center z-10 flex flex-col items-center justify-center px-4 w-full">
-      <div class="logo-container animate__animated animate__zoomIn">
-        <img src="images/fm.png" alt="Finder Logo" class="logo-img">
+  <nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="images/fm.png" alt="Logo"
+          class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
+        <span
+          class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
       </div>
-      <h1
-        class="responsive-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-3 animate__animated animate__fadeIn">
-        Finder...
-      </h1>
-      <p
-        class="text-zinc-300 dark:text-zinc-400 max-w-md px-4 responsive-subheading animate__animated animate__fadeIn animate__delay-1s">
-        Your intelligent file management system
-      </p>
-      <div class="progress-container animate__animated animate__fadeIn animate__delay-1s">
-        <div class="progress" id="progressBar"></div>
+
+      <div class="flex items-center space-x-3">
+        <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
+          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
+          <span class="ai-tooltip">FinderAI...</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon"
+            viewBox="0 0 16 16">
+            <path
+              d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863 .099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
+          </svg>
+        </a>
+
+        <button id="theme-toggle"
+          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
+          <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden group-hover:scale-110 transition-transform"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+
+        <button id="settings-btn"
+          class="hidden md:flex p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </button>
+
+        <a href="/logout" title="Logout"
+          class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
+          <svg xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+        </a>
       </div>
-      <div
-        class="loading-text text-sm text-zinc-400 dark:text-zinc-500 mt-3 animate__animated animate__fadeIn animate__delay-1s responsive-text"
-        id="loadingText">
-        <span id="loading-message">Initializing system...</span>
-        <span id="loading-percent">0%</span>
-      </div>
-      <button id="skipBtn"
-        class="mt-6 px-5 py-1.5 rounded-full bg-transparent border-2 border-zinc-400 dark:border-zinc-600 text-zinc-300 dark:text-zinc-400 hover:text-white dark:hover:text-white hover:border-white dark:hover:border-white transition-all duration-300 skip-btn opacity-0 animate__animated responsive-text">
-        Skip Introduction
-      </button>
     </div>
-  </div>
-
- <nav class="navbar" id="navbar">
-  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-    <div class="flex items-center space-x-3">
-      <img src="images/fm.png" alt="Logo"
-        class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
-      <span
-        class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
-    </div>
-
-    <div class="flex items-center space-x-3">
-      <a id="ai-assistant" href="https://finderai.netlify.app/" target="_blank"
-        class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group relative">
-        <span class="ai-tooltip">FinderAI...</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors duration-300 ai-icon"
-          viewBox="0 0 16 16">
-          <path
-            d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863 .099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
-        </svg>
-      </a>
-
-      <button id="theme-toggle"
-        class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
-        <svg id="theme-icon-dark" xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-        <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 hidden group-hover:scale-110 transition-transform"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-        </svg>
-      </button>
-
-      <button id="settings-btn"
-        class="hidden md:flex p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
-        <svg xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      </button>
-
-      <a href="/logout" title="Logout"
-        class="p-2 rounded-full hover:bg-zinc-200/50 dark:hover:bg-zinc-700/50 transition-all duration-300 group">
-        <svg xmlns="http://www.w3.org/2000/svg"
-          class="h-5 w-5 text-zinc-800 dark:text-zinc-200 group-hover:scale-110 transition-transform" fill="none"
-          viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-        </svg>
-      </a>
-    </div>
-  </div>
-</nav>
+  </nav>
 
   <div class="flex flex-col justify-center items-center text-center pt-20 pb-16 md:py-24 space-y-3 px-4">
     <h1 id="typewriter"
@@ -939,8 +707,6 @@
     </div>
   </div>
 
-  <!-- Mobile Menu Bar -->
-
   <div class="mobile-menu-bar" id="mobileMenuBar">
     <div class="mobile-menu-item active" id="mobileHome">
       <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -1026,9 +792,8 @@
       </div>
     </div>
   </div>
-  <!-- Dynamic Floating Chat Button - Add 'welcome-hidden' class -->
   <a href="https://finderchat.onrender.com/" target="_blank" rel="noopener noreferrer"
-    class="floating-chat-btn welcome-hidden" title="Chat with AI">
+    class="floating-chat-btn" title="Chat with AI">
     <span class="floating-chat-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
         <path
@@ -1051,655 +816,408 @@
     </div>
   </footer>
   <script>
-    // Add this JavaScript to show/hide the button based on welcome page visibility
-    document.addEventListener('DOMContentLoaded', function () {
-      const welcomePage = document.getElementById('welcomePage');
-      const floatingButton = document.querySelector('.floating-chat-btn');
+    document.addEventListener('DOMContentLoaded', () => {
+        // Show welcome toast on first visit
+        if (!sessionStorage.getItem('welcomeToastShown')) {
+            setTimeout(() => {
+                showToast('Welcome to Finder! Start organizing your files.');
+                sessionStorage.setItem('welcomeToastShown', 'true');
+            }, 500);
+        }
 
-      // Function to update button visibility
-      function updateButtonVisibility() {
-        if (welcomePage.classList.contains('hidden')) {
-          floatingButton.classList.remove('welcome-hidden');
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIconDark = document.getElementById('theme-icon-dark');
+        const themeIconLight = document.getElementById('theme-icon-light');
+
+        // Check for saved theme preference or use system preference
+        const savedTheme = localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        // Apply the saved theme
+        if (savedTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+            themeIconDark.classList.add('hidden');
+            themeIconLight.classList.remove('hidden');
         } else {
-          floatingButton.classList.add('welcome-hidden');
-        }
-      }
-
-      // Initial check
-      updateButtonVisibility();
-
-      // Monitor for changes to the welcome page
-      const observer = new MutationObserver(updateButtonVisibility);
-      observer.observe(welcomePage, { attributes: true, attributeFilter: ['class'] });
-    });
-    // Check if welcome page has been shown in this session
-    if (!sessionStorage.getItem('welcomeShown')) {
-      document.getElementById('welcomePage').classList.remove('hidden');
-      sessionStorage.setItem('welcomeShown', 'true');
-    }
-
-    // Create stars and shooting stars for space background
-    function createSpaceBackground() {
-      const container = document.getElementById('spaceBackground');
-      const starCount = Math.floor(window.innerWidth * window.innerHeight / 1000);
-      const shootingStarCount = Math.floor(starCount / 100);
-
-      // Create regular twinkling stars
-      for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-
-        // Random position
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-
-        // Random size
-        const size = Math.random() * 3;
-
-        // Random animation properties
-        const duration = Math.random() * 5 + 5;
-        const delay = Math.random() * -10;
-        const opacity = Math.random() * 0.8 + 0.2;
-
-        star.style.left = `${posX}%`;
-        star.style.top = `${posY}%`;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.setProperty('--duration', `${duration}s`);
-        star.style.setProperty('--opacity', opacity);
-        star.style.animationDelay = `${delay}s`;
-
-        container.appendChild(star);
-      }
-
-      // Create shooting stars
-      for (let i = 0; i < shootingStarCount; i++) {
-        const shootingStar = document.createElement('div');
-        shootingStar.classList.add('shooting-star');
-
-        // Random start position (top or left edge)
-        const startEdge = Math.random() > 0.5 ? 'top' : 'left';
-        let posX, posY;
-
-        if (startEdge === 'top') {
-          posX = Math.random() * 100;
-          posY = 0;
-        } else {
-          posX = 0;
-          posY = Math.random() * 100;
+            document.documentElement.classList.remove('dark');
+            themeIconDark.classList.remove('hidden');
+            themeIconLight.classList.add('hidden');
         }
 
-        // Random end position (somewhere diagonally down-right)
-        const endX = posX + 10 + Math.random() * 30;
-        const endY = posY + 10 + Math.random() * 30;
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                themeIconDark.classList.remove('hidden');
+                themeIconLight.classList.add('hidden');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                themeIconDark.classList.add('hidden');
+                themeIconLight.classList.remove('hidden');
+            }
+        });
 
-        // Random animation properties
-        const duration = Math.random() * 2 + 1;
-        const delay = Math.random() * 10;
+        // Typewriter Effect
+        const typewriter = new Typewriter('#typewriter', {
+            loop: true,
+            delay: 75,
+            cursorClassName: 'Typewriter__cursor',
+            wrapperClassName: 'compact-typewriter'
+        });
 
-        shootingStar.style.left = `${posX}%`;
-        shootingStar.style.top = `${posY}%`;
-        shootingStar.style.setProperty('--duration', `${duration}s`);
-        shootingStar.style.setProperty('--end-x', `${endX}%`);
-        shootingStar.style.setProperty('--end-y', `${endY}%`);
-        shootingStar.style.animationDelay = `${delay}s`;
+        typewriter
+            .typeString('Welcome to Finder...')
+            .pauseFor(2000)
+            .deleteAll()
+            .typeString('Smart File Management')
+            .pauseFor(2000)
+            .deleteAll()
+            .typeString('Organize with Ease')
+            .pauseFor(2000)
+            .deleteAll()
+            .typeString('Find Anything Fast')
+            .pauseFor(2000)
+            .start();
 
-        container.appendChild(shootingStar);
-      }
-    }
+        // Character Counter
+        const detailsInput = document.getElementById('details-input');
+        const charCount = document.getElementById('char-count');
+        const maxChars = 500;
 
-    // Dynamic loading messages with realistic progress
-    const loadingMessages = [
-      { text: "Booting core modules...", percent: 5 },
-      { text: "Initializing file system...", percent: 12 },
-      { text: "Loading database engine...", percent: 22 },
-      { text: "Authenticating user session...", percent: 34 },
-      { text: "Configuring search index...", percent: 46 },
-      { text: "Optimizing performance...", percent: 58 },
-      { text: "Loading UI components...", percent: 72 },
-      { text: "Finalizing setup...", percent: 85 },
-      { text: "Almost ready...", percent: 94 },
-      { text: "Launching Finder...", percent: 100 }
-    ];
+        detailsInput.addEventListener('input', () => {
+            const remaining = maxChars - detailsInput.value.length;
+            charCount.textContent = `${detailsInput.value.length}/${maxChars}`;
 
-    // Initialize welcome page elements
-    const welcomePage = document.getElementById('welcomePage');
-    const progressBar = document.getElementById('progressBar');
-    const loadingMessage = document.getElementById('loading-message');
-    const loadingPercent = document.getElementById('loading-percent');
-    const skipBtn = document.getElementById('skipBtn');
+            if (remaining < 20) {
+                charCount.classList.add('text-yellow-500');
+                charCount.classList.remove('text-zinc-500', 'dark:text-zinc-400');
+            } else {
+                charCount.classList.remove('text-yellow-500');
+                charCount.classList.add('text-zinc-500', 'dark:text-zinc-400');
+            }
 
-    // Create space background on load if welcome page is visible
-    if (!welcomePage.classList.contains('hidden')) {
-      createSpaceBackground();
+            if (remaining < 0) {
+                charCount.classList.add('text-red-500');
+                detailsInput.value = detailsInput.value.substring(0, maxChars);
+            } else {
+                charCount.classList.remove('text-red-500');
+            }
+        });
 
-      // Show skip button after delay with animation
-      setTimeout(() => {
-        skipBtn.classList.remove('opacity-0');
-        skipBtn.classList.add('animate__fadeInUp');
-      }, 2500);
+        // Form Submission Animation
+        const form = document.getElementById('file-form');
+        const submitBtn = document.getElementById('submit-btn');
 
-      // Skip button functionality
-      skipBtn.addEventListener('click', () => {
-        completeLoading();
-      });
+        form.addEventListener('submit', (e) => {
+            submitBtn.disabled = true;
+            submitBtn.value = 'Adding...';
+            submitBtn.classList.remove('hover:scale-105');
+            submitBtn.classList.add('cursor-not-allowed', 'opacity-75');
+        });
 
-      // Simulate system loading
-      let currentProgress = 0;
-      let currentMessageIndex = 0;
+        // Search Functionality
+        const searchInput = document.getElementById('search-input');
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const tasks = document.querySelectorAll('.task');
 
-      function updateLoading() {
-        // Update progress bar
-        progressBar.style.width = `${currentProgress}%`;
+            tasks.forEach(task => {
+                const title = task.querySelector('h1').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    task.classList.remove('hidden');
+                    task.classList.add('animate__animated', 'animate__fadeIn');
+                } else {
+                    task.classList.add('hidden');
+                }
+            });
+        });
 
-        // Find the appropriate loading message
-        const message = loadingMessages.find(m => currentProgress <= m.percent) ||
-          loadingMessages[loadingMessages.length - 1];
+        // Filter Functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => {
+                    btn.classList.remove('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
+                });
 
-        if (message.percent > currentMessageIndex) {
-          loadingMessage.textContent = message.text;
-          loadingPercent.textContent = `${currentProgress}%`;
-          currentMessageIndex = message.percent;
+                // Add active class to clicked button
+                button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
 
-          // Add animation to loading text
-          loadingMessage.classList.add('animate__animated', 'animate__fadeIn');
-          setTimeout(() => {
-            loadingMessage.classList.remove('animate__fadeIn');
-          }, 500);
+                const filter = button.dataset.filter;
+                showToast(`Showing ${filter} files`);
+            });
+        });
+
+        // Delete Confirmation Modal
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        const confirmationModal = document.getElementById('confirmation-modal');
+        const cancelDeleteBtn = document.getElementById('cancel-delete');
+        const confirmDeleteBtn = document.getElementById('confirm-delete');
+        const fileToDeleteElement = document.getElementById('file-to-delete');
+        let fileToDelete = null;
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                fileToDelete = button.dataset.filename;
+                fileToDeleteElement.textContent = fileToDelete;
+                confirmationModal.classList.remove('hidden');
+            });
+        });
+
+        cancelDeleteBtn.addEventListener('click', () => {
+            confirmationModal.classList.add('hidden');
+            fileToDelete = null;
+        });
+
+        confirmDeleteBtn.addEventListener('click', async () => {
+            try {
+                const response = await fetch(`/file/${fileToDelete}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showToast(`File "${fileToDelete}" deleted`, 'error');
+                    confirmationModal.classList.add('hidden');
+
+                    // Remove the file from the UI with animation
+                    const fileElement = document.querySelector(`.delete-btn[data-filename="${fileToDelete}"]`).closest('.task');
+                    fileElement.classList.add('animate__animated', 'animate__zoomOut');
+
+                    setTimeout(() => {
+                        fileElement.remove();
+
+                        // Check if no files left
+                        if (document.querySelectorAll('.task').length === 0) {
+                            const container = document.getElementById('files-container');
+                            container.innerHTML = `
+                                  <div class="w-full text-center py-12 sm:py-16 col-span-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                    </svg>
+                                    <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
+                                    <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
+                                  </div>
+                                `;
+                        }
+                    }, 500);
+                } else {
+                    showToast(`Error: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                showToast('Error deleting file', 'error');
+                console.error('Delete error:', error);
+            }
+        });
+
+        // File Upload Functionality
+        const uploadBtn = document.getElementById('uploadBtn');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', async (e) => {
+            const files = e.target.files;
+            if (files.length > 0) {
+                try {
+                    // Show loading state
+                    uploadBtn.disabled = true;
+                    uploadBtn.innerHTML = `
+                          <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Uploading...
+                        `;
+
+                    const formData = new FormData();
+                    for (let i = 0; i < files.length; i++) {
+                        formData.append('files', files[i]);
+                    }
+
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        showToast(`${files.length} file(s) uploaded successfully!`);
+                        // Refresh the file list
+                        window.location.reload();
+                    } else {
+                        showToast(`Upload failed: ${result.message || 'Unknown error'}`, 'error');
+                    }
+                } catch (error) {
+                    showToast(`Upload failed: ${error.message}`, 'error');
+                    console.error('Upload error:', error);
+                } finally {
+                    // Reset button state
+                    uploadBtn.disabled = false;
+                    uploadBtn.innerHTML = `
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                          <span>Upload</span>
+                        `;
+                    // Reset file input
+                    fileInput.value = '';
+                }
+            }
+        });
+
+        // Random creation dates for demo purposes
+        document.querySelectorAll('.created-date').forEach(el => {
+            const daysAgo = Math.floor(Math.random() * 30);
+            if (daysAgo === 0) {
+                const hoursAgo = Math.floor(Math.random() * 24);
+                if (hoursAgo === 0) {
+                    const minutesAgo = Math.floor(Math.random() * 60);
+                    el.textContent = `${minutesAgo} minute${minutesAgo !== 1 ? 's' : ''} ago`;
+                } else {
+                    el.textContent = `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
+                }
+            } else if (daysAgo === 1) {
+                el.textContent = 'Yesterday';
+            } else {
+                el.textContent = `${daysAgo} days ago`;
+            }
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        let lastScrollY = window.scrollY;
+        let ticking = false;
+
+        // Initialize navbar state
+        navbar.classList.toggle('scrolled', window.scrollY > 20);
+
+        // Optimized scroll handler
+        const updateNavbar = () => {
+            if (Math.abs(lastScrollY - window.scrollY) > 5) { // Only update if significant scroll
+                navbar.classList.toggle('scrolled', window.scrollY > 20);
+                lastScrollY = window.scrollY;
+            }
+            ticking = false;
+        };
+
+        // Throttled scroll event
+        window.addEventListener('scroll', () => {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(updateNavbar);
+                ticking = true;
+            }
+        });
+
+        // Close modal when clicking outside
+        confirmationModal.addEventListener('click', (e) => {
+            if (e.target === confirmationModal) {
+                confirmationModal.classList.add('hidden');
+            }
+        });
+
+        // Toggle form visibility
+        const toggleFormBtn = document.getElementById('toggleFormBtn');
+        const contentBox = document.getElementById('contentBox');
+
+        toggleFormBtn.addEventListener('click', () => {
+            if (contentBox.classList.contains('hidden')) {
+                contentBox.classList.remove('hidden');
+                contentBox.classList.add('visible');
+                // Scroll to the form for better UX
+                contentBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                contentBox.classList.add('hidden');
+                contentBox.classList.remove('visible');
+            }
+        });
+
+        // Mobile Menu Functionality
+        const mobileMenuBar = document.getElementById('mobileMenuBar');
+        const mobileHome = document.getElementById('mobileHome');
+        const mobileChat = document.getElementById('mobileChat');
+        const mobileSearch = document.getElementById('mobileSearch');
+        const mobileSettings = document.getElementById('mobileSettings');
+        const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+
+        function checkScreenSize() {
+            mobileMenuBar.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
         }
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
 
-        // Continue loading or complete
-        if (currentProgress < 100) {
-          // Variable speed loading - slows down at certain points
-          let increment = 0.5 + Math.random() * 1.5;
-          if (currentProgress > 80) increment = 0.2 + Math.random() * 0.8;
-          if (currentProgress > 90) increment = 0.1 + Math.random() * 0.4;
+        mobileHome.addEventListener('click', () => {
+            window.location.href = '/';
+            mobileMenuItems.forEach(item => item.classList.remove('active'));
+            mobileHome.classList.add('active');
+            showToast('Navigating to Home...');
+        });
 
-          currentProgress += increment;
-          setTimeout(updateLoading, 30 + Math.random() * 50);
-        } else {
-          completeLoading();
+        mobileChat.addEventListener('click', () => {
+            mobileMenuItems.forEach(item => item.classList.remove('active'));
+            mobileChat.classList.add('active');
+        });
+
+        mobileSearch.addEventListener('click', () => {
+            mobileMenuItems.forEach(item => item.classList.remove('active'));
+            mobileSearch.classList.add('active');
+            showToast('Search feature coming soon!', 'info');
+        });
+
+        mobileSettings.addEventListener('click', () => {
+            window.location.href = '/settings';
+            mobileMenuItems.forEach(item => item.classList.remove('active'));
+            mobileSettings.classList.add('active');
+        });
+
+        const desktopSettingsBtn = document.getElementById('settings-btn');
+        if (desktopSettingsBtn) {
+            desktopSettingsBtn.addEventListener('click', () => {
+                window.location.href = '/settings';
+            });
         }
-      }
-
-      function completeLoading() {
-        loadingMessage.textContent = "Ready to go!";
-        loadingPercent.textContent = "100%";
-        progressBar.style.width = "100%";
-
-        // Add celebration effect
-        progressBar.style.background = "linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6)";
-        progressBar.style.boxShadow = "0 0 15px rgba(59, 130, 246, 0.8)";
-
-        // Add a slight delay before hiding
-        setTimeout(() => {
-          welcomePage.classList.add('hidden');
-
-          // Show welcome toast
-          setTimeout(() => {
-            showToast('Welcome to Finder! Start organizing your files.');
-          }, 500);
-        }, 800);
-      }
-
-      // Start loading animation
-      setTimeout(() => {
-        updateLoading();
-      }, 500);
-
-      // Also allow click to skip
-      welcomePage.addEventListener('click', () => {
-        completeLoading();
-      });
-    }
-
-    // Theme Toggle Functionality
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeIconDark = document.getElementById('theme-icon-dark');
-    const themeIconLight = document.getElementById('theme-icon-light');
-
-    // Check for saved theme preference or use system preference
-    const savedTheme = localStorage.getItem('theme') ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-    // Apply the saved theme
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
-      themeIconDark.classList.add('hidden');
-      themeIconLight.classList.remove('hidden');
-    } else {
-      document.documentElement.classList.remove('dark');
-      themeIconDark.classList.remove('hidden');
-      themeIconLight.classList.add('hidden');
-    }
-
-    // Toggle theme on button click
-    themeToggle.addEventListener('click', () => {
-      if (document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        themeIconDark.classList.remove('hidden');
-        themeIconLight.classList.add('hidden');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        themeIconDark.classList.add('hidden');
-        themeIconLight.classList.remove('hidden');
-      }
-    });
-
-    // Typewriter Effect
-    const typewriter = new Typewriter('#typewriter', {
-      loop: true,
-      delay: 75,
-      cursorClassName: 'Typewriter__cursor',
-      wrapperClassName: 'compact-typewriter'
-    });
-
-    typewriter
-      .typeString('Welcome to Finder...')
-      .pauseFor(2000)
-      .deleteAll()
-      .typeString('Smart File Management')
-      .pauseFor(2000)
-      .deleteAll()
-      .typeString('Organize with Ease')
-      .pauseFor(2000)
-      .deleteAll()
-      .typeString('Find Anything Fast')
-      .pauseFor(2000)
-      .start();
-
-    // Character Counter
-    const detailsInput = document.getElementById('details-input');
-    const charCount = document.getElementById('char-count');
-    const maxChars = 500;
-
-    detailsInput.addEventListener('input', () => {
-      const remaining = maxChars - detailsInput.value.length;
-      charCount.textContent = `${detailsInput.value.length}/${maxChars}`;
-
-      if (remaining < 20) {
-        charCount.classList.add('text-yellow-500');
-        charCount.classList.remove('text-zinc-500', 'dark:text-zinc-400');
-      } else {
-        charCount.classList.remove('text-yellow-500');
-        charCount.classList.add('text-zinc-500', 'dark:text-zinc-400');
-      }
-
-      if (remaining < 0) {
-        charCount.classList.add('text-red-500');
-        detailsInput.value = detailsInput.value.substring(0, maxChars);
-      } else {
-        charCount.classList.remove('text-red-500');
-      }
-    });
-
-    // Form Submission Animation
-    const form = document.getElementById('file-form');
-    const submitBtn = document.getElementById('submit-btn');
-
-    form.addEventListener('submit', (e) => {
-      submitBtn.disabled = true;
-      submitBtn.value = 'Adding...';
-      submitBtn.classList.remove('hover:scale-105');
-      submitBtn.classList.add('cursor-not-allowed', 'opacity-75');
     });
 
     // Enhanced Toast Notification
     function showToast(message, type = 'success') {
-      const toast = document.getElementById('toast');
-      const toastMessage = document.getElementById('toast-message');
-      const toastIcon = toast.querySelector('.toast-icon');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        const toastIcon = toast.querySelector('.toast-icon');
 
-      toastMessage.textContent = message;
+        toastMessage.textContent = message;
 
-      // Set color and icon based on type
-      if (type === 'success') {
-        toast.classList.remove('bg-red-600', 'bg-yellow-500');
-        toast.classList.add('bg-green-600');
-        toastIcon.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-          </svg>
-        `;
-      } else if (type === 'error') {
-        toast.classList.remove('bg-green-600', 'bg-yellow-500');
-        toast.classList.add('bg-red-600');
-        toastIcon.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-          </svg>
-        `;
-      } else if (type === 'warning') {
-        toast.classList.remove('bg-green-600', 'bg-red-600');
-        toast.classList.add('bg-yellow-500');
-        toastIcon.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-          </svg>
-        `;
-      }
+        // Reset classes
+        toast.classList.remove('bg-red-600', 'bg-yellow-500', 'bg-green-600');
 
-      // Show toast with bounce effect
-      toast.classList.remove('translate-y-10', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
+        if (type === 'success') {
+            toast.classList.add('bg-green-600');
+            toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+        } else if (type === 'error') {
+            toast.classList.add('bg-red-600');
+            toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>`;
+        } else if (type === 'info') {
+            toast.classList.add('bg-yellow-500');
+            toastIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>`;
+        }
 
-      // Hide after delay
-      setTimeout(() => {
-        toast.classList.add('translate-y-10', 'opacity-0');
-        toast.classList.remove('translate-y-0', 'opacity-100');
-      }, 3500);
+        toast.classList.remove('translate-y-10', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-10', 'opacity-0');
+            toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 3500);
     }
-
-    // Search Functionality
-    const searchInput = document.getElementById('search-input');
-    searchInput.addEventListener('input', () => {
-      const searchTerm = searchInput.value.toLowerCase();
-      const tasks = document.querySelectorAll('.task');
-
-      tasks.forEach(task => {
-        const title = task.querySelector('h1').textContent.toLowerCase();
-        if (title.includes(searchTerm)) {
-          task.classList.remove('hidden');
-          task.classList.add('animate__animated', 'animate__fadeIn');
-        } else {
-          task.classList.add('hidden');
-        }
-      });
-    });
-
-    // Filter Functionality
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    filterButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        // Remove active class from all buttons
-        filterButtons.forEach(btn => {
-          btn.classList.remove('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
-        });
-
-        // Add active class to clicked button
-        button.classList.add('bg-blue-600', 'text-white', 'dark:bg-blue-600', 'dark:text-white');
-
-        const filter = button.dataset.filter;
-        showToast(`Showing ${filter} files`);
-      });
-    });
-
-    // Delete Confirmation Modal
-    const deleteButtons = document.querySelectorAll('.delete-btn');
-    const confirmationModal = document.getElementById('confirmation-modal');
-    const cancelDeleteBtn = document.getElementById('cancel-delete');
-    const confirmDeleteBtn = document.getElementById('confirm-delete');
-    const fileToDeleteElement = document.getElementById('file-to-delete');
-    let fileToDelete = null;
-
-    deleteButtons.forEach(button => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        fileToDelete = button.dataset.filename;
-        fileToDeleteElement.textContent = fileToDelete;
-        confirmationModal.classList.remove('hidden');
-      });
-    });
-
-    cancelDeleteBtn.addEventListener('click', () => {
-      confirmationModal.classList.add('hidden');
-      fileToDelete = null;
-    });
-
-    confirmDeleteBtn.addEventListener('click', async () => {
-      try {
-        const response = await fetch(`/file/${fileToDelete}`, {
-          method: 'DELETE'
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-          showToast(`File "${fileToDelete}" deleted`, 'error');
-          confirmationModal.classList.add('hidden');
-
-          // Remove the file from the UI with animation
-          const fileElement = document.querySelector(`.delete-btn[data-filename="${fileToDelete}"]`).closest('.task');
-          fileElement.classList.add('animate__animated', 'animate__zoomOut');
-
-          setTimeout(() => {
-            fileElement.remove();
-
-            // Check if no files left
-            if (document.querySelectorAll('.task').length === 0) {
-              const container = document.getElementById('files-container');
-              container.innerHTML = `
-                <div class="w-full text-center py-12 sm:py-16 col-span-3">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                  </svg>
-                  <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
-                  <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
-                </div>
-              `;
-            }
-          }, 500);
-        } else {
-          showToast(`Error: ${result.message}`, 'error');
-        }
-      } catch (error) {
-        showToast('Error deleting file', 'error');
-        console.error('Delete error:', error);
-      }
-    });
-
-    // File Upload Functionality
-    const uploadBtn = document.getElementById('uploadBtn');
-    const fileInput = document.getElementById('fileInput');
-
-    uploadBtn.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    fileInput.addEventListener('change', async (e) => {
-      const files = e.target.files;
-      if (files.length > 0) {
-        try {
-          // Show loading state
-          uploadBtn.disabled = true;
-          uploadBtn.innerHTML = `
-            <svg class="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            Uploading...
-          `;
-
-          const formData = new FormData();
-          for (let i = 0; i < files.length; i++) {
-            formData.append('files', files[i]);
-          }
-
-          const response = await fetch('/upload', {
-            method: 'POST',
-            body: formData
-          });
-
-          const result = await response.json();
-
-          if (response.ok) {
-            showToast(`${files.length} file(s) uploaded successfully!`);
-            // Refresh the file list
-            window.location.reload();
-          } else {
-            showToast(`Upload failed: ${result.message || 'Unknown error'}`, 'error');
-          }
-        } catch (error) {
-          showToast(`Upload failed: ${error.message}`, 'error');
-          console.error('Upload error:', error);
-        } finally {
-          // Reset button state
-          uploadBtn.disabled = false;
-          uploadBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
-            <span>Upload</span>
-          `;
-          // Reset file input
-          fileInput.value = '';
-        }
-      }
-    });
-
-    // Random creation dates for demo purposes
-    document.querySelectorAll('.created-date').forEach(el => {
-      const daysAgo = Math.floor(Math.random() * 30);
-      if (daysAgo === 0) {
-        const hoursAgo = Math.floor(Math.random() * 24);
-        if (hoursAgo === 0) {
-          const minutesAgo = Math.floor(Math.random() * 60);
-          el.textContent = `${minutesAgo} minute${minutesAgo !== 1 ? 's' : ''} ago`;
-        } else {
-          el.textContent = `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
-        }
-      } else if (daysAgo === 1) {
-        el.textContent = 'Yesterday';
-      } else {
-        el.textContent = `${daysAgo} days ago`;
-      }
-    });
-
-    // Navbar scroll effect
-    // FINAL OPTIMIZED NAVBAR SCRIPT
-    document.addEventListener('DOMContentLoaded', () => {
-      const navbar = document.getElementById('navbar');
-      let lastScrollY = window.scrollY;
-      let ticking = false;
-
-      // Initialize navbar state
-      navbar.classList.toggle('scrolled', window.scrollY > 20);
-
-      // Optimized scroll handler
-      const updateNavbar = () => {
-        if (Math.abs(lastScrollY - window.scrollY) > 5) { // Only update if significant scroll
-          navbar.classList.toggle('scrolled', window.scrollY > 20);
-          lastScrollY = window.scrollY;
-        }
-        ticking = false;
-      };
-
-      // Throttled scroll event
-      window.addEventListener('scroll', () => {
-        lastScrollY = window.scrollY;
-        if (!ticking) {
-          window.requestAnimationFrame(updateNavbar);
-          ticking = true;
-        }
-      });
-    });
-
-    // Close modal when clicking outside
-    confirmationModal.addEventListener('click', (e) => {
-      if (e.target === confirmationModal) {
-        confirmationModal.classList.add('hidden');
-      }
-    });
-
-    // Toggle form visibility
-    const toggleFormBtn = document.getElementById('toggleFormBtn');
-    const contentBox = document.getElementById('contentBox');
-
-    toggleFormBtn.addEventListener('click', () => {
-      if (contentBox.classList.contains('hidden')) {
-        contentBox.classList.remove('hidden');
-        contentBox.classList.add('visible');
-        // Scroll to the form for better UX
-        contentBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        contentBox.classList.add('hidden');
-        contentBox.classList.remove('visible');
-      }
-    });
-
-    // Mobile Menu Functionality
-    // Mobile Menu Functionality
-    const mobileMenuBar = document.getElementById('mobileMenuBar');
-    const mobileHome = document.getElementById('mobileHome');
-    const mobileChat = document.getElementById('mobileChat');
-    const mobileSearch = document.getElementById('mobileSearch');
-const mobileSettings = document.getElementById('mobileSettings');
-    const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
-
-    // Show/hide mobile menu based on screen size
-    function checkScreenSize() {
-      if (window.innerWidth <= 768) {
-        mobileMenuBar.style.display = 'flex';
-      } else {
-        mobileMenuBar.style.display = 'none';
-      }
-    }
-
-    // Initial check
-    checkScreenSize();
-
-    // Listen for window resize
-    window.addEventListener('resize', checkScreenSize);
-
-    // Mobile menu item click handlers
-    mobileHome.addEventListener('click', () => {
-      // Navigate to home page
-      window.location.href = '/';
-
-      // Update active state
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileHome.classList.add('active');
-
-      showToast('Navigating to Home...');
-    });
-
-    mobileChat.addEventListener('click', () => {
-      // Update active state when the link is clicked
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileChat.classList.add('active');
-    });
-
-
-    mobileSearch.addEventListener('click', () => {
-      // Placeholder for search functionality
-      mobileMenuItems.forEach(item => item.classList.remove('active'));
-      mobileSearch.classList.add('active');
-
-      showToast('Search feature coming soon!', 'info');
-    });
-
-  mobileSettings.addEventListener('click', () => {
-    // Navigate to the settings page
-    window.location.href = '/settings';
-    
-    // Update active state
-    mobileMenuItems.forEach(item => item.classList.remove('active'));
-    mobileSettings.classList.add('active');
-});
-
-    // Responsive adjustments
-    function handleResize() {
-      const typewriter = document.getElementById('typewriter');
-      if (typewriter) {
-        typewriter.style.minHeight = typewriter.scrollHeight + 'px';
-      }
-      checkScreenSize();
-    }
-
-    // Initial call and event listener
-    handleResize();
-    window.addEventListener('resize', handleResize);
-// Desktop Settings Button Functionality
-const settingsBtn = document.getElementById('settings-btn');
-if (settingsBtn) {
-    settingsBtn.addEventListener('click', () => {
-        // Navigate to the settings page
-        window.location.href = '/settings';
-    });
-}
-
   </script>
 </body>
 
