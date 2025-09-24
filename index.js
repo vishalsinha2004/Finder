@@ -5,24 +5,34 @@ const fs = require('fs');
 const marked = require('marked');
 const multer = require('multer');
 const { v4: uuidv4 } = require('uuid');
+const admin = require('firebase-admin');
+const cookieParser = require('cookie-parser');
 
+// --- Firebase Admin SDK Initialization ---
+// Make sure 'serviceAccountKey.json' is in the root of your project
+const serviceAccount = require('./serviceAccountKey.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+// --- Middleware Configurations ---
 // Configure marked
 marked.setOptions({
   breaks: true,
   gfm: true
 });
 
-// Configure file upload storage
+// Configure file upload storage with Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Create files directory if it doesn't exist
-    if (!fs.existsSync('./files')) {
-      fs.mkdirSync('./files');
+    const uploadPath = './files';
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath);
     }
-    cb(null, './files/');
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    // Sanitize filename and add unique prefix
     const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
     cb(null, `${uuidv4()}_${sanitizedName}`);
   }
@@ -33,26 +43,98 @@ const upload = multer({
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB limit
     files: 5 // Max 5 files at once
-  },
-  fileFilter: (req, file, cb) => {
-    // Accept all file types but you could filter here
-    cb(null, true);
   }
 });
 
-// Set up Express
+// --- Express App Setup ---
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
-// Make marked available to all templates
+// Make 'marked' available to all EJS templates
 app.locals.marked = marked;
 
-// Supported image extensions
-const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
+// --- Authentication Middleware ---
+// This function checks if the user has a valid session cookie.
+// If they do, the request continues. If not, they are redirected to /login.
+const checkAuth = (req, res, next) => {
+  const sessionCookie = req.cookies.session || '';
 
-// File upload endpoint
+  admin
+    .auth()
+    .verifySessionCookie(sessionCookie, true /** checkRevoked */)
+    .then((decodedClaims) => {
+      req.user = decodedClaims; // Make user info available in the request
+      next();
+    })
+    .catch((error) => {
+      // Session cookie is invalid, redirect to login.
+      res.redirect("/login");
+    });
+};
+
+
+// --- Public Routes (No Authentication Required) ---
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+
+// This route creates the session cookie after client-side login
+app.post('/sessionLogin', async (req, res) => {
+    const idToken = req.body.idToken.toString();
+    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+
+    try {
+        const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn });
+        const options = { maxAge: expiresIn, httpOnly: true, secure: process.env.NODE_ENV === 'production' };
+        res.cookie('session', sessionCookie, options);
+        res.end(JSON.stringify({ status: 'success' }));
+    } catch (error) {
+        res.status(401).send('UNAUTHORIZED REQUEST!');
+    }
+});
+
+// Logout route to clear the session cookie
+app.get('/logout', (req, res) => {
+    res.clearCookie('session');
+    res.redirect('/login');
+});
+
+
+// --- Protected Routes (Authentication Required) ---
+// The checkAuth middleware is applied to all routes defined below this line.
+app.use(checkAuth);
+
+app.get('/', function (req, res) {
+  fs.readdir(`./files`, function (err, files) {
+    if (err) {
+      console.error('Error reading files:', err);
+      if (err.code === 'ENOENT') {
+        fs.mkdirSync('./files');
+        return res.render("index", { files: [] });
+      }
+      return res.status(500).send('Error reading files');
+    }
+
+    const sortedFiles = files.map(file => {
+      const stat = fs.statSync(path.join(__dirname, 'files', file));
+      return {
+        name: file,
+        createdAt: stat.birthtime
+      };
+    }).sort((a, b) => b.createdAt - a.createdAt)
+      .map(file => file.name);
+
+    res.render("index", { files: sortedFiles });
+  });
+});
+
 app.post('/upload', upload.array('files'), function (req, res) {
   try {
     if (!req.files || req.files.length === 0) {
@@ -77,7 +159,6 @@ app.post('/upload', upload.array('files'), function (req, res) {
   }
 });
 
-// Delete file endpoint
 app.delete('/file/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
@@ -97,39 +178,11 @@ app.delete('/file/:filename', function (req, res) {
   });
 });
 
-// Routes
-app.get('/', function (req, res) {
-  fs.readdir(`./files`, function (err, files) {
-    if (err) {
-      console.error('Error reading files:', err);
-      // If directory doesn't exist, create it and return empty array
-      if (err.code === 'ENOENT') {
-        fs.mkdirSync('./files');
-        return res.render("index", { files: [] });
-      }
-      return res.status(500).send('Error reading files');
-    }
-
-    // Sort files by creation time (newest first)
-    const sortedFiles = files.map(file => {
-      const stat = fs.statSync(path.join(__dirname, 'files', file));
-      return {
-        name: file,
-        createdAt: stat.birthtime
-      };
-    }).sort((a, b) => b.createdAt - a.createdAt)
-      .map(file => file.name);
-
-    res.render("index", { files: sortedFiles });
-  });
-});
-
 app.get('/file/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
   const ext = path.extname(filename).toLowerCase();
-
-  // Check file types
+  const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
   const isPdf = ext === '.pdf';
   const isImage = IMAGE_EXTENSIONS.includes(ext);
 
@@ -143,10 +196,7 @@ app.get('/file/:filename', function (req, res) {
   } else {
     fs.readFile(filePath, "utf-8", function (err, filedata) {
       if (err) return res.status(404).send('File not found');
-
-      // Check if file is markdown
       const isMarkdown = ext === '.md';
-
       res.render('show', {
         filename: filename,
         filedata: isMarkdown ? marked(filedata) : filedata,
@@ -158,12 +208,10 @@ app.get('/file/:filename', function (req, res) {
   }
 });
 
-// Route to serve actual files
 app.get('/files/:filename', function (req, res) {
   const filename = req.params.filename;
   const filePath = path.join(__dirname, 'files', filename);
 
-  // Check if file exists
   fs.access(filePath, fs.constants.F_OK, (err) => {
     if (err) {
       return res.status(404).send('File not found');
@@ -184,7 +232,7 @@ app.get('/edit/:filename', function (req, res) {
     });
   });
 });
-// Add this route in index.js
+
 app.get('/settings', function(req, res) {
   res.render("settings");
 });
@@ -207,7 +255,6 @@ app.post('/create', function (req, res) {
     return res.status(400).send('Title and details are required');
   }
 
-  // Sanitize filename
   const filename = req.body.title.replace(/[^a-zA-Z0-9]/g, '_') + '.txt';
   const filePath = path.join(__dirname, 'files', filename);
 
@@ -220,12 +267,7 @@ app.post('/create', function (req, res) {
   });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
+// --- Server Startup ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
