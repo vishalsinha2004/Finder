@@ -1,3 +1,6 @@
+// This MUST be the first line to load the .env file
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -8,16 +11,33 @@ const { v4: uuidv4 } = require('uuid');
 const admin = require('firebase-admin');
 const cookieParser = require('cookie-parser');
 
-// --- Firebase Admin SDK Initialization ---
-// Make sure 'serviceAccountKey.json' is in the root of your project
-const serviceAccount = require('./serviceAccountKey.json');
+// --- Secure Firebase Admin SDK Initialization ---
+try {
+  let serviceAccount;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+  // This will check for the variable in your .env file (locally) or Netlify settings (deployed)
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+    console.log('Initializing Firebase Admin from environment variable...');
+    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+  } else {
+    // This is a fallback in case the environment variable is not found
+    console.error('CRITICAL: FIREBASE_SERVICE_ACCOUNT_KEY environment variable not found.');
+    console.log('Attempting to fall back to local serviceAccountKey.json file...');
+    serviceAccount = require('./serviceAccountKey.json'); // This will now fail if .env is missing
+  }
+
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+  console.log('Firebase Admin SDK initialized successfully.');
+
+} catch (error) {
+  console.error('CRITICAL: Firebase Admin SDK initialization failed!', error);
+  process.exit(1); // Exit if Firebase can't connect
+}
+
 
 // --- Middleware Configurations ---
-// Configure marked
 marked.setOptions({
   breaks: true,
   gfm: true
@@ -33,7 +53,7 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
-    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const sanitizedName = file.originalname.replace(/[^a-zA-Z0-9.-]/g, '');
     cb(null, `${uuidv4()}_${sanitizedName}`);
   }
 });
@@ -57,8 +77,6 @@ app.use(cookieParser());
 app.locals.marked = marked;
 
 // --- Authentication Middleware ---
-// This function checks if the user has a valid session cookie.
-// If they do, the request continues. If not, they are redirected to /login.
 const checkAuth = (req, res, next) => {
   const sessionCookie = req.cookies.session || '';
 
@@ -96,7 +114,11 @@ app.post('/sessionLogin', async (req, res) => {
         res.cookie('session', sessionCookie, options);
         res.end(JSON.stringify({ status: 'success' }));
     } catch (error) {
-        res.status(401).send('UNAUTHORIZED REQUEST!');
+        console.error('Error creating session cookie:', error);
+        res.status(401).send({
+            error: 'Unauthorized request',
+            code: error.code || 'UNKNOWN_ERROR'
+        });
     }
 });
 
@@ -112,7 +134,7 @@ app.get('/logout', (req, res) => {
 app.use(checkAuth);
 
 app.get('/', function (req, res) {
-  fs.readdir(`./files`, function (err, files) {
+  fs.readdir('./files', function (err, files) {
     if (err) {
       console.error('Error reading files:', err);
       if (err.code === 'ENOENT') {

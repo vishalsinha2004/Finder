@@ -29,7 +29,7 @@
             </h1>
         </div>
 
-        <div class="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-2xl rounded-2xl p-8 animate__animated animate__fadeInUp form-container">
+        <div class="bg-white/80 dark:bg-zinc-800/80 backdrop-blur-sm shadow-2xl rounded-2xl p-8 animate_animated animate_fadeInUp form-container">
             <form id="signup-form" class="space-y-6">
 
                 <div id="error-message" class="hidden p-3 bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 rounded-lg text-sm flex items-center space-x-2">
@@ -74,8 +74,8 @@
                         <input id="password" name="password" type="password" autocomplete="new-password" required placeholder="••••••••" class="block w-full pl-10 px-4 py-3 bg-zinc-100 dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
                     </div>
                 </div>
-
-                <div>
+                
+                 <div>
                     <label for="reconfirmPassword" class="block text-sm font-medium text-zinc-700 dark:text-zinc-300">Re-confirm Password</label>
                     <div class="mt-1 relative">
                          <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -93,7 +93,23 @@
                     </button>
                 </div>
             </form>
-             <div class="text-center mt-6">
+
+            <div class="relative my-6">
+              <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                <div class="w-full border-t border-zinc-300 dark:border-zinc-600"></div>
+              </div>
+              <div class="relative flex justify-center text-sm">
+                <span class="px-2 bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400">OR</span>
+              </div>
+            </div>
+
+            <div>
+              <button id="google-signin-btn" type="button" class="w-full inline-flex justify-center items-center py-3 px-4 border border-zinc-300 dark:border-zinc-600 rounded-lg shadow-sm bg-white dark:bg-zinc-700 text-sm font-medium text-zinc-700 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 transform hover:scale-105">
+                <svg class="w-5 h-5 mr-3" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512"><path fill="currentColor" d="M488 261.8C488 403.3 381.5 512 244 512 110.3 512 0 401.7 0 265.4c0-13.3 1-26.4 2.8-39.2H244v86.1H125.8c8.8 40.5 42.1 72.9 86.2 72.9 50.1 0 88.3-38.2 88.3-86.4s-38.2-86.4-88.3-86.4c-22.3 0-42.5 8.1-58.5 21.4l-52.1-52.1C136.2 86.5 187.3 64 244 64c120.7 0 219.8 89.9 219.8 197.8z"></path></svg>
+                Continue with Google
+              </button>
+            </div>
+            <div class="text-center mt-6">
                 <a href="/login" class="font-medium text-sm text-blue-500 hover:text-blue-400 transition-colors">
                     Already have an account? Sign in
                 </a>
@@ -101,19 +117,20 @@
         </div>
     </div>
 
-    <script type="module">
+  <script type="module">
+        // START: Import new Google Auth providers
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
-
-        // --- Your Firebase Config ---
+        import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+        // END: Import new Google Auth providers
+        
         const firebaseConfig = {
             apiKey: "AIzaSyABf45Hk2BDO46LTXueVTrvbjxHabcRoDU",
             authDomain: "finder-8c490.firebaseapp.com",
             projectId: "finder-8c490",
             storageBucket: "finder-8c490.firebasestorage.app",
             messagingSenderId: "377389818457",
-            appId: "1:377389818457:web:33832714f43e63078d8748",
-            measurementId: "G-5VQZKGPQZ3"
+            appId: "1:377389818457:web:555848e4e84d37e28d8748",
+            measurementId: "G-EVLFL57D9R"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -124,18 +141,55 @@
         const errorMessageDiv = document.getElementById('error-message');
         const errorTextSpan = document.getElementById('error-text');
 
-        // Dark Mode Logic to sync with system/localStorage preference
         if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
           document.documentElement.classList.add('dark')
         } else {
           document.documentElement.classList.remove('dark')
         }
 
-        function show_error(message) {
-            errorTextSpan.textContent = message;
+        // Helper function to handle successful authentication
+        function handleAuthSuccess(userCredential) {
+            return userCredential.user.getIdToken()
+                .then((idToken) => fetch('/sessionLogin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idToken }),
+                }))
+                .then((response) => {
+                    if (!response.ok) throw new Error('Session login failed.');
+                    window.location.href = '/';
+                });
+        }
+        
+        // Helper function to handle failed authentication
+        function handleAuthError(error, button, originalContent) {
+            let friendlyMessage = "Sign up failed. Please try again.";
+            if (error.code) {
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        friendlyMessage = "This email address is already in use.";
+                        break;
+                    case 'auth/weak-password':
+                        friendlyMessage = "Password is too weak. It should be at least 6 characters long.";
+                        break;
+                    case 'auth/invalid-email':
+                        friendlyMessage = "Please enter a valid email address.";
+                        break;
+                    case 'auth/popup-closed-by-user':
+                        friendlyMessage = "Sign-up cancelled. Please try again.";
+                        break;
+                }
+            }
+            errorTextSpan.textContent = friendlyMessage;
             errorMessageDiv.classList.remove('hidden');
+
+            if (button && originalContent) {
+              button.disabled = false;
+              button.innerHTML = originalContent;
+            }
         }
 
+        // Event listener for Email/Password form
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
@@ -144,13 +198,12 @@
             const reconfirmPassword = signupForm.reconfirmPassword.value;
             const originalButtonContent = submitButton.innerHTML;
             
-            // Basic client-side validation
             if (password !== reconfirmPassword) {
-                show_error("Passwords do not match. Please try again.");
+                errorTextSpan.textContent = "Passwords do not match. Please try again.";
+                errorMessageDiv.classList.remove('hidden');
                 return;
             }
 
-            // Disable button and show loading state
             submitButton.disabled = true;
             submitButton.innerHTML = `
                 <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -159,42 +212,24 @@
                 </svg>
                 Creating Account...
             `;
-            // Hide previous errors
             errorMessageDiv.classList.add('hidden');
 
             createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => userCredential.user.getIdToken())
-                .then((idToken) => fetch('/sessionLogin', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idToken }),
-                }))
-                .then((response) => {
-                    if (!response.ok) throw new Error('Session login after signup failed.');
-                    window.location.href = '/';
-                })
-                .catch((error) => {
-                    let friendlyMessage = "An unexpected error occurred. Please try again.";
-                    if (error.code) {
-                        switch (error.code) {
-                            case 'auth/email-already-in-use':
-                                friendlyMessage = "This email address is already in use.";
-                                break;
-                            case 'auth/weak-password':
-                                friendlyMessage = "Password is too weak. It should be at least 6 characters long.";
-                                break;
-                            case 'auth/invalid-email':
-                                friendlyMessage = "Please enter a valid email address.";
-                                break;
-                        }
-                    }
-                    show_error(friendlyMessage);
-
-                    // Restore button state
-                    submitButton.disabled = false;
-                    submitButton.innerHTML = originalButtonContent;
-                });
+                .then(handleAuthSuccess)
+                .catch((error) => handleAuthError(error, submitButton, originalButtonContent));
         });
+
+        // START: New Google Sign-In logic
+        const googleSignInBtn = document.getElementById('google-signin-btn');
+        const googleProvider = new GoogleAuthProvider();
+
+        googleSignInBtn.addEventListener('click', () => {
+          errorMessageDiv.classList.add('hidden');
+          signInWithPopup(auth, googleProvider)
+            .then(handleAuthSuccess)
+            .catch((error) => handleAuthError(error));
+        });
+        // END: New Google Sign-In logic
     </script>
 
 </body>
