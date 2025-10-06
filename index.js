@@ -139,7 +139,8 @@ app.get('/', function (req, res) {
       console.error('Error reading files:', err);
       if (err.code === 'ENOENT') {
         fs.mkdirSync('./files');
-        return res.render("index", { files: [] });
+        // This line is updated to pass the user object
+        return res.render("index", { files: [], user: req.user });
       }
       return res.status(500).send('Error reading files');
     }
@@ -153,7 +154,8 @@ app.get('/', function (req, res) {
     }).sort((a, b) => b.createdAt - a.createdAt)
       .map(file => file.name);
 
-    res.render("index", { files: sortedFiles });
+    // This line is also updated to pass the user object
+    res.render("index", { files: sortedFiles, user: req.user });
   });
 });
 
