@@ -15,15 +15,15 @@ const cookieParser = require('cookie-parser');
 try {
   let serviceAccount;
 
-  // This will check for the variable in your .env file (locally) or Vercel settings (deployed)
+  // This will check for the variable in your .env file (locally) or Netlify settings (deployed)
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     console.log('Initializing Firebase Admin from environment variable...');
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
   } else {
-    // Fallback to local JSON file if env variable is missing
+    // This is a fallback in case the environment variable is not found
     console.error('CRITICAL: FIREBASE_SERVICE_ACCOUNT_KEY environment variable not found.');
     console.log('Attempting to fall back to local serviceAccountKey.json file...');
-    serviceAccount = require('./serviceAccountKey.json'); // Will fail if file is missing
+    serviceAccount = require('./serviceAccountKey.json'); // This will now fail if .env is missing
   }
 
   admin.initializeApp({
