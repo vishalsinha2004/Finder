@@ -318,6 +318,20 @@
       flex-shrink: 0;
     }
 
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a {
+      color: #3b82f6;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
     /* Mobile Menu Bar */
     .mobile-menu-bar {
       position: fixed;
@@ -547,6 +561,7 @@
     <% if (user) { %>
       <div class="mt-4 flex items-center space-x-3 bg-zinc-100/80 dark:bg-zinc-800/80 py-2 px-4 rounded-full shadow-inner animate__animated animate__fadeIn border border-zinc-200/50 dark:border-zinc-700/50">
           <% if (user.picture) { %>
+          <img src="<%= user.picture %>" alt="User" class="w-8 h-8 rounded-full">
           <% } else { %>
               <div class="w-8 h-8 rounded-full bg-gradient-to-r from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm">
                   <%= user.email.charAt(0).toUpperCase() %>
@@ -560,13 +575,45 @@
     </div>
 
   <div class="w-full px-4 sm:px-6 md:px-10 lg:px-20 animate__animated animate__fadeInUp">
-    <div class="flex justify-center mb-6 space-x-4 ">
+    <!-- Breadcrumb Navigation -->
+    <% if(currentFolder) { %>
+    <div class="breadcrumb mb-4 text-sm text-zinc-600 dark:text-zinc-400">
+        <a href="/" class="flex items-center">
+            <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            Home
+        </a>
+        <% 
+        let breadcrumbPath = '';
+        const folders = currentFolder.split('/');
+        folders.forEach((folder, index) => {
+            breadcrumbPath += (breadcrumbPath ? '/' : '') + folder;
+        %>
+            <span class="mx-2">/</span>
+            <% if (index === folders.length - 1) { %>
+                <span class="font-semibold text-zinc-800 dark:text-zinc-200"><%= folder %></span>
+            <% } else { %>
+                <a href="/folder/<%= breadcrumbPath %>"><%= folder %></a>
+            <% } %>
+        <% }); %>
+    </div>
+    <% } %>
+
+    <div class="flex justify-center mb-6 space-x-4">
       <button id="toggleFormBtn"
         class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
         </svg>
-        <span>Add</span>
+        <span>Add File</span>
+      </button>
+
+      <button id="toggleFolderFormBtn" class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>
+        <span>Add Folder</span>
       </button>
 
       <button id="uploadBtn"
@@ -585,6 +632,7 @@
       <div
         class="bg-zinc-100/80 dark:bg-zinc-800/80 p-6 sm:p-8 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50">
         <form action="/create" method="post" class="space-y-4" id="file-form">
+          <input type="hidden" name="currentFolder" value="<%= currentFolder || '' %>">
           <input
             class="w-full rounded-xl outline-none px-4 py-2.5 sm:px-5 sm:py-3 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-blue-500 transition-all duration-300 text-zinc-900 dark:text-white border border-zinc-300/50 dark:border-zinc-600/50 responsive-text"
             type="text" placeholder="Title goes here..." name="title" id="title-input" required>
@@ -596,6 +644,18 @@
               class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-5 py-2 sm:px-6 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text"
               type="submit" value="Add File" id="submit-btn">
             <span id="char-count" class="text-zinc-500 dark:text-zinc-400 text-xs sm:text-sm">0/500</span>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="folderFormContainer" class="content-box hidden">
+      <div class="bg-zinc-100/80 dark:bg-zinc-800/80 p-6 sm:p-8 rounded-xl shadow-md">
+        <form action="/create-folder" method="post" class="space-y-4" id="folder-form">
+          <input type="hidden" name="currentFolder" value="<%= currentFolder || '' %>">
+          <input class="w-full rounded-xl outline-none px-4 py-2.5 bg-white/90 dark:bg-zinc-700/90 focus:ring-2 focus:ring-yellow-500" type="text" placeholder="Folder name..." name="foldername" required>
+          <div class="flex justify-end">
+            <input class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 px-5 py-2 rounded-xl cursor-pointer text-white font-medium" type="submit" value="Create Folder">
           </div>
         </form>
       </div>
@@ -629,167 +689,131 @@
     </div>
 
     <div class="tasks grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 py-8 sm:py-12" id="files-container">
-      <% if(files.length> 0) { %>
-        <% files.forEach(function(val, index) { %>
-          <div
-            class="task p-4 sm:p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50"
-            data-index="<%= index %>">
+      <% if(files.length > 0) { %>
+        <% files.forEach(function(file) { %>
+          <div class="task p-4 sm:p-5 rounded-xl bg-zinc-100/80 dark:bg-zinc-800/80 shadow hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-zinc-200/50 dark:border-zinc-700/50">
             <div class="flex justify-between items-start">
-              <div class="flex items-center">
-                <% const ext=val.split('.').pop().toLowerCase(); %>
-                  <% if (['jpg', 'jpeg' , 'png' , 'gif' , 'webp' , 'bmp' ].includes(ext)) { %>
-                    <svg class="file-icon text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                      viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              <% if (file.isDirectory) { %>
+                <a href="/folder/<%= file.path %>" class="flex items-center group flex-1 min-w-0">
+                  <svg class="file-icon text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                  </svg>
+                  <h1 class="text-zinc-900 dark:text-white font-semibold truncate group-hover:underline"><%= file.name %></h1>
+                </a>
+              <% } else { %>
+                <div class="flex items-center flex-1 min-w-0">
+                  <% const ext = file.name.split('.').pop().toLowerCase(); %>
+                  <% if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'].includes(ext)) { %>
+                    <svg class="file-icon text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <% } else if (ext==='pdf' ) { %>
-                      <svg class="file-icon text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                      </svg>
-                      <% } else if (ext==='txt' || ext==='md' ) { %>
-                        <svg class="file-icon text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                          viewBox="0 0 24 24" stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        <% } else { %>
-                          <svg class="file-icon text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                          </svg>
-                          <% } %>
-                            <h1
-                              class="text-zinc-900 dark:text-white text-lg sm:text-xl font-semibold tracking-tight truncate max-w-[160px] sm:max-w-[180px]">
-                              <%= val %>
-                            </h1>
-              </div>
-              <button
-                class="delete-btn text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors duration-300"
-                data-filename="<%= val %>">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  <% } else if (ext === 'pdf') { %>
+                    <svg class="file-icon text-red-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                  <% } else if (ext === 'txt' || ext === 'md') { %>
+                    <svg class="file-icon text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  <% } else { %>
+                    <svg class="file-icon text-purple-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    </svg>
+                  <% } %>
+                  <h1 class="text-zinc-900 dark:text-white text-lg sm:text-xl font-semibold tracking-tight truncate max-w-[160px] sm:max-w-[180px]"><%= file.name %></h1>
+                </div>
+              <% } %>
+              <button class="delete-btn text-zinc-500 dark:text-zinc-400 hover:text-red-500 transition-colors duration-300 ml-2 flex-shrink-0" data-filepath="<%= file.path %>">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
               </button>
             </div>
-            <div class="flex justify-between items-center mt-3 sm:mt-4">
-              <a class="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium shadow-sm transition-all duration-300 transform hover:scale-105 active:scale-95"
-                href="/file/<%= val %>">
-                View
-                <a class="px-3 py-1 rounded-lg bg-gradient-to-r from-zinc-200 to-zinc-300 hover:from-zinc-300 hover:to-zinc-400 dark:from-zinc-600 dark:to-zinc-700 dark:hover:from-zinc-700 dark:hover:to-zinc-800 text-zinc-800 dark:text-white text-sm font-medium shadow-sm transition-all duration-300 transform hover:scale-105 active:scale-95"
-                  href="/edit/<%= val %>">
-                  Rename
-                </a>
-            </div>
+
+            <% if (!file.isDirectory) { %>
+              <div class="flex justify-between items-center mt-3 sm:mt-4">
+                <a class="px-3 py-1 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm font-medium shadow-sm transition-all duration-300 transform hover:scale-105 active:scale-95" href="/file/<%= file.path %>">View</a>
+                <a class="px-3 py-1 rounded-lg bg-gradient-to-r from-zinc-200 to-zinc-300 hover:from-zinc-300 hover:to-zinc-400 dark:from-zinc-600 dark:to-zinc-700 dark:hover:from-zinc-700 dark:hover:to-zinc-800 text-zinc-800 dark:text-white text-sm font-medium shadow-sm transition-all duration-300 transform hover:scale-105 active:scale-95" href="/edit/<%= file.path %>">Rename</a>
+              </div>
+            <% } %>
+
             <div class="mt-2 sm:mt-3 text-xs text-zinc-500 dark:text-zinc-400 flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span class="created-date">Just now</span>
+              <span class="created-date" data-date="<%= file.createdAt %>"></span>
             </div>
           </div>
-          <% }); %>
-            <% } else { %>
-              <div class="w-full text-center py-12 sm:py-16 col-span-3">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                  class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none"
-                  viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                </svg>
-                <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your
-                  first file!</h3>
-                <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start
-                  organizing your files by adding a new one above.</p>
-              </div>
-              <% } %>
+        <% }); %>
+      <% } else { %>
+        <div class="w-full text-center py-12 sm:py-16 col-span-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+          </svg>
+          <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files or folders yet.</h3>
+          <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing by adding a new one above.</p>
+        </div>
+      <% } %>
     </div>
   </div>
 
   <div class="mobile-menu-bar" id="mobileMenuBar">
     <div class="mobile-menu-item active" id="mobileHome">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2h-4a2 2 0 01-2-2V12H9v8a2 2 0 01-2 2H3a2 2 0 01-2-2V9z" />
       </svg>
       <span class="mobile-menu-label">Home</span>
     </div>
 
-    <a href="https://finderchat.onrender.com/" target="_blank" rel="noopener noreferrer" class="mobile-menu-item"
-      id="mobileChat">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-        class="bi bi-chat-left-text" viewBox="0 0 16 16">
-        <path
-          d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-        <path
-          d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+    <a href="https://finderchat.onrender.com/" target="_blank" rel="noopener noreferrer" class="mobile-menu-item" id="mobileChat">
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text" viewBox="0 0 16 16">
+        <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
+        <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6m0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
       </svg>
       <span class="mobile-menu-label">Chat</span>
     </a>
 
     <div class="mobile-menu-item" id="mobileSearch">
-      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18a7.5 7.5 0 006.15-3.15z" />
       </svg>
       <span class="mobile-menu-label">Search</span>
     </div>
     <div class="mobile-menu-item" id="mobileSettings">
-  <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-  </svg>
-  <span class="mobile-menu-label">Settings</span>
-</div>
+      <svg class="mobile-menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+      <span class="mobile-menu-label">Settings</span>
+    </div>
   </div>
-
 
   <div id="toast"
     class="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 bg-green-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl shadow-xl transform translate-y-10 opacity-0 transition-all duration-500 flex items-center space-x-2 sm:space-x-3 z-50 responsive-text">
     <div class="toast-icon">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd"
-          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-          clip-rule="evenodd" />
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
       </svg>
     </div>
     <span id="toast-message" class="font-medium">File added successfully!</span>
   </div>
 
-  <div id="confirmation-modal"
-    class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
-    <div
-      class="bg-white dark:bg-zinc-800 rounded-xl p-5 sm:p-6 max-w-md w-full mx-4 animate__animated animate__fadeInUp border border-zinc-200/50 dark:border-zinc-700/50">
+  <div id="confirmation-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden backdrop-blur-sm">
+    <div class="bg-white dark:bg-zinc-800 rounded-xl p-5 sm:p-6 max-w-md w-full mx-4 animate__animated animate__fadeInUp border border-zinc-200/50 dark:border-zinc-700/50">
       <div class="flex items-start space-x-3">
         <div class="flex-shrink-0 p-2 bg-red-100 dark:bg-red-900/30 rounded-full">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 sm:h-6 sm:w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
         <div>
           <h3 class="text-lg sm:text-xl font-semibold mb-2">Confirm Deletion</h3>
-          <p class="text-zinc-700 dark:text-zinc-300 responsive-text">Are you sure you want to delete "<span
-              id="file-to-delete" class="font-medium">filename.txt</span>"? This action cannot be undone.</p>
+          <p class="text-zinc-700 dark:text-zinc-300 responsive-text">Are you sure you want to delete "<span id="file-to-delete" class="font-medium">filename.txt</span>"? This action cannot be undone.</p>
           <div class="flex justify-end space-x-2 sm:space-x-3 mt-4 sm:mt-6">
-            <button id="cancel-delete"
-              class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors duration-300 responsive-text">Cancel</button>
-            <button id="confirm-delete"
-              class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-colors duration-300 text-white flex items-center space-x-1 responsive-text">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            <button id="cancel-delete" class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-zinc-200 dark:bg-zinc-700 hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors duration-300 responsive-text">Cancel</button>
+            <button id="confirm-delete" class="px-4 py-1.5 sm:px-5 sm:py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-colors duration-300 text-white flex items-center space-x-1 responsive-text">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
               <span>Delete</span>
             </button>
@@ -798,29 +822,24 @@
       </div>
     </div>
   </div>
-  <a href="https://finderchat.onrender.com/" target="_blank" rel="noopener noreferrer"
-    class="floating-chat-btn" title="Chat with AI">
+
+  <a href="https://finderchat.onrender.com/" target="_blank" rel="noopener noreferrer" class="floating-chat-btn" title="Chat with AI">
     <span class="floating-chat-icon">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
-        <path
-          d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+        <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
       </svg>
     </span>
     <span class="floating-chat-text">Chat...</span>
   </a>
-  
 
-  <footer
-    class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 mb-2 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm rounded-[40px]">
+  <footer class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 mb-2 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm rounded-[40px]">
     <div class="max-w-7xl mx-auto px-4">
-      <p
-        class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
-        &copy; 2025 <span
-          class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>.
-        All Rights Reserved.
+      <p class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
+        &copy; 2025 <span class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>. All Rights Reserved.
       </p>
     </div>
   </footer>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
         // Show welcome toast on first visit
@@ -969,7 +988,7 @@
         deleteButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
-                fileToDelete = button.dataset.filename;
+                fileToDelete = button.dataset.filepath;
                 fileToDeleteElement.textContent = fileToDelete;
                 confirmationModal.classList.remove('hidden');
             });
@@ -993,7 +1012,7 @@
                     confirmationModal.classList.add('hidden');
 
                     // Remove the file from the UI with animation
-                    const fileElement = document.querySelector(`.delete-btn[data-filename="${fileToDelete}"]`).closest('.task');
+                    const fileElement = document.querySelector(`.delete-btn[data-filepath="${fileToDelete}"]`).closest('.task');
                     fileElement.classList.add('animate__animated', 'animate__zoomOut');
 
                     setTimeout(() => {
@@ -1003,14 +1022,14 @@
                         if (document.querySelectorAll('.task').length === 0) {
                             const container = document.getElementById('files-container');
                             container.innerHTML = `
-                                  <div class="w-full text-center py-12 sm:py-16 col-span-3">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-                                    </svg>
-                                    <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files yet. Add your first file!</h3>
-                                    <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing your files by adding a new one above.</p>
-                                  </div>
-                                `;
+                                <div class="w-full text-center py-12 sm:py-16 col-span-3">
+                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 sm:h-20 w-16 sm:w-20 mx-auto text-zinc-400 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                  </svg>
+                                  <h3 class="text-zinc-500 dark:text-zinc-400 text-lg sm:text-xl mt-3 sm:mt-4">No files or folders yet.</h3>
+                                  <p class="text-zinc-400 dark:text-zinc-500 mt-1 sm:mt-2 max-w-md mx-auto responsive-text">Start organizing by adding a new one above.</p>
+                                </div>
+                              `;
                         }
                     }, 500);
                 } else {
@@ -1044,12 +1063,15 @@
                           Uploading...
                         `;
 
+                    const currentFolder = document.querySelector('input[name="currentFolder"]').value;
+                    const uploadPath = currentFolder ? `/upload/${currentFolder}` : '/upload';
+
                     const formData = new FormData();
                     for (let i = 0; i < files.length; i++) {
                         formData.append('files', files[i]);
                     }
 
-                    const response = await fetch('/upload', {
+                    const response = await fetch(uploadPath, {
                         method: 'POST',
                         body: formData
                     });
@@ -1081,22 +1103,10 @@
             }
         });
 
-        // Random creation dates for demo purposes
+        // Format creation dates
         document.querySelectorAll('.created-date').forEach(el => {
-            const daysAgo = Math.floor(Math.random() * 30);
-            if (daysAgo === 0) {
-                const hoursAgo = Math.floor(Math.random() * 24);
-                if (hoursAgo === 0) {
-                    const minutesAgo = Math.floor(Math.random() * 60);
-                    el.textContent = `${minutesAgo} minute${minutesAgo !== 1 ? 's' : ''} ago`;
-                } else {
-                    el.textContent = `${hoursAgo} hour${hoursAgo !== 1 ? 's' : ''} ago`;
-                }
-            } else if (daysAgo === 1) {
-                el.textContent = 'Yesterday';
-            } else {
-                el.textContent = `${daysAgo} days ago`;
-            }
+            const date = new Date(el.dataset.date);
+            el.textContent = date.toLocaleString();
         });
 
         // Navbar scroll effect
@@ -1135,8 +1145,12 @@
         // Toggle form visibility
         const toggleFormBtn = document.getElementById('toggleFormBtn');
         const contentBox = document.getElementById('contentBox');
+        const toggleFolderFormBtn = document.getElementById('toggleFolderFormBtn');
+        const folderFormContainer = document.getElementById('folderFormContainer');
 
         toggleFormBtn.addEventListener('click', () => {
+            folderFormContainer.classList.add('hidden');
+            folderFormContainer.classList.remove('visible');
             if (contentBox.classList.contains('hidden')) {
                 contentBox.classList.remove('hidden');
                 contentBox.classList.add('visible');
@@ -1145,6 +1159,20 @@
             } else {
                 contentBox.classList.add('hidden');
                 contentBox.classList.remove('visible');
+            }
+        });
+
+        toggleFolderFormBtn.addEventListener('click', () => {
+            contentBox.classList.add('hidden');
+            contentBox.classList.remove('visible');
+            if (folderFormContainer.classList.contains('hidden')) {
+                folderFormContainer.classList.remove('hidden');
+                folderFormContainer.classList.add('visible');
+                // Scroll to the form for better UX
+                folderFormContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                folderFormContainer.classList.add('hidden');
+                folderFormContainer.classList.remove('visible');
             }
         });
 
@@ -1226,5 +1254,4 @@
     }
   </script>
 </body>
-
 </html>

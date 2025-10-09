@@ -250,37 +250,39 @@
       </h1>
 
       <form id="editForm" action="/edit" method="post" class="space-y-4">
+          <input type="hidden" name="previousPath" value="<%= filePath %>">
+
         <!-- Current filename -->
-        <div>
-          <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">Current Filename</label>
-          <div class="relative">
-            <input
-              class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input"
-              type="text" name="previous" value="<%= filename %>" readonly>
-            <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
-              <i class="fas fa-lock"></i>
-            </div>
-          </div>
-        </div>
+       <div>
+    <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">Current Filename</label>
+    <div class="relative">
+      <input
+        class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input"
+        type="text" value="<%= filename %>" readonly>
+      <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
+        <i class="fas fa-lock"></i>
+      </div>
+    </div>
+  </div>
 
         <!-- New filename -->
-        <div>
-          <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">New Filename</label>
-          <div class="relative">
-            <input id="newFilename"
-              class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input"
-              type="text" name="new" placeholder="Enter new filename..." required pattern="[^\\\/:*?\" <>|]+"
-            title="Filename cannot contain special characters (\ / : * ? \" <> |)"
-              autocomplete="off"
-              autocorrect="off"
-              spellcheck="false">
-              <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
-                <i class="fas fa-edit"></i>
-              </div>
-          </div>
-          <p class="text-xs text-zinc-500 dark:text-gray-500 mt-1">Allowed: letters, numbers, spaces, hyphens,
-            underscores, dots</p>
-        </div>
+      <div>
+    <label class="block text-sm font-medium text-zinc-600 dark:text-gray-400 mb-1">New Filename</label>
+    <div class="relative">
+      <input id="newFilename"
+        class="w-full rounded-md outline-none px-5 py-2 text-zinc-900 dark:text-white bg-white dark:bg-zinc-700 border border-zinc-300 dark:border-zinc-600 input-focus-effect transition-all filename-input"
+        type="text" name="new" placeholder="Enter new filename..." required 
+        pattern="[^\\\/:*?\"<>|]+"
+        title="Filename cannot contain special characters (\ / : * ? \" < > |)"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false">
+      <div class="absolute right-3 top-2.5 text-zinc-500 dark:text-gray-400">
+        <i class="fas fa-edit"></i>
+      </div>
+    </div>
+    <p class="text-xs text-zinc-500 dark:text-gray-500 mt-1">Allowed: letters, numbers, spaces, hyphens, underscores, dots</p>
+  </div>
 
         <!-- Extension info -->
         <div class="flex items-center text-sm text-zinc-600 dark:text-gray-400">
@@ -443,104 +445,107 @@ const mobileSettings = document.getElementById('mobileSettings');
       const newNamePreview = document.getElementById('newNamePreview');
 
       // Get file extension
-      const originalFilename = "<%= filename %>";
-      const fileExtension = originalFilename.split('.').pop();
+     // Get file extension
+const originalFilename = "<%= filename %>";
+const fileExtension = originalFilename.split('.').pop();
 
-      // Auto-focus the new filename input
-      newFilenameInput.focus();
+// Update preview when typing
+newFilenameInput.addEventListener('input', function () {
+  const newName = this.value.trim();
 
-      // Update preview when typing
-      newFilenameInput.addEventListener('input', function () {
-        const newName = this.value.trim();
+  if (newName) {
+    // Show preview with smooth animation
+    previewSection.classList.remove('opacity-0', 'translate-y-2');
+    previewSection.classList.add('opacity-100', 'translate-y-0');
 
-        if (newName) {
-          // Show preview with smooth animation
-          previewSection.classList.remove('opacity-0', 'translate-y-2');
-          previewSection.classList.add('opacity-100', 'translate-y-0');
-
-          // Update preview text
-          const displayName = newName + (newName.includes('.') ? '' : '.' + fileExtension);
-          newNamePreview.textContent = displayName;
-        } else {
-          // Hide preview with smooth animation
-          previewSection.classList.remove('opacity-100', 'translate-y-0');
-          previewSection.classList.add('opacity-0', 'translate-y-2');
-        }
-      });
-
+    // Check if user included an extension
+    const userIncludesExtension = newName.includes('.');
+    const displayName = userIncludesExtension ? newName : newName + '.' + fileExtension;
+    
+    // Update preview text
+    newNamePreview.textContent = displayName;
+    
+    // Warn if changing extension
+    if (userIncludesExtension) {
+      const newExt = newName.split('.').pop();
+      if (newExt !== fileExtension) {
+        newNamePreview.classList.add('text-yellow-600', 'dark:text-yellow-400');
+        newNamePreview.innerHTML = displayName + ' <span class="text-xs">(extension changed)</span>';
+      } else {
+        newNamePreview.classList.remove('text-yellow-600', 'dark:text-yellow-400');
+        newNamePreview.textContent = displayName;
+      }
+    } else {
+      newNamePreview.classList.remove('text-yellow-600', 'dark:text-yellow-400');
+      newNamePreview.textContent = displayName;
+    }
+  } else {
+    // Hide preview with smooth animation
+    previewSection.classList.remove('opacity-100', 'translate-y-0');
+    previewSection.classList.add('opacity-0', 'translate-y-2');
+  }
+});
       // Form submission
       form.addEventListener('submit', async function (e) {
-        e.preventDefault();
+  e.preventDefault();
 
-        const newName = newFilenameInput.value.trim();
+  const newName = newFilenameInput.value.trim();
 
-        // Validate empty input
-        if (!newName) {
-          showError("Please enter a new filename");
-          newFilenameInput.classList.add('shake', 'border-red-500');
-          setTimeout(() => {
-            newFilenameInput.classList.remove('shake');
-          }, 500);
-          return;
-        }
+  // Validate empty input
+  if (!newName) {
+    showError("Please enter a new filename");
+    newFilenameInput.classList.add('shake', 'border-red-500');
+    setTimeout(() => {
+      newFilenameInput.classList.remove('shake');
+    }, 500);
+    return;
+  }
 
-        // Validate forbidden characters
-        const forbiddenChars = /[\\\/:*?"<>|]/;
-        if (forbiddenChars.test(newName)) {
-          showError('Filename cannot contain: \\ / : * ? " < > |');
-          newFilenameInput.classList.add('shake', 'border-red-500');
-          setTimeout(() => {
-            newFilenameInput.classList.remove('shake');
-          }, 500);
-          return;
-        }
+  // Validate forbidden characters
+  const forbiddenChars = /[\\\/:*?"<>|]/;
+  if (forbiddenChars.test(newName)) {
+    showError('Filename cannot contain: \\ / : * ? " < > |');
+    newFilenameInput.classList.add('shake', 'border-red-500');
+    setTimeout(() => {
+      newFilenameInput.classList.remove('shake');
+    }, 500);
+    return;
+  }
 
-        // Validate length
-        if (newName.length > 100) {
-          showError('Filename must be less than 100 characters');
-          newFilenameInput.classList.add('shake', 'border-red-500');
-          setTimeout(() => {
-            newFilenameInput.classList.remove('shake');
-          }, 500);
-          return;
-        }
+  // Validate length
+  if (newName.length > 100) {
+    showError('Filename must be less than 100 characters');
+    newFilenameInput.classList.add('shake', 'border-red-500');
+    setTimeout(() => {
+      newFilenameInput.classList.remove('shake');
+    }, 500);
+    return;
+  }
 
-        // Show loading state
-        btnText.textContent = 'Updating...';
-        btnSpinner.classList.remove('hidden');
-        submitBtn.disabled = true;
-
-        try {
-          // Submit form
-          const response = await fetch('/edit', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams(new FormData(form))
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to rename file');
-          }
-
-          // Show success message
-          Swal.fire({
-            icon: 'success',
-            title: 'File Renamed!',
-            text: 'The file has been successfully renamed.',
-            willClose: () => {
-              window.location.href = '/';
-            }
-          });
-        } catch (error) {
-          console.error('Error:', error);
-          showError('An error occurred while renaming the file');
-          btnText.textContent = 'Update Filename';
-          btnSpinner.classList.add('hidden');
-          submitBtn.disabled = false;
-        }
+  // Warn about extension change
+  const userIncludesExtension = newName.includes('.');
+  if (userIncludesExtension) {
+    const newExt = newName.split('.').pop();
+    if (newExt !== fileExtension) {
+      const result = await Swal.fire({
+        icon: 'warning',
+        title: 'Change File Extension?',
+        text: `You're changing the file extension from .${fileExtension} to .${newExt}. This may make the file unreadable by certain programs.`,
+        showCancelButton: true,
+        confirmButtonText: 'Yes, rename it',
+        cancelButtonText: 'Cancel'
       });
+      
+      if (!result.isConfirmed) {
+        return;
+      }
+    }
+  }
+
+  // Show loading state
+  btnText.textContent = 'Updating...';
+  btnSpinner.classList.remove('hidden');
+  submitBtn.disabled = true;      });
 
       // Clear error state on focus
       newFilenameInput.addEventListener('focus', function () {

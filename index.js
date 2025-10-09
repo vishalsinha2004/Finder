@@ -36,7 +36,6 @@ try {
   process.exit(1); // Exit if Firebase can't connect
 }
 
-
 // --- Middleware Configurations ---
 marked.setOptions({
   breaks: true,
@@ -46,9 +45,12 @@ marked.setOptions({
 // Configure file upload storage with Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = './files';
+    const folder = req.params.folder || '';
+    const uploadPath = folder ? path.join('./files', folder) : './files';
+    
+    // Create directory if it doesn't exist
     if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath);
+      fs.mkdirSync(uploadPath, { recursive: true });
     }
     cb(null, uploadPath);
   },
@@ -93,7 +95,6 @@ const checkAuth = (req, res, next) => {
     });
 };
 
-
 // --- Public Routes (No Authentication Required) ---
 app.get('/login', (req, res) => {
   res.render('login');
@@ -128,38 +129,88 @@ app.get('/logout', (req, res) => {
     res.redirect('/login');
 });
 
-
 // --- Protected Routes (Authentication Required) ---
 // The checkAuth middleware is applied to all routes defined below this line.
 app.use(checkAuth);
 
-app.get('/', function (req, res) {
-  fs.readdir('./files', function (err, files) {
-    if (err) {
-      console.error('Error reading files:', err);
-      if (err.code === 'ENOENT') {
-        fs.mkdirSync('./files');
-        // This line is updated to pass the user object
-        return res.render("index", { files: [], user: req.user });
+// Helper function to read directory contents
+const readDirectory = (dirPath, currentFolder = null) => {
+  return new Promise((resolve, reject) => {
+    fs.readdir(dirPath, (err, files) => {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          fs.mkdirSync(dirPath, { recursive: true });
+          return resolve([]);
+        }
+        return reject(err);
       }
-      return res.status(500).send('Error reading files');
-    }
 
-    const sortedFiles = files.map(file => {
-      const stat = fs.statSync(path.join(__dirname, 'files', file));
-      return {
-        name: file,
-        createdAt: stat.birthtime
-      };
-    }).sort((a, b) => b.createdAt - a.createdAt)
-      .map(file => file.name);
+      const fileDetails = files.map(file => {
+        const filePath = path.join(dirPath, file);
+        const stat = fs.statSync(filePath);
+        return {
+          name: file,
+          isDirectory: stat.isDirectory(),
+          createdAt: stat.birthtime,
+          path: currentFolder ? path.join(currentFolder, file) : file
+        };
+      }).sort((a, b) => {
+        // Sort directories first, then by creation date
+        if (a.isDirectory && !b.isDirectory) return -1;
+        if (!a.isDirectory && b.isDirectory) return 1;
+        return b.createdAt - a.createdAt;
+      });
 
-    // This line is also updated to pass the user object
-    res.render("index", { files: sortedFiles, user: req.user });
+      resolve(fileDetails);
+    });
   });
+};
+
+app.get('/', function (req, res) {
+  const filesPath = path.join(__dirname, 'files');
+  
+  readDirectory(filesPath)
+    .then(files => {
+      res.render("index", { 
+        files: files, 
+        user: req.user, 
+        currentFolder: null 
+      });
+    })
+    .catch(err => {
+      console.error('Error reading files:', err);
+      res.status(500).send('Error reading files');
+    });
 });
 
-app.post('/upload', upload.array('files'), function (req, res) {
+app.get('/folder/*', function (req, res) {
+  const folderPath = req.params[0]; // Get the entire folder path
+  const fullPath = path.join(__dirname, 'files', folderPath);
+
+  // Security check to prevent directory traversal
+  const normalizedPath = path.normalize(fullPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid folder path');
+  }
+
+  readDirectory(fullPath, folderPath)
+    .then(files => {
+      res.render("index", { 
+        files: files, 
+        user: req.user, 
+        currentFolder: folderPath 
+      });
+    })
+    .catch(err => {
+      console.error('Error reading folder:', err);
+      if (err.code === 'ENOENT') {
+        return res.status(404).send('Folder not found');
+      }
+      res.status(500).send('Error reading folder');
+    });
+});
+
+app.post('/upload/*', upload.array('files'), function (req, res) {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({
@@ -183,46 +234,110 @@ app.post('/upload', upload.array('files'), function (req, res) {
   }
 });
 
-app.delete('/file/:filename', function (req, res) {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'files', filename);
+app.delete('/file/*', function (req, res) {
+  const filePath = req.params[0]; // Get the entire file path including folders
+  const fullPath = path.join(__dirname, 'files', filePath);
 
-  fs.unlink(filePath, (err) => {
-    if (err) {
-      console.error('Delete error:', err);
+  // Security check
+  const normalizedPath = path.normalize(fullPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).json({
+      success: false,
+      message: 'Invalid file path'
+    });
+  }
+
+  // Check if path exists
+  fs.stat(fullPath, (statErr, stats) => {
+    if (statErr) {
+      if (statErr.code === 'ENOENT') {
+        return res.status(404).json({
+          success: false,
+          message: 'File or folder not found'
+        });
+      }
       return res.status(500).json({
         success: false,
-        message: 'Error deleting file'
+        message: 'Error accessing path'
       });
     }
-    res.status(200).json({
-      success: true,
-      message: 'File deleted successfully'
-    });
+
+    // Delete based on type (file vs directory)
+    if (stats.isDirectory()) {
+      // Delete directory recursively
+      fs.rm(fullPath, { recursive: true, force: true }, (dirErr) => {
+        if (dirErr) {
+          console.error('Delete directory error:', dirErr);
+          return res.status(500).json({
+            success: false,
+            message: 'Error deleting directory'
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: 'Directory deleted successfully'
+        });
+      });
+    } else {
+      // Delete file
+      fs.unlink(fullPath, (fileErr) => {
+        if (fileErr) {
+          console.error('Delete file error:', fileErr);
+          if (fileErr.code === 'ENOENT') {
+            return res.status(404).json({
+              success: false,
+              message: 'File not found'
+            });
+          }
+          return res.status(500).json({
+            success: false,
+            message: 'Error deleting file'
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: 'File deleted successfully'
+        });
+      });
+    }
   });
 });
 
-app.get('/file/:filename', function (req, res) {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'files', filename);
+app.get('/file/*', function (req, res) {
+  const filePath = req.params[0];
+  const fullPath = path.join(__dirname, 'files', filePath);
+  const filename = path.basename(filePath);
   const ext = path.extname(filename).toLowerCase();
   const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
   const isPdf = ext === '.pdf';
   const isImage = IMAGE_EXTENSIONS.includes(ext);
 
+  // Security check
+  const normalizedPath = path.normalize(fullPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid file path');
+  }
+
   if (isPdf || isImage) {
     res.render('show', {
       filename: filename,
+      filePath: filePath, // Pass the full path for serving
       isPdf: isPdf,
       isImage: isImage,
       filedata: null
     });
   } else {
-    fs.readFile(filePath, "utf-8", function (err, filedata) {
-      if (err) return res.status(404).send('File not found');
+    fs.readFile(fullPath, "utf-8", function (err, filedata) {
+      if (err) {
+        if (err.code === 'ENOENT') {
+          return res.status(404).send('File not found');
+        }
+        return res.status(500).send('Error reading file');
+      }
       const isMarkdown = ext === '.md';
       res.render('show', {
         filename: filename,
+        filePath: filePath, // Pass the full path for serving
         filedata: isMarkdown ? marked(filedata) : filedata,
         isPdf: false,
         isImage: false,
@@ -232,26 +347,45 @@ app.get('/file/:filename', function (req, res) {
   }
 });
 
-app.get('/files/:filename', function (req, res) {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'files', filename);
+app.get('/files/*', function (req, res) {
+  const filePath = req.params[0];
+  const fullPath = path.join(__dirname, 'files', filePath);
 
-  fs.access(filePath, fs.constants.F_OK, (err) => {
+  // Security check
+  const normalizedPath = path.normalize(fullPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid file path');
+  }
+
+  fs.access(fullPath, fs.constants.F_OK, (err) => {
     if (err) {
       return res.status(404).send('File not found');
     }
-    res.sendFile(filePath);
+    res.sendFile(fullPath);
   });
 });
 
-app.get('/edit/:filename', function (req, res) {
-  const filename = req.params.filename;
-  const filePath = path.join(__dirname, 'files', filename);
+app.get('/edit/*', function (req, res) {
+  const filePath = req.params[0];
+  const fullPath = path.join(__dirname, 'files', filePath);
+  const filename = path.basename(filePath);
 
-  fs.readFile(filePath, "utf-8", function (err, filedata) {
-    if (err) return res.status(404).send('File not found');
+  // Security check
+  const normalizedPath = path.normalize(fullPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid file path');
+  }
+
+  fs.readFile(fullPath, "utf-8", function (err, filedata) {
+    if (err) {
+      if (err.code === 'ENOENT') {
+        return res.status(404).send('File not found');
+      }
+      return res.status(500).send('Error reading file');
+    }
     res.render('edit', {
       filename: filename,
+      filePath: filePath, // Pass full path for form submission
       filedata: filedata
     });
   });
@@ -262,15 +396,85 @@ app.get('/settings', function(req, res) {
 });
 
 app.post('/edit', function (req, res) {
-  const oldPath = path.join(__dirname, 'files', req.body.previous);
-  const newPath = path.join(__dirname, 'files', req.body.new);
+  const oldFilePath = req.body.previousPath || req.body.previous;
+  const newFilename = req.body.new.replace(/[^a-zA-Z0-9._-]/g, '_');
+  
+  // Get the original file extension from the current filename
+  const originalExt = path.extname(oldFilePath);
+  
+  // If user didn't specify an extension in the new filename, keep the original extension
+  const hasExtension = newFilename.includes('.');
+  const finalNewFilename = hasExtension ? newFilename : newFilename + originalExt;
+  
+  const oldPath = path.join(__dirname, 'files', oldFilePath);
+  const newPath = path.join(__dirname, 'files', path.dirname(oldFilePath), finalNewFilename);
 
-  fs.rename(oldPath, newPath, function (err) {
-    if (err) {
-      console.error('Error renaming file:', err);
-      return res.status(500).send('Error renaming file');
+  // Security checks
+  const normalizedOldPath = path.normalize(oldPath);
+  const normalizedNewPath = path.normalize(newPath);
+  if (!normalizedOldPath.startsWith(path.join(__dirname, 'files')) || 
+      !normalizedNewPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid file path');
+  }
+
+  console.log('Attempting to rename:', {
+    oldPath: oldPath,
+    newPath: newPath,
+    oldFilePath: oldFilePath,
+    newFilename: finalNewFilename,
+    originalExt: originalExt
+  });
+
+  // Check if source file exists BEFORE any processing
+  fs.access(oldPath, fs.constants.F_OK, (accessErr) => {
+    if (accessErr) {
+      console.error('Source file not found:', {
+        path: oldPath,
+        error: accessErr
+      });
+      return res.status(404).send(`Source file not found: ${path.basename(oldFilePath)}`);
     }
-    res.redirect("/");
+
+    // Check if target file already exists
+    fs.access(newPath, fs.constants.F_OK, (targetAccessErr) => {
+      if (!targetAccessErr) {
+        return res.status(409).send(`A file with name "${finalNewFilename}" already exists`);
+      }
+
+      // Perform the rename operation
+      fs.rename(oldPath, newPath, function (err) {
+        if (err) {
+          console.error('Error renaming file:', {
+            oldPath: oldPath,
+            newPath: newPath,
+            error: err
+          });
+          
+          if (err.code === 'ENOENT') {
+            return res.status(404).send('File not found during rename operation');
+          } else if (err.code === 'EACCES') {
+            return res.status(403).send('Permission denied');
+          } else if (err.code === 'EBUSY') {
+            return res.status(409).send('File is busy or in use');
+          }
+          
+          return res.status(500).send('Error renaming file');
+        }
+        
+        console.log('File successfully renamed:', {
+          from: path.basename(oldPath),
+          to: path.basename(newPath)
+        });
+        
+        // Redirect back to the appropriate folder
+        const folderPath = path.dirname(oldFilePath);
+        if (folderPath && folderPath !== '.') {
+          res.redirect(`/folder/${folderPath}`);
+        } else {
+          res.redirect("/");
+        }
+      });
+    });
   });
 });
 
@@ -279,16 +483,62 @@ app.post('/create', function (req, res) {
     return res.status(400).send('Title and details are required');
   }
 
-  const filename = req.body.title.replace(/[^a-zA-Z0-9]/g, '_') + '.txt';
-  const filePath = path.join(__dirname, 'files', filename);
+  const filename = req.body.title.replace(/[^a-zA-Z0-9._-]/g, '_') + '.txt';
+  const folderPath = req.body.currentFolder || '';
+  const filePath = path.join(__dirname, 'files', folderPath, filename);
+
+  // Security check
+  const normalizedPath = path.normalize(filePath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid path');
+  }
+
+  // Ensure directory exists
+  const dirPath = path.dirname(filePath);
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
 
   fs.writeFile(filePath, req.body.details, function (err) {
     if (err) {
       console.error('Error creating file:', err);
       return res.status(500).send('Error creating file');
     }
-    res.redirect("/");
+    
+    if (folderPath) {
+      res.redirect(`/folder/${folderPath}`);
+    } else {
+      res.redirect("/");
+    }
   });
+});
+
+app.post('/create-folder', function (req, res) {
+  if (!req.body.foldername) {
+    return res.status(400).send('Folder name is required');
+  }
+
+  const foldername = req.body.foldername.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const parentFolder = req.body.currentFolder || '';
+  const folderPath = path.join(__dirname, 'files', parentFolder, foldername);
+
+  // Security check
+  const normalizedPath = path.normalize(folderPath);
+  if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+    return res.status(400).send('Invalid folder path');
+  }
+
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(folderPath, { recursive: true });
+    
+    if (parentFolder) {
+      res.redirect(`/folder/${parentFolder}`);
+    } else {
+      res.redirect("/");
+    }
+  } else {
+    res.status(400).send('Folder already exists');
+  }
 });
 
 // --- Server Startup ---
