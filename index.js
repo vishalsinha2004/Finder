@@ -12,30 +12,21 @@ const admin = require('firebase-admin');
 const cookieParser = require('cookie-parser');
 
 // --- Secure Firebase Admin SDK Initialization ---
+// New, improved code for debugging
+let serviceAccount;
 try {
-  let serviceAccount;
-
-  // This will check for the variable in your .env file (locally) or Netlify settings (deployed)
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    console.log('Initializing Firebase Admin from environment variable...');
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-  } else {
-    // This is a fallback in case the environment variable is not found
-    console.error('CRITICAL: FIREBASE_SERVICE_ACCOUNT_KEY environment variable not found.');
-    console.log('Attempting to fall back to local serviceAccountKey.json file...');
-    serviceAccount = require('./serviceAccountKey.json'); // This will now fail if .env is missing
-  }
-
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
-  console.log('Firebase Admin SDK initialized successfully.');
-
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+    } else {
+        // This will fail on Vercel, but is fine for local dev
+        serviceAccount = require("./serviceAccountKey.json");
+    }
 } catch (error) {
-  console.error('CRITICAL: Firebase Admin SDK initialization failed!', error);
-  process.exit(1); // Exit if Firebase can't connect
+    // This will print a clear error message in your Vercel logs
+    console.error("Firebase service account parsing failed:", error);
+    // Exit the process if Firebase can't initialize, to prevent a crash loop
+    process.exit(1); 
 }
-
 
 // --- Middleware Configurations ---
 marked.setOptions({
