@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Dashboard | Finder...</title>
+  <link rel="icon" type="image/png" href="images/fm1.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#3b82f6',
+              600: '#2563eb',
+            },
+          },
+        },
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+  <style>
+    .navbar {
+      position: sticky;
+      top: 10px;
+      left: 0;
+      width: calc(100% - 32px);
+      margin: 0 16px;
+      padding: 12px 20px;
+      z-index: 50;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.08),
+        0 2px 6px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+        0 0 12px rgba(255, 255, 255, 0.08) inset,
+        0 1px 1px rgba(255, 255, 255, 0.1) inset;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .modal-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body class="bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white">
+
+  <nav class="navbar" id="navbar">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <img src="images/fm.png" alt="Logo"
+          class="w-8 h-8 rounded-full object-cover hover:rotate-12 transition-transform duration-300 border-2 border-white/20" />
+        <span
+          class="text-lg sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 hover:from-pink-500 hover:to-blue-500 transition-all duration-500">Finder...</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="w-full px-4 sm:px-6 md:px-10 lg:px-20 animate__animated animate__fadeInUp">
+    <div class="flex justify-center mb-6 space-x-4 pt-10">
+      <button id="addFileBtn"
+        class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Add File</span>
+      </button>
+
+      <button id="addFolderBtn" class="bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>
+        <span>Add Folder</span>
+      </button>
+
+      <button id="uploadBtn"
+        class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 px-6 py-2.5 sm:px-7 sm:py-3 rounded-xl cursor-pointer transition-all duration-300 transform hover:scale-105 active:scale-95 text-white font-medium shadow-md responsive-text flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <span>Upload</span>
+      </button>
+    </div>
+
+    <div class="mt-8">
+      <h2 class="text-2xl font-bold mb-4 text-center">Your Files and Folders</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <% files.forEach(function(file) { %>
+          <div class="bg-zinc-100 dark:bg-zinc-800 p-4 rounded-lg shadow-md">
+            <a href="/file/<%= file.path %>" class="flex items-center space-x-3">
+              <% if (file.isDirectory) { %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
+              <% } else { %>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              <% } %>
+              <span class="font-medium truncate"><%= file.name %></span>
+            </a>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+
+  <div id="createFileModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Create New File</h2>
+        <form action="/create" method="POST">
+            <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter file name" name="title" required>
+            <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter folder path (optional)" name="currentFolder">
+            <textarea class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" name="details" placeholder="Enter file content..." rows="5" required></textarea>
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="closeFileModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+            </div>
+        </form>
+    </div>
+  </div>
+  
+  <div id="createFolderModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+          <h2 class="text-2xl font-bold mb-4">Create New Folder</h2>
+          <form action="/create-folder" method="POST">
+            <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter folder name" name="foldername" required>
+            <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter parent folder path (optional)" name="currentFolder">
+            <div class="flex justify-end space-x-2">
+                <button type="button" id="closeFolderModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+            </div>
+          </form>
+      </div>
+  </div>
+
+  <div id="uploadModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+          <h2 class="text-2xl font-bold mb-4">Upload Files</h2>
+          <form id="uploadForm" action="/upload/" method="POST" enctype="multipart/form-data">
+              <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="file" name="files" multiple required>
+              <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Target folder (optional)" name="folder">
+              <div class="flex justify-end space-x-2">
+                  <button type="button" id="closeUploadModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                  <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Upload</button>
+              </div>
+          </form>
+      </div>
+  </div>
+
+  <footer class="w-full bg-zinc-100/80 dark:bg-zinc-800/80 text-center py-4 sm:py-6 mt-8 sm:mt-12 mb-2 border-t border-zinc-200/50 dark:border-zinc-700/50 backdrop-blur-sm rounded-[40px]">
+    <div class="max-w-7xl mx-auto px-4">
+      <p class="text-zinc-600 dark:text-zinc-300 opacity-80 hover:opacity-100 transition-opacity duration-300 responsive-text">
+        &copy;
+        2025 <span class="font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">Finder...</span>. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
+
+<script>
+    const addFileBtn = document.getElementById('addFileBtn');
+    const addFolderBtn = document.getElementById('addFolderBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+
+    const createFileModal = document.getElementById('createFileModal');
+    const createFolderModal = document.getElementById('createFolderModal');
+    const uploadModal = document.getElementById('uploadModal');
+
+    const closeFileModal = document.getElementById('closeFileModal');
+    const closeFolderModal = document.getElementById('closeFolderModal');
+    const closeUploadModal = document.getElementById('closeUploadModal');
+
+    function toggleModal(modal) {
+        modal.classList.toggle('hidden');
+        modal.classList.toggle('flex');
+    }
+    
+    addFileBtn.addEventListener('click', () => toggleModal(createFileModal));
+    addFolderBtn.addEventListener('click', () => toggleModal(createFolderModal));
+    uploadBtn.addEventListener('click', () => {
+        const uploadForm = document.getElementById('uploadForm');
+        const folderInput = uploadForm.querySelector('[name="folder"]');
+        uploadForm.action = `/upload/${folderInput.value}`;
+        toggleModal(uploadModal);
+    });
+
+    closeFileModal.addEventListener('click', () => toggleModal(createFileModal));
+    closeFolderModal.addEventListener('click', () => toggleModal(createFolderModal));
+    closeUploadModal.addEventListener('click', () => toggleModal(uploadModal));
+    
+    // Close modals if backdrop is clicked
+    createFileModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(createFileModal));
+    createFolderModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(createFolderModal));
+    uploadModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(uploadModal));
+
+</script>
+
+</body>
+</html>

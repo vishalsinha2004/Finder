@@ -318,33 +318,47 @@ app.get('/file/*', function (req, res) {
     return res.status(400).send('Invalid file path');
   }
 
-  if (isPdf || isImage) {
-    res.render('show', {
-      filename: filename,
-      filePath: filePath, // Pass the full path for serving
-      isPdf: isPdf,
-      isImage: isImage,
-      filedata: null
-    });
-  } else {
-    fs.readFile(fullPath, "utf-8", function (err, filedata) {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          return res.status(404).send('File not found');
+  fs.stat(fullPath, (statErr, stats) => {
+    if (statErr) {
+        if (statErr.code === 'ENOENT') {
+            return res.status(404).send('File not found');
         }
-        return res.status(500).send('Error reading file');
-      }
-      const isMarkdown = ext === '.md';
-      res.render('show', {
-        filename: filename,
-        filePath: filePath, // Pass the full path for serving
-        filedata: isMarkdown ? marked(filedata) : filedata,
-        isPdf: false,
-        isImage: false,
-        isMarkdown: isMarkdown
-      });
-    });
-  }
+        return res.status(500).send('Error accessing file');
+    }
+
+    if (stats.isDirectory()) {
+        return res.redirect(`/folder/${filePath}`);
+    }
+
+    if (isPdf || isImage) {
+        res.render('show', {
+            filename: filename,
+            filePath: filePath, // Pass the full path for serving
+            isPdf: isPdf,
+            isImage: isImage,
+            filedata: null
+        });
+    } else {
+        fs.readFile(fullPath, "utf-8", function (err, filedata) {
+            if (err) {
+                console.error(`Error reading file: ${fullPath}`, err); // Detailed logging
+                if (err.code === 'ENOENT') {
+                    return res.status(404).send('File not found');
+                }
+                return res.status(500).send(`Error reading file: ${err.message}`); // Send more specific error
+            }
+            const isMarkdown = ext === '.md';
+            res.render('show', {
+                filename: filename,
+                filePath: filePath, // Pass the full path for serving
+                filedata: isMarkdown ? marked(filedata) : filedata,
+                isPdf: false,
+                isImage: false,
+                isMarkdown: isMarkdown
+            });
+        });
+    }
+  });
 });
 
 app.get('/files/*', function (req, res) {
@@ -393,6 +407,22 @@ app.get('/edit/*', function (req, res) {
 
 app.get('/settings', function(req, res) {
   res.render("settings");
+});
+
+app.get('/Dashboard', function (req, res) {
+  const filesPath = path.join(__dirname, 'files');
+  readDirectory(filesPath)
+    .then(files => {
+      res.render("GeneratorDashboard", {
+        files: files,
+        user: req.user,
+        currentFolder: null
+      });
+    })
+    .catch(err => {
+      console.error('Error reading files for dashboard:', err);
+      res.status(500).send('Error loading dashboard');
+    });
 });
 
 app.post('/edit', function (req, res) {
