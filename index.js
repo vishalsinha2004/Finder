@@ -133,7 +133,7 @@ app.get('/logout', (req, res) => {
 // The checkAuth middleware is applied to all routes defined below this line.
 app.use(checkAuth);
 
-// Helper function to read directory contents
+// *** THE FIX IS IN THIS FUNCTION ***
 const readDirectory = (dirPath, currentFolder = null) => {
   return new Promise((resolve, reject) => {
     fs.readdir(dirPath, (err, files) => {
@@ -145,21 +145,23 @@ const readDirectory = (dirPath, currentFolder = null) => {
         return reject(err);
       }
 
-      const fileDetails = files.map(file => {
-        const filePath = path.join(dirPath, file);
-        const stat = fs.statSync(filePath);
-        return {
-          name: file,
-          isDirectory: stat.isDirectory(),
-          createdAt: stat.birthtime,
-          path: currentFolder ? path.join(currentFolder, file) : file
-        };
-      }).sort((a, b) => {
-        // Sort directories first, then by creation date
-        if (a.isDirectory && !b.isDirectory) return -1;
-        if (!a.isDirectory && b.isDirectory) return 1;
-        return b.createdAt - a.createdAt;
-      });
+      const fileDetails = files
+        .filter(file => file.toLowerCase() !== 'images') // <<< FIX: This line ignores the 'images' folder
+        .map(file => {
+          const filePath = path.join(dirPath, file);
+          const stat = fs.statSync(filePath);
+          return {
+            name: file,
+            isDirectory: stat.isDirectory(),
+            createdAt: stat.birthtime,
+            path: currentFolder ? path.join(currentFolder, file) : file
+          };
+        }).sort((a, b) => {
+          // Sort directories first, then by creation date
+          if (a.isDirectory && !b.isDirectory) return -1;
+          if (!a.isDirectory && b.isDirectory) return 1;
+          return b.createdAt - a.createdAt;
+        });
 
       resolve(fileDetails);
     });
@@ -413,7 +415,7 @@ app.get('/Dashboard', function (req, res) {
   const filesPath = path.join(__dirname, 'files');
   readDirectory(filesPath)
     .then(files => {
-      res.render("GeneratorDashboard", {
+      res.render("Dashboard", {
         files: files,
         user: req.user,
         currentFolder: null

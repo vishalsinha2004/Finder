@@ -1,0 +1,184 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Finder Dashboard | Finder...</title>
+      <link rel="icon" type="image/png" href="/images/fm1.png" />
+      <script src="https://cdn.tailwindcss.com"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+      <style>
+          .modal-backdrop {
+              position: fixed;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.5);
+              z-index: 999;
+          }
+
+          .modal-content {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              z-index: 1000;
+          }
+      </style>
+  </head>
+
+  <body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
+
+      <div class="flex h-screen">
+          <div class="w-64 bg-white dark:bg-gray-800 p-4 flex flex-col">
+              <div class="flex items-center space-x-2 mb-8">
+                  <img src="/images/fm.png" alt="Logo" class="w-8 h-8 rounded-full" />
+                  <span class="text-xl font-bold">Finder...</span>
+              </div>
+              <nav class="flex-1">
+                  <ul>
+                      <li class="mb-4">
+                          <a href="#" class="flex items-center p-2 text-white bg-blue-600 rounded-lg">
+                              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                              Dashboard
+                          </a>
+                      </li>
+                      <li>
+                          <a href="/" class="flex items-center p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg">
+                              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                              All Files
+                          </a>
+                      </li>
+                  </ul>
+              </nav>
+          </div>
+
+          <div class="flex-1 p-8 overflow-y-auto">
+              <header class="flex justify-between items-center mb-8">
+                  <h1 class="text-3xl font-bold">Finder Dashboard</h1>
+                  <div class="flex space-x-4">
+                      <button id="addFileBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                          Add File
+                      </button>
+                      <button id="addFolderBtn" class="bg-yellow-500 text-white px-4 py-2 rounded-lg flex items-center">
+                          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path></svg>
+                          Add Folder
+                      </button>
+                      <button id="uploadBtn" class="bg-green-500 text-white px-4 py-2 rounded-lg flex items-center">
+                          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                          Upload
+                      </button>
+                  </div>
+              </header>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <% files.forEach(function(file) { %>
+                  <a href="/file/<%= file.path %>" class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex items-center space-x-4 hover:shadow-lg transition-shadow">
+                      <% if (file.isDirectory) { %>
+                          <div class="bg-yellow-100 dark:bg-yellow-900 p-3 rounded-full">
+                              <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path></svg>
+                          </div>
+                      <% } else { %>
+                          <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-full">
+                              <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                          </div>
+                      <% } %>
+                      <div>
+                          <p class="font-semibold truncate"><%= file.name %></p>
+                          <p class="text-sm text-gray-500 dark:text-gray-400"><%= file.isDirectory ? 'Folder' : 'File' %></p>
+                      </div>
+                  </a>
+                  <% }); %>
+              </div>
+          </div>
+      </div>
+
+      <div id="createFileModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+          <div class="modal-backdrop"></div>
+          <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+              <h2 class="text-2xl font-bold mb-4">Create New File</h2>
+              <form action="/create" method="POST">
+                <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter folder path (optional)" name="currentFolder">
+                  <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter file name" name="title" required>
+                  <textarea class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" name="details" placeholder="Enter file content..." rows="5" required></textarea>
+                  <div class="flex justify-end space-x-2">
+                      <button type="button" id="closeFileModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div id="createFolderModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+          <div class="modal-backdrop"></div>
+          <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+              <h2 class="text-2xl font-bold mb-4">Create New Folder</h2>
+              <form action="/create-folder" method="POST">
+                  <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter folder name" name="foldername" required>
+                  <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Enter parent folder path (optional)" name="currentFolder">
+                  <div class="flex justify-end space-x-2">
+                      <button type="button" id="closeFolderModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                      <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Create</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <div id="uploadModal" class="fixed inset-0 z-50 items-center justify-center hidden">
+          <div class="modal-backdrop"></div>
+          <div class="modal-content bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-xl w-full max-w-md">
+              <h2 class="text-2xl font-bold mb-4">Upload Files</h2>
+              <form id="uploadForm" action="/upload/" method="POST" enctype="multipart/form-data">
+                <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="text" placeholder="Target folder (optional)" name="folder">
+                  <input class="w-full p-2 mb-4 bg-zinc-100 dark:bg-zinc-700 rounded" type="file" name="files" multiple required>
+                  <div class="flex justify-end space-x-2">
+                      <button type="button" id="closeUploadModal" class="px-4 py-2 bg-zinc-200 dark:bg-zinc-600 rounded">Cancel</button>
+                      <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Upload</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+
+      <script>
+          // Your existing script for modals
+          const addFileBtn = document.getElementById('addFileBtn');
+          const addFolderBtn = document.getElementById('addFolderBtn');
+          const uploadBtn = document.getElementById('uploadBtn');
+
+          const createFileModal = document.getElementById('createFileModal');
+          const createFolderModal = document.getElementById('createFolderModal');
+          const uploadModal = document.getElementById('uploadModal');
+
+          const closeFileModal = document.getElementById('closeFileModal');
+          const closeFolderModal = document.getElementById('closeFolderModal');
+          const closeUploadModal = document.getElementById('closeUploadModal');
+
+          function toggleModal(modal) {
+              modal.classList.toggle('hidden');
+              modal.classList.toggle('flex');
+          }
+
+          addFileBtn.addEventListener('click', () => toggleModal(createFileModal));
+          addFolderBtn.addEventListener('click', () => toggleModal(createFolderModal));
+          uploadBtn.addEventListener('click', () => {
+              const uploadForm = document.getElementById('uploadForm');
+              const folderInput = uploadForm.querySelector('[name="folder"]');
+              uploadForm.action = `/upload/${folderInput.value}`;
+              toggleModal(uploadModal);
+          });
+
+          closeFileModal.addEventListener('click', () => toggleModal(createFileModal));
+          closeFolderModal.addEventListener('click', () => toggleModal(createFolderModal));
+          closeUploadModal.addEventListener('click', () => toggleModal(uploadModal));
+
+          createFileModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(createFileModal));
+          createFolderModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(createFolderModal));
+          uploadModal.querySelector('.modal-backdrop').addEventListener('click', () => toggleModal(uploadModal));
+      </script>
+
+  </body>
+
+  </html>
