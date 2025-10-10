@@ -755,7 +755,12 @@
             <a class="px-3 py-1 rounded-lg bg-gradient-to-r from-zinc-200 to-zinc-300 hover:from-zinc-300 hover:to-zinc-400 dark:from-zinc-600 dark:to-zinc-700 dark:hover:from-zinc-700 dark:hover:to-zinc-800 text-zinc-800 dark:text-white text-sm font-medium shadow-sm transition-all duration-300 transform hover:scale-105 active:scale-95" href="/edit/<%= file.path %>">Rename</a>
           </div>
 
-          
+          <div class="mt-2 text-xs text-zinc-500 dark:text-zinc-400 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="created-date" data-date="<%= file.createdAt %>"></span>
+          </div>
         </div>
       <% } %>
     <% }); %>
