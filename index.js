@@ -45,8 +45,9 @@ marked.setOptions({
 // Configure file upload storage with Multer
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    const semester = req.body.semester || '';
     const folder = req.params.folder || '';
-    const uploadPath = folder ? path.join('./files', folder) : './files';
+    const uploadPath = path.join('./files', semester, folder);
     
     // Create directory if it doesn't exist
     if (!fs.existsSync(uploadPath)) {
@@ -516,8 +517,9 @@ app.post('/create', function (req, res) {
   }
 
   const filename = req.body.title.replace(/[^a-zA-Z0-9._-]/g, '_') + '.txt';
+  const semester = req.body.semester || '';
   const folderPath = req.body.currentFolder || '';
-  const filePath = path.join(__dirname, 'files', folderPath, filename);
+  const filePath = path.join(__dirname, 'files', semester, folderPath, filename);
 
   // Security check
   const normalizedPath = path.normalize(filePath);
@@ -538,7 +540,9 @@ app.post('/create', function (req, res) {
     }
     
     if (folderPath) {
-      res.redirect(`/folder/${folderPath}`);
+      res.redirect(`/folder/${path.join(semester, folderPath)}`);
+    } else if (semester) {
+      res.redirect(`/folder/${semester}`);
     } else {
       res.redirect("/");
     }
@@ -551,8 +555,9 @@ app.post('/create-folder', function (req, res) {
   }
 
   const foldername = req.body.foldername.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const semester = req.body.semester || '';
   const parentFolder = req.body.currentFolder || '';
-  const folderPath = path.join(__dirname, 'files', parentFolder, foldername);
+  const folderPath = path.join(__dirname, 'files', semester, parentFolder, foldername);
 
   // Security check
   const normalizedPath = path.normalize(folderPath);
@@ -564,13 +569,37 @@ app.post('/create-folder', function (req, res) {
     fs.mkdirSync(folderPath, { recursive: true });
     
     if (parentFolder) {
-      res.redirect(`/folder/${parentFolder}`);
+      res.redirect(`/folder/${path.join(semester, parentFolder)}`);
+    } else if (semester) {
+        res.redirect(`/folder/${semester}`);
     } else {
       res.redirect("/");
     }
   } else {
     res.status(400).send('Folder already exists');
   }
+});
+
+app.post('/create-semester', function (req, res) {
+    if (!req.body.semestername) {
+        return res.status(400).send('Semester name is required');
+    }
+
+    const semestername = req.body.semestername.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const folderPath = path.join(__dirname, 'files', semestername);
+
+    // Security check
+    const normalizedPath = path.normalize(folderPath);
+    if (!normalizedPath.startsWith(path.join(__dirname, 'files'))) {
+        return res.status(400).send('Invalid folder path');
+    }
+
+    if (!fs.existsSync(folderPath)) {
+        fs.mkdirSync(folderPath, { recursive: true });
+        res.redirect("/Dashboard");
+    } else {
+        res.status(400).send('Semester folder already exists');
+    }
 });
 
 // --- Server Startup ---
