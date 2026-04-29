@@ -6,7 +6,7 @@ setup
 4.npx react-native run-android
 
 "
-rename app.jsx into app.js
+rename app.tsx into app.js
 add logo on assets folder file is logo.png
 
 "
