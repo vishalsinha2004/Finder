@@ -1,0 +1,151 @@
+setup
+
+1.npx react-native init MyApp
+2.npx @react-native-community/cli init MyApp
+3.npx react-native start
+4.npx react-native run-android
+
+"
+rename app.jsx into app.js
+add logo on assets folder file is logo.png
+
+"
+
+
+topic 2 : Hello world 
+
+import React from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator
+} from 'react-native';
+
+const App = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+
+      {/* Colored Buttons */}
+      <Button text="Hello" style={{ backgroundColor: '#f1c40f' }} />
+      <Button text="Hello" style={{ backgroundColor: '#e67e22' }} />
+      <Button text="Hello" style={{ backgroundColor: '#e74c3c' }} />
+      <Button text="Hello" style={{ backgroundColor: '#1abc9c' }} />
+      <Button text="Hello" style={{ backgroundColor: '#2ecc71' }} />
+      <Button text="Hello" style={{ backgroundColor: '#3498db' }} />
+      <Button text="Hello" style={{ backgroundColor: '#9b59b6' }} />
+
+      {/* Outline Button */}
+      <TouchableOpacity style={styles.outlineBtn}>
+        <Text style={styles.outlineText}>Hello</Text>
+      </TouchableOpacity>
+
+      {/* Loading Button */}
+      <View style={styles.loadingBtn}>
+        <ActivityIndicator size="small" color="#9b59b6" />
+      </View>
+
+      {/* Disabled Button */}
+      <TouchableOpacity style={styles.disabledBtn} disabled>
+        <Text style={styles.disabledText}>Disabled</Text>
+      </TouchableOpacity>
+
+      {/* Custom Inner View Button */}
+      <TouchableOpacity style={styles.customBtn}>
+        <Text style={styles.customText}>Custom inner view</Text>
+      </TouchableOpacity>
+
+    </SafeAreaView>
+  );
+};
+
+// Reusable Button Component
+const Button = ({ text, style }) => (
+  <TouchableOpacity style={[styles.btn, style]}>
+    <Text style={styles.text}>{text}</Text>
+  </TouchableOpacity>
+);
+
+export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#eee',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  btn: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 8,
+    alignItems: 'center',
+    elevation: 3
+  },
+
+  text: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold'
+  },
+
+  outlineBtn: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 8,
+    borderWidth: 2,
+    borderColor: '#9b59b6',
+    alignItems: 'center'
+  },
+
+  outlineText: {
+    color: '#9b59b6',
+    fontWeight: 'bold'
+  },
+
+  loadingBtn: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 8,
+    borderWidth: 2,
+    borderColor: '#9b59b6',
+    alignItems: 'center'
+  },
+
+  disabledBtn: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 30,
+    marginVertical: 8,
+    borderWidth: 2,
+    borderColor: '#333',
+    alignItems: 'center',
+    backgroundColor: '#ddd'
+  },
+
+  disabledText: {
+    color: '#555',
+    fontWeight: 'bold'
+  },
+
+  customBtn: {
+    width: '85%',
+    padding: 15,
+    borderRadius: 30,
+    marginVertical: 8,
+    borderWidth: 2,
+    borderColor: '#333',
+    alignItems: 'center'
+  },
+
+  customText: {
+    color: '#333'
+  }
+});
+
